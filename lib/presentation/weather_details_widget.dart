@@ -19,10 +19,11 @@ class WeatherDetailsWidget extends StatelessWidget {
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.lightBlue
+        color: Color.fromARGB(255, 155, 212, 248,)
       ),
       child: Column(
         children: [
+          Positioned(right:0,child: Image.network('http://openweathermap.org/img/wn/${weatherContoller.getIcon()}.png')),
           Row(
             children: [
               Icon(Icons.thermostat),

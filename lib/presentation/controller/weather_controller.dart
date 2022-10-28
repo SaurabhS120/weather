@@ -11,6 +11,7 @@ class WeatherController extends GetxController{
   final RxDouble _temp_min = 0.0.obs;
   final RxDouble _pressure = 0.0.obs;
   final RxDouble _humidity = 0.0.obs;
+  final RxString _icon = ''.obs;
 
   RxBool checkLoading()=>_isLoading;
   RxDouble getTemp() => _temp;
@@ -19,6 +20,7 @@ class WeatherController extends GetxController{
   RxDouble getTempMin() => _temp_min;
   RxDouble getPressure() => _pressure;
   RxDouble getHumidity() => _humidity;
+  RxString getIcon() => _icon;
 
   @override
   void onInit(){
@@ -34,6 +36,7 @@ class WeatherController extends GetxController{
     _temp_max.value = weatherEntity.temp_max;
     _pressure.value = weatherEntity.pressure;
     _humidity.value = weatherEntity.humidity;
+    _icon.value = weatherEntity.icon;
     _isLoading.value = false;
   }
 
