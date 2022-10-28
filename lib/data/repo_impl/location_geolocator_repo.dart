@@ -22,8 +22,9 @@ class LocationGeolocatorRepo extends LocationRepo{
         return Future.error('Location permission is denied');
       }
     }
-    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)        ;
+    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     var positionEntity = LocationEntity(position.latitude, position.longitude);
+    print('location lat : ${positionEntity.lattitude}, location lon : ${positionEntity.longitude}');
     return Future.value(positionEntity);
   }
 
