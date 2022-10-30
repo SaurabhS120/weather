@@ -15,6 +15,7 @@ class HttpService{
         'lat':37.4219983,
         'lon':-122.084,
         'appid':'961132958849047de54af9a4a68a8166',
+        'units':'metric'
       };
       response = await _dio.get('/weather',queryParameters: data);
       print(response);
