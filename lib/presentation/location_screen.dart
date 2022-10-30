@@ -1,4 +1,3 @@
-import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather/domain/entity/location_entity.dart';
@@ -11,7 +10,6 @@ class LocationScreen extends StatelessWidget {
   late RxBool fetching_location;
   RxString city = ''.obs;
   Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
-  RxBool _choosing_loc = false.obs;
 
   LocationScreen() {
     fetching_location = geoLocationController.checkLoading();
@@ -45,15 +43,6 @@ class LocationScreen extends StatelessWidget {
                 SizedBox(
                   height: 12,
                 ),
-                Text('OR'),
-                SizedBox(
-                  height: 12,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      _choosing_loc.value = true;
-                    },
-                    child: Text('Choose City'))
               ],
             ),
           ),
@@ -95,21 +84,6 @@ class LocationScreen extends StatelessWidget {
                     ),
                   ));
             },
-          ),
-          Obx(
-            () => Visibility(
-                visible: _choosing_loc.isTrue,
-                child: Container(
-                  color: Colors.white,
-                  child: SelectState(
-                    onCityChanged: (value) {
-                      this.city.value = value;
-                      _choosing_loc.value = false;
-                    },
-                    onCountryChanged: (value) {},
-                    onStateChanged: (value) {},
-                  ),
-                )),
           ),
         ],
       ),
