@@ -3,7 +3,7 @@ import 'package:weather/data/repo_impl/weather_repo_impl.dart';
 import 'package:weather/domain/entity/weather_entity.dart';
 import 'package:weather/domain/repo/weather_data_repo.dart';
 
-class WeatherController extends GetxController{
+class WeatherController extends GetxController {
   final RxBool _isLoading = true.obs;
   final RxDouble _temp = 0.0.obs;
   final RxDouble _feels_like = 0.0.obs;
@@ -13,22 +13,31 @@ class WeatherController extends GetxController{
   final RxDouble _humidity = 0.0.obs;
   final RxString _icon = ''.obs;
 
-  RxBool checkLoading()=>_isLoading;
+  RxBool checkLoading() => _isLoading;
+
   RxDouble getTemp() => _temp;
+
   RxDouble getFeelsLike() => _feels_like;
+
   RxDouble getTempMax() => _temp_max;
+
   RxDouble getTempMin() => _temp_min;
+
   RxDouble getPressure() => _pressure;
+
   RxDouble getHumidity() => _humidity;
+
   RxString getIcon() => _icon;
 
   @override
-  void onInit(){
+  void onInit() {
     getWeather();
     super.onInit();
   }
+
   WeatherDataRepo weatherDataRepo = WeatherDataRepoImpl();
-  void getWeather() async{
+
+  void getWeather() async {
     WeatherEntity weatherEntity = await weatherDataRepo.getWeatherData();
     _temp.value = weatherEntity.temp;
     _feels_like.value = weatherEntity.feels_like;
@@ -39,5 +48,4 @@ class WeatherController extends GetxController{
     _icon.value = weatherEntity.icon;
     _isLoading.value = false;
   }
-
 }

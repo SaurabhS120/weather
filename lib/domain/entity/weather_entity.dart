@@ -1,4 +1,4 @@
-class WeatherEntity{
+class WeatherEntity {
   double temp;
   double feels_like;
   double temp_max;
@@ -6,5 +6,7 @@ class WeatherEntity{
   double pressure;
   double humidity;
   String icon;
-  WeatherEntity(this.temp,this.feels_like,this.temp_max,this.temp_min,this.pressure,this.humidity,this.icon);
+
+  WeatherEntity(this.temp, this.feels_like, this.temp_max, this.temp_min,
+      this.pressure, this.humidity, this.icon);
 }
