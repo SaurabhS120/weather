@@ -5,38 +5,29 @@ import 'package:weather/domain/entity/location_entity.dart';
 import 'package:weather/domain/repo/location_repo.dart';
 
 class GeoLocationController extends GetxController {
-  final RxBool _isLoading = true.obs;
-  final RxDouble _longitude = 0.0.obs;
-  final RxDouble _lattitude = 0.0.obs;
-  final RxString _location = ''.obs;
+  final RxBool _isLoading = false.obs;
+  final _location = Rx<LocationEntity?>(null);
+  final RxString _city = ''.obs;
 
   RxBool checkLoading() => _isLoading;
 
-  RxDouble getLattitude() => _lattitude;
-
-  RxDouble getLongitude() => _longitude;
-
-  @override
-  void onInit() {
-    getLocation();
-    super.onInit();
-  }
+  Rx<LocationEntity?> getLocationEntity() => _location;
 
   LocationRepo locationRepo = LocationGeolocatorRepo();
 
   void getLocation() async {
+    _isLoading.value = true;
     LocationEntity location = await locationRepo.getLocation();
-    _longitude.value = location.longitude;
-    _lattitude.value = location.lattitude;
+    _location.value = LocationEntity(location.lattitude, location.longitude);
     List<Placemark> placemarks =
         await placemarkFromCoordinates(location.lattitude, location.longitude);
     Placemark place = placemarks[0];
     print(place.locality);
-    _location.value = place.locality!;
+    _city.value = place.locality!;
     _isLoading.value = false;
   }
 
-  RxString getAddress() {
-    return _location;
+  RxString getCity() {
+    return _city;
   }
 }

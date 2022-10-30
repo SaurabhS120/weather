@@ -12,8 +12,8 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   final GeoLocationController locationController =
-      Get.put(GeoLocationController());
-  final WeatherController weatherController = Get.put(WeatherController());
+      Get.find<GeoLocationController>();
+  final WeatherController weatherController = Get.find<WeatherController>();
 
   @override
   Widget build(BuildContext context) {

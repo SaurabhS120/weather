@@ -1,9 +1,17 @@
 import 'package:get/get.dart';
 import 'package:weather/data/repo_impl/weather_repo_impl.dart';
+import 'package:weather/domain/entity/location_entity.dart';
 import 'package:weather/domain/entity/weather_entity.dart';
 import 'package:weather/domain/repo/weather_data_repo.dart';
 
 class WeatherController extends GetxController {
+  late LocationEntity locationEntity;
+
+  set(LocationEntity locationEntity) {
+    this.locationEntity = locationEntity;
+    getWeather();
+  }
+
   final RxBool _isLoading = true.obs;
   final RxDouble _temp = 0.0.obs;
   final RxDouble _feels_like = 0.0.obs;
@@ -38,7 +46,8 @@ class WeatherController extends GetxController {
   WeatherDataRepo weatherDataRepo = WeatherDataRepoImpl();
 
   void getWeather() async {
-    WeatherEntity weatherEntity = await weatherDataRepo.getWeatherData();
+    WeatherEntity weatherEntity =
+        await weatherDataRepo.getWeatherData(locationEntity);
     _temp.value = weatherEntity.temp;
     _feels_like.value = weatherEntity.feels_like;
     _temp_min.value = weatherEntity.temp_min;

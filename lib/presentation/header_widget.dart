@@ -13,12 +13,6 @@ class HeaderWidgetState extends State<HeaderWidget> {
   final GeoLocationController geoLocationController =
       Get.put(GeoLocationController(), permanent: true);
 
-  @override
-  void initState() {
-    getAddress(geoLocationController.getLattitude().value,
-        geoLocationController.getLongitude().value);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

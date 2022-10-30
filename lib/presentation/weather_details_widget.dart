@@ -28,7 +28,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Obx(
-                        () => Text(locationController.getAddress().value,
+                        () => Text(locationController.getCity().value,
                             style: TextStyle(
                                 color: Color.fromARGB(255, 56, 89, 211))),
                       ),

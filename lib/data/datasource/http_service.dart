@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:weather/data/model/weather_details_model.dart';
 
+import '../../domain/entity/location_entity.dart';
+
 class HttpService {
   late Dio _dio;
   final String base_url = 'https://api.openweathermap.org/data/2.5';
@@ -11,12 +13,12 @@ class HttpService {
     );
   }
 
-  Future<WeatherDetailsModel> getRequest() async {
+  Future<WeatherDetailsModel> getRequest(LocationEntity locationEntity) async {
     Response response;
     try {
       var data = {
-        'lat': 37.4219983,
-        'lon': -122.084,
+        'lat': locationEntity.lattitude,
+        'lon': locationEntity.longitude,
         'appid': '961132958849047de54af9a4a68a8166',
         'units': 'metric'
       };
@@ -32,5 +34,6 @@ class HttpService {
 }
 
 void main() async {
-  var data = await HttpService().getRequest();
+  var data =
+      await HttpService().getRequest(LocationEntity(37.4219983, -122.084));
 }
