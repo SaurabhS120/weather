@@ -1,3 +1,4 @@
+import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather/domain/entity/location_entity.dart';
@@ -10,6 +11,7 @@ class LocationScreen extends StatelessWidget {
   late RxBool fetching_location;
   RxString city = ''.obs;
   Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
+  RxBool _choosing_loc = false.obs;
 
   LocationScreen() {
     fetching_location = geoLocationController.checkLoading();
@@ -49,9 +51,9 @@ class LocationScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      //TODO Choose location code
+                      _choosing_loc.value = true;
                     },
-                    child: Text('Choose Location'))
+                    child: Text('Choose City'))
               ],
             ),
           ),
@@ -62,7 +64,6 @@ class LocationScreen extends StatelessWidget {
               width: double.maxFinite,
               child: ElevatedButton(
                 onPressed: () {
-                  //Todo Proceed with selected loc click
                   if (location.value == null) {
                     Get.snackbar(
                         "Location error", "Please select location to proceed");
@@ -76,7 +77,7 @@ class LocationScreen extends StatelessWidget {
             ),
           ),
           Obx(
-            () {
+                () {
               return Visibility(
                   visible: fetching_location.isTrue,
                   child: SizedBox(
@@ -94,6 +95,21 @@ class LocationScreen extends StatelessWidget {
                     ),
                   ));
             },
+          ),
+          Obx(
+            () => Visibility(
+                visible: _choosing_loc.isTrue,
+                child: Container(
+                  color: Colors.white,
+                  child: SelectState(
+                    onCityChanged: (value) {
+                      this.city.value = value;
+                      _choosing_loc.value = false;
+                    },
+                    onCountryChanged: (value) {},
+                    onStateChanged: (value) {},
+                  ),
+                )),
           ),
         ],
       ),
