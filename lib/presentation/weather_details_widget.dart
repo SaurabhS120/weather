@@ -21,60 +21,79 @@ class WeatherDetailsWidget extends StatelessWidget {
     Center(child: CircularProgressIndicator()) :
     Container(
       margin: EdgeInsets.all(12),
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Color.fromARGB(255, 155, 212, 248,)
+        gradient: LinearGradient(colors: [Color.fromRGBO(155, 212, 248, 1.0),Colors.blue],),
       ),
       child: Column(
         children: [
-          Align(alignment: Alignment.topRight,child: Image.network('http://openweathermap.org/img/wn/${weatherContoller.getIcon()}.png',width: 72,height: 72,fit: BoxFit.contain,),),
-          Obx(() => Text(locationController.getAddress().value)),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.thermostat),
-              Text("temp : " + weatherContoller
-                  .getTemp()
-                  .string)
+              Obx(() => Text(locationController.getAddress().value,
+                style: TextStyle(color: Color.fromARGB(255, 56, 89, 211))),),
+              Image.network('http://openweathermap.org/img/wn/${weatherContoller.getIcon()}.png',width: 72,height: 72,fit: BoxFit.contain,color: Color.fromARGB(255, 56, 89, 211),),
             ],
           ),
+          SizedBox(height: 12,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(weatherContoller
+                  .getTemp()
+                  .string+'°',
+        style: TextStyle(color: Color.fromARGB(255, 56, 89, 211),fontSize: 72),)
+            ],
+          ),
+          SizedBox(height: 12,),
           Row(
             children: [
-              Icon(Icons.thermostat),
+              Padding(child: Icon(Icons.thermostat,color: Color.fromARGB(255, 56, 89, 211)),padding: EdgeInsets.all(4),),
               Text("min temp : " + weatherContoller
                   .getTempMin()
-                  .string),
+                  .string+'°',
+                style: TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
+              ),
             ],
           ),
           Row(
             children: [
-              Icon(Icons.thermostat),
+              Padding(child: Icon(Icons.thermostat,color: Color.fromARGB(255, 56, 89, 211)),padding: EdgeInsets.all(4),),
               Text("max temp : " + weatherContoller
                   .getTempMax()
-                  .string),],
+                  .string+'°',
+                style: TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
+              ),],
           ),
           Row(
             children: [
-              Icon(Icons.thermostat),
+              Padding(child: Icon(Icons.thermostat,color: Color.fromARGB(255, 56, 89, 211)),padding: EdgeInsets.all(4),),
               Text("Feels like : " + weatherContoller
                   .getFeelsLike()
-                  .string),
+                  .string+'°',
+                style: TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
+              ),
             ],
           ),
           Row(
             children: [
-              Icon(Icons.atm),
+              Padding(child: Icon(Icons.atm,color: Color.fromARGB(255, 56, 89, 211)),padding: EdgeInsets.all(4),),
               Text("pressure : " + weatherContoller
                   .getPressure()
-                  .string),
+                  .string+' hPa',
+                style: TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
+              ),
             ],
           ),
           Row(
             children: [
-              Icon(Icons.water_drop),
+              Padding(child: Icon(Icons.water_drop,color: Color.fromARGB(255, 56, 89, 211)),padding: EdgeInsets.all(4),),
               Text("Humidity : " + weatherContoller
                   .getHumidity()
-                  .string),
+                  .string+' %',
+                style: TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
+              ),
             ],
           ),
         ],
