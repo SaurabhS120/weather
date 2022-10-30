@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:weather/presentation/controller/geolocation_controller.dart';
+import 'package:weather/presentation/controller/weather_controller.dart';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 import 'package:get/get.dart';
 
 class WeatherDetailsWidget extends StatelessWidget {
   final weatherContoller = Get.find<WeatherController>();
-
+  final locationController = Get.find<GeoLocationController>();
   @override
   Widget build(BuildContext context) {
     weatherContoller.getWeather();
@@ -23,7 +28,8 @@ class WeatherDetailsWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Positioned(right:0,child: Image.network('http://openweathermap.org/img/wn/${weatherContoller.getIcon()}.png')),
+          Align(alignment: Alignment.topRight,child: Image.network('http://openweathermap.org/img/wn/${weatherContoller.getIcon()}.png',width: 72,height: 72,fit: BoxFit.contain,),),
+          Obx(() => Text(locationController.getAddress().value)),
           Row(
             children: [
               Icon(Icons.thermostat),
