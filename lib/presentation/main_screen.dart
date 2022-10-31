@@ -21,14 +21,12 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: [
-              HeaderWidget(),
-              WeatherDetailsWidget(),
-            ],
-          ),
+        child: Column(
+          children: [
+            HeaderWidget(),
+            Expanded(child: WeatherDetailsWidget()),
+            Spacer(),
+          ],
         ),
       ),
     );
