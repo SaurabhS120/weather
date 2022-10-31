@@ -2,6 +2,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:weather/data/repo_impl/city_name_to_lat_lon_geo_loc_repo_impl.dart';
 import 'package:weather/data/repo_impl/location_geolocator_repo.dart';
+import 'package:weather/domain/entity/city_entity.dart';
 import 'package:weather/domain/entity/location_entity.dart';
 import 'package:weather/domain/repo/location_repo.dart';
 import 'package:weather/domain/usecase/LocationFromCityUsecase.dart';
@@ -19,7 +20,7 @@ class GeoLocationController extends GetxController {
 
   LocationRepo locationRepo = LocationGeolocatorRepo();
 
-  void getLocation() async {
+  void getCurrentLocation() async {
     _isLoading.value = true;
     LocationEntity location = await locationRepo.getLocation();
     _location.value = LocationEntity(location.lattitude, location.longitude);
@@ -41,5 +42,10 @@ class GeoLocationController extends GetxController {
     _location.value = locationEntity;
     _city.value = cityName;
     onFinish?.call();
+  }
+
+  void setLocation(CityEntity cityEntity) {
+    _city.value = cityEntity.city_name;
+    _location.value = cityEntity.locationEntity;
   }
 }

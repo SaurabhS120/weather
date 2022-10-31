@@ -1,8 +1,10 @@
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:weather/domain/entity/city_entity.dart';
 import 'package:weather/domain/entity/location_entity.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
+import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
 class LocationScreen extends StatelessWidget {
@@ -13,6 +15,7 @@ class LocationScreen extends StatelessWidget {
   Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
   RxBool _choosing_loc = false.obs;
   String selected_city = '';
+  final location_list_controller = Get.find<LocationListController>();
 
   LocationScreen() {
     fetching_location = geoLocationController.checkLoading();
@@ -53,7 +56,7 @@ class LocationScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          geoLocationController.getLocation();
+                          geoLocationController.getCurrentLocation();
                         },
                         child: Text('Get city from location')),
                     SizedBox(
@@ -82,8 +85,9 @@ class LocationScreen extends StatelessWidget {
                         Get.snackbar("Location error",
                             "Please select location to proceed");
                       } else {
-                        weatherController.locationEntity = location.value!;
-                        Get.toNamed('/home');
+                        location_list_controller
+                            .add_city(CityEntity(city.value, location.value!));
+                        Get.back();
                       }
                     },
                     child: Text('Proceed with selected location '),

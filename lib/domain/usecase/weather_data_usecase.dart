@@ -1,4 +1,4 @@
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/domain/entity/city_entity.dart';
 import 'package:weather/domain/entity/weather_entity.dart';
 import 'package:weather/domain/repo/weather_data_repo.dart';
 
@@ -7,7 +7,7 @@ class WeatherDataUsecase {
 
   WeatherDataUsecase(this.weatherDataRepo);
 
-  Future<WeatherEntity> getWeatherDetails(LocationEntity locationEntity) async {
-    return weatherDataRepo.getWeatherData(locationEntity);
+  Future<WeatherEntity> getWeatherDetails(CityEntity cityEntity) async {
+    return weatherDataRepo.getWeatherData(cityEntity);
   }
 }
