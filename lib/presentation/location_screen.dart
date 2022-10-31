@@ -124,7 +124,6 @@ class LocationScreen extends StatelessWidget {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                this.city.value = selected_city;
                                 geoLocationController.getLocationFromCityName(
                                     selected_city, onFinish: () {
                                   _choosing_loc.value = false;
