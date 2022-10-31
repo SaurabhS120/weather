@@ -28,6 +28,9 @@ class LocationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Add Location'),
+        ),
         body: WillPopScope(
           onWillPop: () {
             if (_choosing_loc.isTrue) {
@@ -88,7 +91,7 @@ class LocationScreen extends StatelessWidget {
                 ),
               ),
               Obx(
-                () {
+                    () {
                   return Visibility(
                       visible: fetching_location.isTrue,
                       child: SizedBox(
@@ -108,7 +111,7 @@ class LocationScreen extends StatelessWidget {
                 },
               ),
               Obx(
-                () => Visibility(
+                    () => Visibility(
                     visible: _choosing_loc.isTrue,
                     child: Container(
                       color: Colors.white,
