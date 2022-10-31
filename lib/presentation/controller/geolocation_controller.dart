@@ -1,10 +1,14 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:weather/data/repo_impl/city_name_to_lat_lon_geo_loc_repo_impl.dart';
 import 'package:weather/data/repo_impl/location_geolocator_repo.dart';
 import 'package:weather/domain/entity/location_entity.dart';
 import 'package:weather/domain/repo/location_repo.dart';
+import 'package:weather/domain/usecase/LocationFromCityUsecase.dart';
 
 class GeoLocationController extends GetxController {
+  final loc_from_city_name_usecase =
+      LocationFromCityUsecase(CiityNameToLatLonGeoLocRepoImpl());
   final RxBool _isLoading = false.obs;
   final _location = Rx<LocationEntity?>(null);
   final RxString _city = ''.obs;
@@ -29,5 +33,13 @@ class GeoLocationController extends GetxController {
 
   RxString getCity() {
     return _city;
+  }
+
+  void getLocationFromCityName(String cityName, {Function? onFinish}) async {
+    LocationEntity locationEntity =
+        await loc_from_city_name_usecase.invoke(cityName);
+    _location.value = locationEntity;
+    _city.value = cityName;
+    onFinish?.call();
   }
 }
