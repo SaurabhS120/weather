@@ -17,7 +17,6 @@ class WeatherDetailsWidget extends StatelessWidget {
       itemCount: city_list.length,
       onPageChanged: (index) {
         weatherContoller.set(city_list[index]);
-        // weatherContoller.getWeather();
       },
       itemBuilder: (context, index) {
         return Obx(() => Container(
