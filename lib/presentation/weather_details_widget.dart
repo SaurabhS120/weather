@@ -12,6 +12,7 @@ class WeatherDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final city_list = locationListController.getCityList();
     final weatherContoller = WeatherController();
+    weatherContoller.set(city_list[0]);
     return PageView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: city_list.length,
