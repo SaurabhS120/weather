@@ -1,6 +1,5 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:weather/data/repo_impl/city_name_to_lat_lon_geo_loc_repo_impl.dart';
 import 'package:weather/data/repo_impl/location_geolocator_repo.dart';
 import 'package:weather/domain/entity/city_entity.dart';
 import 'package:weather/domain/entity/location_entity.dart';
@@ -8,8 +7,7 @@ import 'package:weather/domain/repo/location_repo.dart';
 import 'package:weather/domain/usecase/location_from_city_usecase.dart';
 
 class GeoLocationController extends GetxController {
-  final locFromCityNameUsecase =
-      LocationFromCityUsecase(CiityNameToLatLonGeoLocRepoImpl());
+  final locFromCityNameUsecase = Get.find<LocationFromCityUsecase>();
   final RxBool _isLoading = false.obs;
   final _location = Rx<LocationEntity?>(null);
   final RxString _city = ''.obs;

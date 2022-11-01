@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-import 'package:weather/data/repo_impl/weather_repo_impl.dart';
 import 'package:weather/domain/entity/city_entity.dart';
 import 'package:weather/domain/entity/weather_entity.dart';
-import 'package:weather/domain/repo/weather_data_repo.dart';
+import 'package:weather/domain/usecase/weather_data_usecase.dart';
 
 class WeatherController extends GetxController {
   final cityEntity = Rx<CityEntity?>(null);
@@ -43,14 +42,13 @@ class WeatherController extends GetxController {
     super.onInit();
   }
 
-  WeatherDataRepo weatherDataRepo = WeatherDataRepoImpl();
-
   void getWeather() async {
     if (cityEntity.value == null) {
       print('No cities passed to fetch');
     } else {
+      WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
       WeatherEntity weatherEntity =
-          await weatherDataRepo.getWeatherData(cityEntity.value!);
+          await weatherDataUsecase.invoke(cityEntity.value!);
       _temp.value = weatherEntity.temp;
       _feels_like.value = weatherEntity.feelsLike;
       _temp_min.value = weatherEntity.tempMin;

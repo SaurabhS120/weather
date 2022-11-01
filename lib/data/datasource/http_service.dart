@@ -5,7 +5,7 @@ import '../../domain/entity/location_entity.dart';
 
 class HttpService {
   late Dio _dio;
-  final String baseUrl = 'https://api.openweathermap.org/data/2.5';
+  final String baseUrl = 'https://api.openweathermap.org';
 
   HttpService() {
     _dio = Dio(
@@ -22,7 +22,7 @@ class HttpService {
         'appid': '961132958849047de54af9a4a68a8166',
         'units': 'metric'
       };
-      response = await _dio.get('/weather', queryParameters: data);
+      response = await _dio.get('/data/2.5/weather', queryParameters: data);
       print(response);
       WeatherDetailsModel json = WeatherDetailsModel.fromJson(response.data);
       return json;

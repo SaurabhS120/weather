@@ -7,7 +7,7 @@ class WeatherDataUsecase {
 
   WeatherDataUsecase(this.weatherDataRepo);
 
-  Future<WeatherEntity> getWeatherDetails(CityEntity cityEntity) async {
+  Future<WeatherEntity> invoke(CityEntity cityEntity) async {
     return weatherDataRepo.getWeatherData(cityEntity);
   }
 }

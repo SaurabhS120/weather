@@ -3,7 +3,7 @@ import 'package:weather/data/model/city_data_response.dart';
 
 class LatLongFromCityService {
   late Dio _dio;
-  final String baseUrl = 'http://api.openweathermap.org/geo/1.0';
+  final String baseUrl = 'http://api.openweathermap.org';
 
   LatLongFromCityService() {
     _dio = Dio(
