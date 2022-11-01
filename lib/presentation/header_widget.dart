@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
-class HeaderWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => HeaderWidgetState();
-}
-
-class HeaderWidgetState extends State<HeaderWidget> {
+class HeaderWidget extends StatelessWidget {
   final weatherController = Get.find<WeatherController>();
 
   @override
