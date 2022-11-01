@@ -19,7 +19,7 @@ class LatLongFromCityService {
         'limit': 1,
         'appid': '961132958849047de54af9a4a68a8166',
       };
-      response = await _dio.get('/direct', queryParameters: data);
+      response = await _dio.get('/geo/1.0/direct', queryParameters: data);
       print(response);
       CityDataResponse cityDataResponse =
           CityDataResponse.fromJson(response.data[0]);
