@@ -18,7 +18,7 @@ class HeaderWidgetState extends State<HeaderWidget> {
           margin: EdgeInsets.all(20),
           alignment: Alignment.topLeft,
           child: Obx(
-              () => Text(weatherController.cityEntity.value?.city_name ?? '')),
+              () => Text(weatherController.cityEntity.value?.cityName ?? '')),
         ),
       ],
     );

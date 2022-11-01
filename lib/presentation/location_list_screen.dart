@@ -5,7 +5,7 @@ import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
 class LocationListScreen extends StatelessWidget {
-  final location_list_controller = Get.find<LocationListController>();
+  final locationListController = Get.find<LocationListController>();
   final GeoLocationController locationController =
       Get.find<GeoLocationController>();
   final WeatherController weatherController = Get.find<WeatherController>();
@@ -24,11 +24,11 @@ class LocationListScreen extends StatelessWidget {
           Obx(
             () => ListView.builder(
               shrinkWrap: true,
-              itemCount: location_list_controller.getCityList().length,
+              itemCount: locationListController.getCityList().length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
-                      location_list_controller.getCityList()[index].city_name),
+                      locationListController.getCityList()[index].cityName),
                 );
               },
             ),
@@ -43,14 +43,14 @@ class LocationListScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (location_list_controller.getCityList().isEmpty) {
+                  if (locationListController.getCityList().isEmpty) {
                     Get.snackbar("No locations",
                         'Please add atleast one location to proceed');
                   } else {
                     locationController
-                        .setLocation(location_list_controller.getCityList()[0]);
+                        .setLocation(locationListController.getCityList()[0]);
                     weatherController
-                        .set(location_list_controller.getCityList()[0]);
+                        .set(locationListController.getCityList()[0]);
                     Get.offNamed('/home');
                   }
                 },

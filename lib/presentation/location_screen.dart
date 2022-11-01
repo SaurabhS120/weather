@@ -10,15 +10,15 @@ import 'package:weather/presentation/controller/weather_controller.dart';
 class LocationScreen extends StatelessWidget {
   final geoLocationController = Get.find<GeoLocationController>();
   final weatherController = Get.find<WeatherController>();
-  late RxBool fetching_location;
+  late RxBool fetchingLocation;
   RxString city = ''.obs;
   Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
-  RxBool _choosing_loc = false.obs;
-  String selected_city = '';
-  final location_list_controller = Get.find<LocationListController>();
+  RxBool _choosingLoc = false.obs;
+  String selectedCity = '';
+  final locationListController = Get.find<LocationListController>();
 
   LocationScreen() {
-    fetching_location = geoLocationController.checkLoading();
+    fetchingLocation = geoLocationController.checkLoading();
     geoLocationController.getCity().listen((city) {
       this.city.value = city;
     });
@@ -36,8 +36,8 @@ class LocationScreen extends StatelessWidget {
         ),
         body: WillPopScope(
           onWillPop: () {
-            if (_choosing_loc.isTrue) {
-              _choosing_loc.value = false;
+            if (_choosingLoc.isTrue) {
+              _choosingLoc.value = false;
               return Future.value(false);
             } else {
               return Future.value(true);
@@ -68,7 +68,7 @@ class LocationScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          _choosing_loc.value = true;
+                          _choosingLoc.value = true;
                         },
                         child: Text('Choose City'))
                   ],
@@ -85,7 +85,7 @@ class LocationScreen extends StatelessWidget {
                         Get.snackbar("Location error",
                             "Please select location to proceed");
                       } else {
-                        location_list_controller
+                        locationListController
                             .add_city(CityEntity(city.value, location.value!));
                         Get.back();
                       }
@@ -97,7 +97,7 @@ class LocationScreen extends StatelessWidget {
               Obx(
                     () {
                   return Visibility(
-                      visible: fetching_location.isTrue,
+                      visible: fetchingLocation.isTrue,
                       child: SizedBox(
                         width: double.maxFinite,
                         child: Container(
@@ -116,7 +116,7 @@ class LocationScreen extends StatelessWidget {
               ),
               Obx(
                     () => Visibility(
-                    visible: _choosing_loc.isTrue,
+                        visible: _choosingLoc.isTrue,
                     child: Container(
                       color: Colors.white,
                       child: Column(
@@ -124,7 +124,7 @@ class LocationScreen extends StatelessWidget {
                         children: [
                           SelectState(
                             onCityChanged: (value) {
-                              selected_city = value;
+                              selectedCity = value;
                             },
                             onCountryChanged: (value) {},
                             onStateChanged: (value) {},
@@ -132,8 +132,8 @@ class LocationScreen extends StatelessWidget {
                           ElevatedButton(
                               onPressed: () {
                                 geoLocationController.getLocationFromCityName(
-                                    selected_city, onFinish: () {
-                                  _choosing_loc.value = false;
+                                    selectedCity, onFinish: () {
+                                  _choosingLoc.value = false;
                                 });
                               },
                               child: Text('Confirm')),

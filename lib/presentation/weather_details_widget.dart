@@ -10,14 +10,14 @@ class WeatherDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final city_list = locationListController.getCityList();
+    final cityList = locationListController.getCityList();
     final weatherContoller = WeatherController();
-    weatherContoller.set(city_list[0]);
+    weatherContoller.set(cityList[0]);
     return PageView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: city_list.length,
+      itemCount: cityList.length,
       onPageChanged: (index) {
-        weatherContoller.set(city_list[index]);
+        weatherContoller.set(cityList[index]);
       },
       itemBuilder: (context, index) {
         return Obx(() => Container(
@@ -36,7 +36,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                     children: [
                       Obx(
                         () => Text(
-                            weatherContoller.cityEntity.value?.city_name ?? '',
+                            weatherContoller.cityEntity.value?.cityName ?? '',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 56, 89, 211))),
                       ),

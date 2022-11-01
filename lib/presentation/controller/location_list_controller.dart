@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:weather/domain/entity/city_entity.dart';
 
 class LocationListController extends GetxController {
-  final RxList<CityEntity> _city_list = RxList<CityEntity>();
+  final RxList<CityEntity> _cityList = RxList<CityEntity>();
 
   void add_city(CityEntity cityEntity) {
-    _city_list.add(cityEntity);
+    _cityList.add(cityEntity);
   }
 
-  RxList<CityEntity> getCityList() => _city_list;
+  RxList<CityEntity> getCityList() => _cityList;
 }

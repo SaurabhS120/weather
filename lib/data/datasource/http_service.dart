@@ -5,11 +5,11 @@ import '../../domain/entity/location_entity.dart';
 
 class HttpService {
   late Dio _dio;
-  final String base_url = 'https://api.openweathermap.org/data/2.5';
+  final String baseUrl = 'https://api.openweathermap.org/data/2.5';
 
   HttpService() {
     _dio = Dio(
-      BaseOptions(baseUrl: base_url),
+      BaseOptions(baseUrl: baseUrl),
     );
   }
 

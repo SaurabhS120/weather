@@ -1,8 +1,8 @@
 import 'package:weather/domain/entity/location_entity.dart';
 
 class CityEntity {
-  String city_name;
+  String cityName;
   LocationEntity locationEntity;
 
-  CityEntity(this.city_name, this.locationEntity);
+  CityEntity(this.cityName, this.locationEntity);
 }

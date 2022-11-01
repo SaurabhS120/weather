@@ -52,9 +52,9 @@ class WeatherController extends GetxController {
       WeatherEntity weatherEntity =
           await weatherDataRepo.getWeatherData(cityEntity.value!);
       _temp.value = weatherEntity.temp;
-      _feels_like.value = weatherEntity.feels_like;
-      _temp_min.value = weatherEntity.temp_min;
-      _temp_max.value = weatherEntity.temp_max;
+      _feels_like.value = weatherEntity.feelsLike;
+      _temp_min.value = weatherEntity.tempMin;
+      _temp_max.value = weatherEntity.tempMax;
       _pressure.value = weatherEntity.pressure;
       _humidity.value = weatherEntity.humidity;
       _icon.value = weatherEntity.icon;
