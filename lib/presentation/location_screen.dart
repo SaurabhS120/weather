@@ -7,17 +7,15 @@ import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
-class LocationScreen extends StatelessWidget {
-  final geoLocationController = Get.find<GeoLocationController>();
-  final weatherController = Get.find<WeatherController>();
-  late RxBool fetchingLocation;
-  RxString city = ''.obs;
-  Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
-  RxBool _choosingLoc = false.obs;
-  String selectedCity = '';
-  final locationListController = Get.find<LocationListController>();
+class LocationScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => LocationScreenState();
+}
 
-  LocationScreen() {
+class LocationScreenState extends State<LocationScreen> {
+  @override
+  void initState() {
+    super.initState();
     fetchingLocation = geoLocationController.checkLoading();
     geoLocationController.getCity().listen((city) {
       this.city.value = city;
@@ -26,6 +24,15 @@ class LocationScreen extends StatelessWidget {
       this.location.value = location;
     });
   }
+
+  final geoLocationController = Get.find<GeoLocationController>();
+  final weatherController = Get.find<WeatherController>();
+  late RxBool fetchingLocation;
+  RxString city = ''.obs;
+  Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
+  RxBool _choosingLoc = false.obs;
+  String selectedCity = '';
+  final locationListController = Get.find<LocationListController>();
 
   @override
   Widget build(BuildContext context) {
