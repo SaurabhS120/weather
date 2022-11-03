@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
-import 'package:weather/presentation/header_widget.dart';
 import 'package:weather/presentation/weather_details_widget.dart';
 
 class MainScreen extends StatefulWidget {
@@ -20,10 +19,13 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title:
+            Obx(() => Text(weatherController.cityEntity.value?.cityName ?? '')),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            HeaderWidget(),
             Expanded(child: WeatherDetailsWidget()),
             Spacer(),
           ],

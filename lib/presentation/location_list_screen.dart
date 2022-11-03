@@ -49,11 +49,11 @@ class LocationListScreen extends StatelessWidget {
                             'Please add atleast one location to proceed');
                       } else {
                         locationController
-                            .setLocation(locationListController.getCityList()[0]);
-                        weatherController
-                            .set(locationListController.getCityList()[0]);
-                        Get.offNamed('/home');
-                      }
+                        .setLocation(locationListController.getCityList()[0]);
+                    weatherController
+                        .set(locationListController.getCityList()[0]);
+                    Get.toNamed('/home');
+                  }
                     },
                     child: Text('Proceed'),
                   ),
