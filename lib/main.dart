@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'presentation/binding/location_list_binding.dart';
-import 'presentation/binding/location_screen_binding.dart';
-import 'presentation/binding/weather_details_binding.dart';
+import 'di/binding/location_list_binding.dart';
+import 'di/binding/location_screen_binding.dart';
+import 'di/binding/weather_details_binding.dart';
 import 'presentation/location_list_screen.dart';
 import 'presentation/location_screen.dart';
 import 'presentation/main_screen.dart';

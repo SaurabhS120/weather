@@ -5,7 +5,6 @@ import 'package:weather/domain/entity/city_entity.dart';
 import 'package:weather/domain/entity/location_entity.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
-import 'package:weather/presentation/controller/weather_controller.dart';
 
 class LocationScreen extends StatefulWidget {
   @override
@@ -14,9 +13,7 @@ class LocationScreen extends StatefulWidget {
 
 class LocationScreenState extends State<LocationScreen> {
   final geoLocationController = Get.find<GeoLocationController>();
-  final weatherController = Get.find<WeatherController>();
   final locationListController = Get.find<LocationListController>();
-
   @override
   void initState() {
     super.initState();
@@ -124,7 +121,7 @@ class LocationScreenState extends State<LocationScreen> {
               ),
               Obx(
                     () => Visibility(
-                    visible: _choosingLoc.isTrue,
+                        visible: _choosingLoc.isTrue,
                     child: Container(
                       color: Colors.white,
                       child: Column(
