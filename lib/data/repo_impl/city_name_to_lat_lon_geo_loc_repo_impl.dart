@@ -1,4 +1,4 @@
-import 'package:weather/data/datasource/lat_long_from_city.dart';
+import 'package:weather/data/datasource/remote/lat_long_from_city.dart';
 import 'package:weather/domain/entity/location_entity.dart';
 import 'package:weather/domain/repo/city_name_to_lat_lon_geo_loc_repo.dart';
 

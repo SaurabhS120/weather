@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:weather/data/model/weather_details_model.dart';
-
-import '../../domain/entity/location_entity.dart';
+import 'package:weather/domain/entity/location_entity.dart';
 
 class HttpService {
   late Dio _dio;

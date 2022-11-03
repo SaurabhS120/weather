@@ -45,6 +45,7 @@ dependencies:
   build_runner: ^2.3.2
   rxdart: ^0.27.5
   country_state_city_picker: ^1.2.8
+  sqflite: ^2.2.0+3
 
 dev_dependencies:
   flutter_test:

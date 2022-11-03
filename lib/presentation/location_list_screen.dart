@@ -12,6 +12,7 @@ class LocationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    locationListController.getFromDB();
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -23,42 +24,42 @@ class LocationListScreen extends StatelessWidget {
         children: [
           Obx(
             () => ListView.builder(
-              shrinkWrap: true,
-              itemCount: locationListController.getCityList().length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                      locationListController.getCityList()[index].cityName),
-                );
-              },
-            ),
-          ),
-          Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Get.toNamed('/location');
-                },
-                child: Text('Add city'),
+                  shrinkWrap: true,
+                  itemCount: locationListController.getCityList().length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                          locationListController.getCityList()[index].cityName),
+                    );
+                  },
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  if (locationListController.getCityList().isEmpty) {
-                    Get.snackbar("No locations",
-                        'Please add atleast one location to proceed');
-                  } else {
-                    locationController
-                        .setLocation(locationListController.getCityList()[0]);
-                    weatherController
-                        .set(locationListController.getCityList()[0]);
-                    Get.offNamed('/home');
-                  }
-                },
-                child: Text('Proceed'),
-              ),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.toNamed('/location');
+                    },
+                    child: Text('Add city'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (locationListController.getCityList().isEmpty) {
+                        Get.snackbar("No locations",
+                            'Please add atleast one location to proceed');
+                      } else {
+                        locationController
+                            .setLocation(locationListController.getCityList()[0]);
+                        weatherController
+                            .set(locationListController.getCityList()[0]);
+                        Get.offNamed('/home');
+                      }
+                    },
+                    child: Text('Proceed'),
+                  ),
+                ],
+              )
             ],
-          )
-        ],
           ),
         ));
   }

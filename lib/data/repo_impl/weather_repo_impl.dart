@@ -1,4 +1,4 @@
-import 'package:weather/data/datasource/http_service.dart';
+import 'package:weather/data/datasource/remote/http_service.dart';
 import 'package:weather/data/model/weather_details_model.dart';
 import 'package:weather/domain/entity/city_entity.dart';
 import 'package:weather/domain/entity/weather_entity.dart';
