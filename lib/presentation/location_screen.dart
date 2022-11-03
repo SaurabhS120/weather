@@ -13,6 +13,10 @@ class LocationScreen extends StatefulWidget {
 }
 
 class LocationScreenState extends State<LocationScreen> {
+  final geoLocationController = Get.find<GeoLocationController>();
+  final weatherController = Get.find<WeatherController>();
+  final locationListController = Get.find<LocationListController>();
+
   @override
   void initState() {
     super.initState();
@@ -25,14 +29,11 @@ class LocationScreenState extends State<LocationScreen> {
     });
   }
 
-  final geoLocationController = Get.find<GeoLocationController>();
-  final weatherController = Get.find<WeatherController>();
   late RxBool fetchingLocation;
   RxString city = ''.obs;
   Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
   RxBool _choosingLoc = false.obs;
   String selectedCity = '';
-  final locationListController = Get.find<LocationListController>();
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +124,7 @@ class LocationScreenState extends State<LocationScreen> {
               ),
               Obx(
                     () => Visibility(
-                        visible: _choosingLoc.isTrue,
+                    visible: _choosingLoc.isTrue,
                     child: Container(
                       color: Colors.white,
                       child: Column(
