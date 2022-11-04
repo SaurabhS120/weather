@@ -10,7 +10,7 @@ class WeatherDataRepoImpl extends WeatherDataRepo {
   @override
   Future<WeatherEntity> getWeatherData(CityEntity cityEntity) async {
     WeatherDetailsModel response =
-        await httpService.getRequest(cityEntity.locationEntity);
+        await httpService.getWeatherDetails(cityEntity.locationEntity);
     WeatherEntity weatherEntity = WeatherEntity(
         response.main.temp,
         response.main.feels_like,
