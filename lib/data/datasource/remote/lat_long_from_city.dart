@@ -32,7 +32,3 @@ class LatLongFromCityService {
     }
   }
 }
-
-void main() async {
-  var data = await LatLongFromCityService().getRequest('pune');
-}
