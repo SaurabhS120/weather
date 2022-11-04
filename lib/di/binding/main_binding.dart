@@ -11,18 +11,21 @@ import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
-class LocationListBinding extends Bindings {
+class MainBinding extends Bindings {
   @override
   void dependencies() {
     CitiesLocalRepo citiesLocalRepo = CitiesLocalRepoImpl() as CitiesLocalRepo;
     citiesLocalRepo.init();
-    Get.put(CitiesLocalRepoImpl() as CitiesLocalRepo);
-    Get.put(CiityNameToLatLonGeoLocRepoImpl() as CityNameToLatLonGeoLocRepo);
-    Get.put(LocationFromCityUsecase());
-    Get.put(WeatherController());
-    Get.put(LocationListController());
-    Get.put(LatLongToCityNameRepoImpl() as LatLongToCityNameRepo);
-    Get.put(LatLongToCityNameUsecase());
-    Get.put(GeoLocationController());
+    Get.lazyPut(() => (CitiesLocalRepoImpl() as CitiesLocalRepo), fenix: true);
+    Get.lazyPut(
+        () => (CiityNameToLatLonGeoLocRepoImpl() as CityNameToLatLonGeoLocRepo),
+        fenix: true);
+    Get.lazyPut(() => (LocationFromCityUsecase()), fenix: true);
+    Get.lazyPut(() => (WeatherController()), fenix: true);
+    Get.lazyPut(() => (LocationListController()), fenix: true);
+    Get.lazyPut(() => (LatLongToCityNameRepoImpl() as LatLongToCityNameRepo),
+        fenix: true);
+    Get.lazyPut(() => (LatLongToCityNameUsecase()), fenix: true);
+    Get.lazyPut(() => (GeoLocationController()), fenix: true);
   }
 }
