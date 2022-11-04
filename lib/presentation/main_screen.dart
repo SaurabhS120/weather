@@ -20,8 +20,7 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Obx(() => Text(weatherController.cityEntity.value?.cityName ?? '')),
+        title: Obx(() => Text(locationListController.currentCity.value ?? '')),
       ),
       body: SafeArea(
         child: Column(
