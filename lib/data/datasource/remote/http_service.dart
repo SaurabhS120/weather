@@ -32,7 +32,3 @@ class HttpService {
   }
 }
 
-void main() async {
-  var data =
-      await HttpService().getRequest(LocationEntity(37.4219983, -122.084));
-}
