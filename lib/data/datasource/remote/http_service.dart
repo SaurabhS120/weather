@@ -19,7 +19,7 @@ class HttpService {
         'lat': locationEntity.lattitude,
         'lon': locationEntity.longitude,
         'appid': '961132958849047de54af9a4a68a8166',
-        'units': 'metric'
+        'units': 'imperial'
       };
       response = await _dio.get('/data/2.5/weather', queryParameters: data);
       print(response);
