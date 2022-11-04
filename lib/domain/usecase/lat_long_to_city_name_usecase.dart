@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/domain/model/location_model.dart';
 import 'package:weather/domain/repo/lat_long_to_city_name_repo.dart';
 
 class LatLongToCityNameUsecase {
@@ -8,7 +8,7 @@ class LatLongToCityNameUsecase {
 
   LatLongToCityNameUsecase();
 
-  Future<String> invoke(LocationEntity location) {
+  Future<String> invoke(LocationModel location) {
     return latLongToCityNameRepo.getCityName(location);
   }
 }

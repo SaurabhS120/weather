@@ -1,8 +1,8 @@
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather/domain/entity/city_entity.dart';
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/domain/model/city_model.dart';
+import 'package:weather/domain/model/location_model.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 
@@ -28,7 +28,7 @@ class LocationScreenState extends State<LocationScreen> {
 
   late RxBool fetchingLocation;
   RxString city = ''.obs;
-  Rx<LocationEntity?> location = Rx<LocationEntity?>(null);
+  Rx<LocationModel?> location = Rx<LocationModel?>(null);
   RxBool _choosingLoc = false.obs;
   String selectedCity = '';
 
@@ -91,7 +91,7 @@ class LocationScreenState extends State<LocationScreen> {
                             "Please select location to proceed");
                       } else {
                         locationListController
-                            .add_city(CityEntity(city.value, location.value!));
+                            .add_city(CityModel(city.value, location.value!));
                         Get.back();
                       }
                     },

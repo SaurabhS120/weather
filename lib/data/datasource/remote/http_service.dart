@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:weather/data/model/city_data_response.dart';
-import 'package:weather/data/model/weather_details_model.dart';
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/data/entity/city_data_response.dart';
+import 'package:weather/data/entity/weather_details_entity.dart';
+import 'package:weather/domain/model/location_model.dart';
 
 class HttpService {
   late Dio _dio;
@@ -13,8 +13,8 @@ class HttpService {
     );
   }
 
-  Future<WeatherDetailsModel> getWeatherDetails(
-      LocationEntity locationEntity) async {
+  Future<WeatherDetailsEntity> getWeatherDetails(
+      LocationModel locationEntity) async {
     Response response;
     try {
       var data = {
@@ -25,7 +25,7 @@ class HttpService {
       };
       response = await _dio.get('/data/2.5/weather', queryParameters: data);
       print(response);
-      WeatherDetailsModel json = WeatherDetailsModel.fromJson(response.data);
+      WeatherDetailsEntity json = WeatherDetailsEntity.fromJson(response.data);
       return json;
     } on DioError catch (e) {
       print(e);

@@ -1,17 +1,17 @@
 import 'package:weather/data/datasource/remote/http_service.dart';
-import 'package:weather/data/model/weather_details_model.dart';
-import 'package:weather/domain/entity/city_entity.dart';
-import 'package:weather/domain/entity/weather_entity.dart';
+import 'package:weather/data/entity/weather_details_entity.dart';
+import 'package:weather/domain/model/city_model.dart';
+import 'package:weather/domain/model/weather_model.dart';
 import 'package:weather/domain/repo/weather_data_repo.dart';
 
 class WeatherDataRepoImpl extends WeatherDataRepo {
   HttpService httpService = HttpService();
 
   @override
-  Future<WeatherEntity> getWeatherData(CityEntity cityEntity) async {
-    WeatherDetailsModel response =
-        await httpService.getWeatherDetails(cityEntity.locationEntity);
-    WeatherEntity weatherEntity = WeatherEntity(
+  Future<WeatherModel> getWeatherData(CityModel cityEntity) async {
+    WeatherDetailsEntity response =
+        await httpService.getWeatherDetails(cityEntity.locationModel);
+    WeatherModel weatherEntity = WeatherModel(
         response.main.temp,
         response.main.feels_like,
         response.main.temp_max,

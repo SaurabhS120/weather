@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
-import 'package:weather/domain/entity/city_entity.dart';
-import 'package:weather/domain/entity/weather_entity.dart';
+import 'package:weather/domain/model/city_model.dart';
+import 'package:weather/domain/model/weather_model.dart';
 import 'package:weather/domain/usecase/weather_data_usecase.dart';
 
 class WeatherController extends GetxController {
-  final cityEntity = Rx<CityEntity?>(null);
+  final cityEntity = Rx<CityModel?>(null);
 
-  set(CityEntity cityEntity) {
+  set(CityModel cityEntity) {
     this.cityEntity.value = cityEntity;
     getWeather();
   }
@@ -47,7 +47,7 @@ class WeatherController extends GetxController {
       print('No cities passed to fetch');
     } else {
       WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
-      WeatherEntity weatherEntity =
+      WeatherModel weatherEntity =
           await weatherDataUsecase.invoke(cityEntity.value!);
       _temp.value = weatherEntity.temp;
       _feels_like.value = weatherEntity.feelsLike;

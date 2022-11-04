@@ -1,10 +1,10 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/domain/model/location_model.dart';
 import 'package:weather/domain/repo/location_repo.dart';
 
 class LocationGeolocatorRepo extends LocationRepo {
   @override
-  Future<LocationEntity> getLocation() async {
+  Future<LocationModel> getLocation() async {
     bool isServiceEnabled;
     LocationPermission locationPermission;
     isServiceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -23,7 +23,7 @@ class LocationGeolocatorRepo extends LocationRepo {
     }
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    var positionEntity = LocationEntity(position.latitude, position.longitude);
+    var positionEntity = LocationModel(position.latitude, position.longitude);
     print(
         'location lat : ${positionEntity.lattitude}, location lon : ${positionEntity.longitude}');
     return Future.value(positionEntity);

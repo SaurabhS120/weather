@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:weather/domain/entity/city_entity.dart';
+import 'package:weather/domain/model/city_model.dart';
 import 'package:weather/domain/repo/cities_local_repo.dart';
 
 class LocationListController extends GetxController {
-  final RxList<CityEntity> _cityList = RxList<CityEntity>();
+  final RxList<CityModel> _cityList = RxList<CityModel>();
   final currentCity = RxString('');
   final CitiesLocalRepo citiesLocalRepo = Get.find<CitiesLocalRepo>();
 
@@ -12,7 +12,7 @@ class LocationListController extends GetxController {
     currentCity.value = getCityList().first.cityName;
   }
 
-  void add_city(CityEntity cityEntity) {
+  void add_city(CityModel cityEntity) {
     _cityList.add(cityEntity);
     citiesLocalRepo.addCity(cityEntity);
   }
@@ -23,7 +23,7 @@ class LocationListController extends GetxController {
     getFromDB();
   }
 
-  RxList<CityEntity> getCityList() => _cityList;
+  RxList<CityModel> getCityList() => _cityList;
 
   void setCurrentCity(String s) {
     currentCity.value = s;

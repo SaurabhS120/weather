@@ -1,10 +1,10 @@
-import 'package:weather/domain/entity/city_entity.dart';
+import 'package:weather/domain/model/city_model.dart';
 
 abstract class CitiesLocalRepo {
 
-  void addCity(CityEntity city);
+  void addCity(CityModel city);
 
-  Future<List<CityEntity>> getCities();
+  Future<List<CityModel>> getCities();
 
-  void removeCity(CityEntity cityEntity);
+  void removeCity(CityModel cityEntity);
 }

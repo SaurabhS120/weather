@@ -1,5 +1,5 @@
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/domain/model/location_model.dart';
 
 abstract class LatLongToCityNameRepo {
-  Future<String> getCityName(LocationEntity location);
+  Future<String> getCityName(LocationModel location);
 }

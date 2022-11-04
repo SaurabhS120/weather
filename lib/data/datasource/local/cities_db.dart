@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:weather/domain/entity/city_entity.dart';
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/domain/model/city_model.dart';
+import 'package:weather/domain/model/location_model.dart';
 
 class CitiesDB {
   Database? database;
@@ -20,21 +20,21 @@ class CitiesDB {
     return database;
   }
 
-  void addCity(CityEntity city) async {
+  void addCity(CityModel city) async {
     var data = {
       'name': city.cityName,
-      'latitude': city.locationEntity.longitude,
-      'longitude': city.locationEntity.lattitude,
+      'latitude': city.locationModel.longitude,
+      'longitude': city.locationModel.lattitude,
     };
     (await init())!.insert('City', data);
   }
 
-  Future<List<CityEntity>> getCities() async {
+  Future<List<CityModel>> getCities() async {
     var response = await (await init())!.rawQuery('SELECT * FROM City');
     return response
-        .map((e) => CityEntity(
+        .map((e) => CityModel(
             e['name'].toString(),
-            LocationEntity(double.parse(e['latitude'] as String),
+            LocationModel(double.parse(e['latitude'] as String),
                 double.parse(e['longitude'] as String))))
         .toList();
   }

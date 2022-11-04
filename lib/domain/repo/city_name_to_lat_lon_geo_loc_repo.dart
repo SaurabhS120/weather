@@ -1,5 +1,5 @@
-import 'package:weather/domain/entity/location_entity.dart';
+import 'package:weather/domain/model/location_model.dart';
 
 abstract class CityNameToLatLonGeoLocRepo {
-  Future<LocationEntity> getLocationDetailsFromCity(String cityName);
+  Future<LocationModel> getLocationDetailsFromCity(String cityName);
 }
