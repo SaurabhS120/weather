@@ -17,8 +17,6 @@ import 'package:weather/presentation/controller/weather_controller.dart';
 class MainBinding extends Bindings {
   @override
   void dependencies() {
-    CitiesLocalRepo citiesLocalRepo = CitiesLocalRepoImpl() as CitiesLocalRepo;
-    citiesLocalRepo.init();
     Get.lazyPut(() => (CitiesLocalRepoImpl() as CitiesLocalRepo), fenix: true);
     Get.lazyPut(
         () => (CiityNameToLatLonGeoLocRepoImpl() as CityNameToLatLonGeoLocRepo),

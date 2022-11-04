@@ -7,10 +7,6 @@ class LocationListController extends GetxController {
   final currentCity = RxString('');
   final CitiesLocalRepo citiesLocalRepo = Get.find<CitiesLocalRepo>();
 
-  void initialize() {
-    citiesLocalRepo.init();
-  }
-
   void getFromDB() async {
     _cityList.value = await citiesLocalRepo.getCities();
     currentCity.value = getCityList().first.cityName;

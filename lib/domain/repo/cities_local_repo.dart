@@ -1,7 +1,6 @@
 import 'package:weather/domain/entity/city_entity.dart';
 
 abstract class CitiesLocalRepo {
-  void init();
 
   void addCity(CityEntity city);
 
