@@ -19,5 +19,11 @@ class LocationListController extends GetxController {
     citiesLocalRepo.addCity(cityEntity);
   }
 
+  void remove(int index) {
+    citiesLocalRepo.removeCity(_cityList[index]);
+    // _cityList.removeAt(index);
+    getFromDB();
+  }
+
   RxList<CityEntity> getCityList() => _cityList;
 }

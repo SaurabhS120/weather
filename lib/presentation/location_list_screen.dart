@@ -29,8 +29,12 @@ class LocationListScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(
-                          locationListController.getCityList()[index].cityName),
-                    );
+                      locationListController.getCityList()[index].cityName),
+                  trailing: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => locationListController.remove(index),
+                  ),
+                );
                   },
                 ),
               ),

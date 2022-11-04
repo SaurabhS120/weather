@@ -38,4 +38,8 @@ class CitiesDB {
                 double.parse(e['longitude'] as String))))
         .toList();
   }
+
+  void removeCity(String cityName) async {
+    (await init())!.delete('City', where: "name=?", whereArgs: [cityName]);
+  }
 }

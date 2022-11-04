@@ -16,4 +16,9 @@ class CitiesLocalRepoImpl extends CitiesLocalRepo {
   Future<List<CityEntity>> getCities() async {
     return await cities_db.getCities();
   }
+
+  @override
+  void removeCity(CityEntity cityEntity) {
+    cities_db.removeCity(cityEntity.cityName);
+  }
 }
