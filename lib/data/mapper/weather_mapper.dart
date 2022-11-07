@@ -6,7 +6,7 @@ import 'package:weather/domain/model/weather_model.dart';
 extension WeatherEntityToModel on WeatherDetailsEntity {
   WeatherModel toModel() {
     return WeatherModel(main.temp, main.feels_like, main.temp_max,
-        main.temp_min, main.pressure, main.pressure, weather[0].icon);
+        main.temp_min, main.pressure, main.humidity, weather[0].icon);
   }
 }
 
