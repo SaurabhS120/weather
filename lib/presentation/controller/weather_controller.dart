@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import 'package:weather/domain/model/city_model.dart';
-import 'package:weather/domain/model/weather_model.dart';
 import 'package:weather/domain/usecase/weather_data_usecase.dart';
+import 'package:weather/presentation/item/city_item.dart';
+import 'package:weather/presentation/item/weather_item.dart';
 
 class WeatherController extends GetxController {
-  final cityEntity = Rx<CityModel?>(null);
+  final cityItem = Rx<CityItem?>(null);
 
-  set(CityModel cityEntity) {
-    this.cityEntity.value = cityEntity;
+  set(CityItem cityEntity) {
+    this.cityItem.value = cityEntity;
     getWeather();
   }
 
@@ -43,19 +43,19 @@ class WeatherController extends GetxController {
   }
 
   void getWeather() async {
-    if (cityEntity.value == null) {
+    if (cityItem.value == null) {
       print('No cities passed to fetch');
     } else {
       WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
-      WeatherModel weatherEntity =
-          await weatherDataUsecase.invoke(cityEntity.value!);
-      _temp.value = weatherEntity.temp;
-      _feels_like.value = weatherEntity.feelsLike;
-      _temp_min.value = weatherEntity.tempMin;
-      _temp_max.value = weatherEntity.tempMax;
-      _pressure.value = weatherEntity.pressure;
-      _humidity.value = weatherEntity.humidity;
-      _icon.value = weatherEntity.icon;
+      WeatherItem weatherItem =
+          await weatherDataUsecase.invoke(cityItem.value!);
+      _temp.value = weatherItem.temp;
+      _feels_like.value = weatherItem.feelsLike;
+      _temp_min.value = weatherItem.tempMin;
+      _temp_max.value = weatherItem.tempMax;
+      _pressure.value = weatherItem.pressure;
+      _humidity.value = weatherItem.humidity;
+      _icon.value = weatherItem.icon;
       _isLoading.value = false;
     }
   }

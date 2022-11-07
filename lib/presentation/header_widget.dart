@@ -12,8 +12,8 @@ class HeaderWidget extends StatelessWidget {
         Container(
           margin: EdgeInsets.all(20),
           alignment: Alignment.topLeft,
-          child: Obx(
-              () => Text(weatherController.cityEntity.value?.cityName ?? '')),
+          child:
+              Obx(() => Text(weatherController.cityItem.value?.cityName ?? '')),
         ),
       ],
     );

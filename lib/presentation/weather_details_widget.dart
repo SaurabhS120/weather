@@ -37,7 +37,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                     children: [
                       Obx(
                         () => Text(
-                            weatherContoller.cityEntity.value?.cityName ?? '',
+                            weatherContoller.cityItem.value?.cityName ?? '',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 56, 89, 211))),
                       ),

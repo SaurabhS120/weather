@@ -1,4 +1,4 @@
-import 'package:weather/presentation/items/location_item.dart';
+import 'package:weather/presentation/item/location_item.dart';
 
 class CityItem {
   String cityName;

@@ -1,10 +1,10 @@
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather/domain/model/city_model.dart';
-import 'package:weather/domain/model/location_model.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
+import 'package:weather/presentation/item/city_item.dart';
+import 'package:weather/presentation/item/location_item.dart';
 
 class LocationScreen extends StatefulWidget {
   @override
@@ -14,6 +14,7 @@ class LocationScreen extends StatefulWidget {
 class LocationScreenState extends State<LocationScreen> {
   final geoLocationController = Get.find<GeoLocationController>();
   final locationListController = Get.find<LocationListController>();
+
   @override
   void initState() {
     super.initState();
@@ -28,7 +29,7 @@ class LocationScreenState extends State<LocationScreen> {
 
   late RxBool fetchingLocation;
   RxString city = ''.obs;
-  Rx<LocationModel?> location = Rx<LocationModel?>(null);
+  Rx<LocationItem?> location = Rx<LocationItem?>(null);
   RxBool _choosingLoc = false.obs;
   String selectedCity = '';
 
@@ -91,7 +92,7 @@ class LocationScreenState extends State<LocationScreen> {
                             "Please select location to proceed");
                       } else {
                         locationListController
-                            .add_city(CityModel(city.value, location.value!));
+                            .add_city(CityItem(city.value, location.value!));
                         Get.back();
                       }
                     },

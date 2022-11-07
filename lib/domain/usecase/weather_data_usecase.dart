@@ -1,14 +1,16 @@
 import 'package:get/get.dart';
-import 'package:weather/domain/model/city_model.dart';
-import 'package:weather/domain/model/weather_model.dart';
+import 'package:weather/domain/mappers/city_mapper.dart';
+import 'package:weather/domain/mappers/weather_mapper.dart';
 import 'package:weather/domain/repo/weather_data_repo.dart';
+import 'package:weather/presentation/item/city_item.dart';
+import 'package:weather/presentation/item/weather_item.dart';
 
 class WeatherDataUsecase {
   WeatherDataRepo weatherDataRepo = Get.find<WeatherDataRepo>();
 
   WeatherDataUsecase();
 
-  Future<WeatherModel> invoke(CityModel cityEntity) async {
-    return weatherDataRepo.getWeatherData(cityEntity);
+  Future<WeatherItem> invoke(CityItem city) async {
+    return (await weatherDataRepo.getWeatherData(city.toModel())).toItem();
   }
 }
