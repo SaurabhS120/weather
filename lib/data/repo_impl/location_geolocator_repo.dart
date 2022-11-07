@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:weather/data/mapper/city_mapper.dart';
 import 'package:weather/domain/model/location_model.dart';
 import 'package:weather/domain/repo/location_repo.dart';
 
@@ -23,7 +24,7 @@ class LocationGeolocatorRepo extends LocationRepo {
     }
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    var positionEntity = LocationModel(position.latitude, position.longitude);
+    var positionEntity = position.toModel();
     print(
         'location lat : ${positionEntity.lattitude}, location lon : ${positionEntity.longitude}');
     return Future.value(positionEntity);

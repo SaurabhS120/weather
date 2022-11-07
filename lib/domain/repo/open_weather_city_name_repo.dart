@@ -1,5 +1,5 @@
 import 'package:weather/domain/model/location_model.dart';
 
-abstract class CityNameToLatLonGeoLocRepo {
+abstract class OpenWeatherCityNameRepo {
   Future<LocationModel> getLocationDetailsFromCity(String cityName);
 }

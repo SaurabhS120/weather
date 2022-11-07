@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:weather/domain/model/location_model.dart';
-import 'package:weather/domain/repo/city_name_to_lat_lon_geo_loc_repo.dart';
+import 'package:weather/domain/repo/open_weather_city_name_repo.dart';
 
 class LocationFromCityUsecase {
-  CityNameToLatLonGeoLocRepo repo = Get.find<CityNameToLatLonGeoLocRepo>();
+  OpenWeatherCityNameRepo repo = Get.find<OpenWeatherCityNameRepo>();
 
   Future<LocationModel> invoke(String cityName) async {
     return await repo.getLocationDetailsFromCity(cityName);
