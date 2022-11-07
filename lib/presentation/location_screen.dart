@@ -14,7 +14,6 @@ class LocationScreen extends StatefulWidget {
 class LocationScreenState extends State<LocationScreen> {
   final geoLocationController = Get.find<GeoLocationController>();
   final locationListController = Get.find<LocationListController>();
-
   @override
   void initState() {
     super.initState();

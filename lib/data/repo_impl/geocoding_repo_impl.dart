@@ -6,6 +6,7 @@ class GeoCodingRepoImpl extends LatLongToCityNameRepo {
   Future<String> getCityName(LocationModel location) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(location.lattitude, location.longitude);
+    print(placemarks.length);
     Placemark place = placemarks[0];
     return Future.value(place.locality);
   }

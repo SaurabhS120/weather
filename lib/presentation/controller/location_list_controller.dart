@@ -5,20 +5,20 @@ import 'package:weather/presentation/item/city_item.dart';
 class LocationListController extends GetxController {
   final RxList<CityItem> _cityList = RxList<CityItem>();
   final currentCity = RxString('');
-  final CitiesLocalUseCase citiesLocalRepo = Get.find<CitiesLocalUseCase>();
+  final CitiesLocalUseCase citiesLocalUsecase = Get.find<CitiesLocalUseCase>();
 
   void getFromDB() async {
-    _cityList.value = (await citiesLocalRepo.getCities());
+    _cityList.value = (await citiesLocalUsecase.getCities());
     currentCity.value = getCityList().first.cityName;
   }
 
   void add_city(CityItem cityItem) {
     _cityList.add(cityItem);
-    citiesLocalRepo.addCity(cityItem);
+    citiesLocalUsecase.addCity(cityItem);
   }
 
   void remove(int index) {
-    citiesLocalRepo.removeCity(_cityList[index]);
+    citiesLocalUsecase.removeCity(_cityList[index]);
     // _cityList.removeAt(index);
     getFromDB();
   }

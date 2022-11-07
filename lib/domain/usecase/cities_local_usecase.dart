@@ -11,5 +11,5 @@ class CitiesLocalUseCase {
   Future<List<CityItem>> getCities() async =>
       (await citiesLocalRepo.getCities()).toItemList();
 
-  void removeCity(CityItem city) => city.toModel();
+  void removeCity(CityItem city) => citiesLocalRepo.removeCity(city.toModel());
 }

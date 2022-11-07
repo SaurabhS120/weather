@@ -20,10 +20,9 @@ class GeoLocationController extends GetxController {
   void getCurrentLocation() async {
     _isLoading.value = true;
     LocationItem location = await locationUseCase.invoke();
-    _location.value = LocationItem(location.lattitude, location.longitude);
-    String city_name = await latLongToCityNameUsecase.invoke(location);
-    print(city_name);
-    _city.value = city_name;
+    String cityName = await latLongToCityNameUsecase.invoke(location);
+    print(cityName);
+    setLocation(CityItem(cityName, location));
     _isLoading.value = false;
   }
 
@@ -33,13 +32,12 @@ class GeoLocationController extends GetxController {
 
   void getLocationFromCityName(String cityName, {Function? onFinish}) async {
     LocationItem locationItem = await locFromCityNameUsecase.invoke(cityName);
-    _location.value = locationItem;
-    _city.value = cityName;
+    setLocation(CityItem(cityName, locationItem));
     onFinish?.call();
   }
 
-  void setLocation(CityItem cityEntity) {
-    _city.value = cityEntity.cityName;
-    _location.value = cityEntity.locationItem;
+  void setLocation(CityItem cityItem) {
+    _city.value = cityItem.cityName;
+    _location.value = cityItem.locationItem;
   }
 }
