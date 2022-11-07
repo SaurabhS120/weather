@@ -41,10 +41,14 @@ class WeatherDetailsWidget extends StatelessWidget {
                             style: TextStyle(
                                 color: Color.fromARGB(255, 56, 89, 211))),
                       ),
-                      Obx(() => weatherContoller.getIcon().value.isEmpty
+                      Obx(() => weatherContoller
+                              .getWeatherItem()
+                              .value
+                              .icon
+                              .isEmpty
                           ? SizedBox()
                           : Image.network(
-                              'http://openweathermap.org/img/wn/${weatherContoller.getIcon().value}.png',
+                              'http://openweathermap.org/img/wn/${weatherContoller.getWeatherItem().value.icon}.png',
                               width: MediaQuery.of(context).size.width * 0.10,
                               height: MediaQuery.of(context).size.width * 0.10,
 
@@ -59,7 +63,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        weatherContoller.getTemp().string + '°',
+                        '${weatherContoller.getWeatherItem().value.temp}°',
                         style: TextStyle(
                             color: Color.fromARGB(255, 56, 89, 211),
                             fontSize: 72),
@@ -77,9 +81,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                         padding: EdgeInsets.all(4),
                       ),
                       Text(
-                        "min temp : " +
-                            weatherContoller.getTempMin().string +
-                            '°',
+                        "min temp : ${weatherContoller.getWeatherItem().value.tempMin}°",
                         style:
                             TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
                       ),
@@ -93,9 +95,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                         padding: EdgeInsets.all(4),
                       ),
                       Text(
-                        "max temp : " +
-                            weatherContoller.getTempMax().string +
-                            '°',
+                        "max temp : ${weatherContoller.getWeatherItem().value.tempMax}°",
                         style:
                             TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
                       ),
@@ -109,9 +109,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                         padding: EdgeInsets.all(4),
                       ),
                       Text(
-                        "Feels like : " +
-                            weatherContoller.getFeelsLike().string +
-                            '°',
+                        "Feels like : ${weatherContoller.getWeatherItem().value.feelsLike}°",
                         style:
                             TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
                       ),
@@ -125,9 +123,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                         padding: EdgeInsets.all(4),
                       ),
                       Text(
-                        "pressure : " +
-                            weatherContoller.getPressure().string +
-                            ' hPa',
+                        "pressure : ${weatherContoller.getWeatherItem().value.pressure} hPa",
                         style:
                             TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
                       ),
@@ -141,9 +137,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                         padding: EdgeInsets.all(4),
                       ),
                       Text(
-                        "Humidity : " +
-                            weatherContoller.getHumidity().string +
-                            ' %',
+                        "Humidity : ${weatherContoller.getWeatherItem().value.humidity} %",
                         style:
                             TextStyle(color: Color.fromARGB(255, 56, 89, 211)),
                       ),

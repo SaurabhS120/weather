@@ -11,30 +11,12 @@ class WeatherController extends GetxController {
     getWeather();
   }
 
+  final _weatherItem = WeatherItem(0, 0, 0, 0, 0, 0, '').obs;
   final RxBool _isLoading = true.obs;
-  final RxDouble _temp = 0.0.obs;
-  final RxDouble _feels_like = 0.0.obs;
-  final RxDouble _temp_max = 0.0.obs;
-  final RxDouble _temp_min = 0.0.obs;
-  final RxDouble _pressure = 0.0.obs;
-  final RxDouble _humidity = 0.0.obs;
-  final RxString _icon = ''.obs;
 
   RxBool checkLoading() => _isLoading;
 
-  RxDouble getTemp() => _temp;
-
-  RxDouble getFeelsLike() => _feels_like;
-
-  RxDouble getTempMax() => _temp_max;
-
-  RxDouble getTempMin() => _temp_min;
-
-  RxDouble getPressure() => _pressure;
-
-  RxDouble getHumidity() => _humidity;
-
-  RxString getIcon() => _icon;
+  Rx<WeatherItem> getWeatherItem() => _weatherItem;
 
   @override
   void onInit() {
@@ -49,13 +31,7 @@ class WeatherController extends GetxController {
       WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
       WeatherItem weatherItem =
           await weatherDataUsecase.invoke(cityItem.value!);
-      _temp.value = weatherItem.temp;
-      _feels_like.value = weatherItem.feelsLike;
-      _temp_min.value = weatherItem.tempMin;
-      _temp_max.value = weatherItem.tempMax;
-      _pressure.value = weatherItem.pressure;
-      _humidity.value = weatherItem.humidity;
-      _icon.value = weatherItem.icon;
+      _weatherItem.value = weatherItem;
       _isLoading.value = false;
     }
   }
