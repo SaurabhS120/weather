@@ -349,19 +349,19 @@ class WeatherDetailsWidget extends StatelessWidget {
     String asset = 'images/sunny.png';
     switch (main.toLowerCase()) {
       case 'rain':
-        asset = 'images/sunny.png';
+        asset = 'images/rain.png';
         break;
       case 'sunny':
         asset = 'images/sunny.png';
         break;
       case 'clouds':
-        asset = 'images/sunny.png';
+        asset = 'images/cloud.png';
         break;
       case 'clear':
         asset = 'images/sunny.png';
         break;
       case 'snow':
-        asset = 'images/sunny.png';
+        asset = 'images/snow.jpg';
         break;
     }
     return Image.asset(
