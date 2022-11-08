@@ -23,19 +23,34 @@ class LocationListScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Obx(
-            () => ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: locationListController.getCityList().length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                      locationListController.getCityList()[index].cityName),
-                  trailing: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () => locationListController.remove(index),
+            () => GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+              ),
+              itemCount: locationListController.getCityList().length,
+              itemBuilder: (context, index) {
+                return Container(
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          locationListController.getCityList()[index].cityName),
+                      IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () => locationListController.remove(index),
+                      ),
+                    ],
                   ),
                 );
-                  },
+              },
                 ),
               ),
               Column(

@@ -43,9 +43,12 @@ class WeatherDetailsWidget extends StatelessWidget {
                     children: [
                       Obx(
                         () => Text(
-                            weatherContoller.cityItem.value?.cityName ?? '',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 36)),
+                          weatherContoller.cityItem.value?.cityName ?? '',
+                          style: TextStyle(
+                              color: getTextColorForMain(
+                                  weatherContoller.getWeatherItem().value.main),
+                              fontSize: 36),
+                        ),
                       ),
                       Obx(() => weatherContoller
                               .getWeatherItem()
@@ -76,8 +79,14 @@ class WeatherDetailsWidget extends StatelessWidget {
                               Row(
                                 children: [
                                   Padding(
-                                    child: Icon(Icons.thermostat,
-                                        color: Colors.white),
+                                    child: Icon(
+                                      Icons.thermostat,
+                                      color: getTextColorForMain(
+                                          weatherContoller
+                                              .getWeatherItem()
+                                              .value
+                                              .main),
+                                    ),
                                     padding: EdgeInsets.all(4),
                                   ),
                                   Text(
@@ -94,8 +103,14 @@ class WeatherDetailsWidget extends StatelessWidget {
                               Row(
                                 children: [
                                   Padding(
-                                    child: Icon(Icons.keyboard_arrow_up,
-                                        color: Colors.white),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_up,
+                                      color: getTextColorForMain(
+                                          weatherContoller
+                                              .getWeatherItem()
+                                              .value
+                                              .main),
+                                    ),
                                     padding: EdgeInsets.all(4),
                                   ),
                                   Text(
@@ -112,8 +127,14 @@ class WeatherDetailsWidget extends StatelessWidget {
                               Row(
                                 children: [
                                   Padding(
-                                    child: Icon(Icons.keyboard_arrow_down,
-                                        color: Colors.white),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: getTextColorForMain(
+                                          weatherContoller
+                                              .getWeatherItem()
+                                              .value
+                                              .main),
+                                    ),
                                     padding: EdgeInsets.all(4),
                                   ),
                                   Text(
@@ -135,7 +156,12 @@ class WeatherDetailsWidget extends StatelessWidget {
                                   Text(
                                     '${weatherContoller.getWeatherItem().value.temp}°',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 72),
+                                        color: getTextColorForMain(
+                                            weatherContoller
+                                                .getWeatherItem()
+                                                .value
+                                                .main),
+                                        fontSize: 72),
                                   )
                                 ],
                               ),
@@ -145,7 +171,14 @@ class WeatherDetailsWidget extends StatelessWidget {
                               Row(
                                 children: [
                                   Padding(
-                                    child: Icon(Icons.atm, color: Colors.white),
+                                    child: Icon(
+                                      Icons.atm,
+                                      color: getTextColorForMain(
+                                          weatherContoller
+                                              .getWeatherItem()
+                                              .value
+                                              .main),
+                                    ),
                                     padding: EdgeInsets.all(4),
                                   ),
                                   Text(
@@ -162,8 +195,14 @@ class WeatherDetailsWidget extends StatelessWidget {
                               Row(
                                 children: [
                                   Padding(
-                                    child: Icon(Icons.water_drop,
-                                        color: Colors.white),
+                                    child: Icon(
+                                      Icons.water_drop,
+                                      color: getTextColorForMain(
+                                          weatherContoller
+                                              .getWeatherItem()
+                                              .value
+                                              .main),
+                                    ),
                                     padding: EdgeInsets.all(4),
                                   ),
                                   Text(
@@ -208,9 +247,14 @@ class WeatherDetailsWidget extends StatelessWidget {
                           Row(
                             children: [
                               imageForMain(
-                                  weatherContoller.getWeatherItem().value.main,
-                                  height: 128,
-                                  width: 128)
+                                weatherContoller.getWeatherItem().value.main,
+                                height: 128,
+                                width: 128,
+                                color: getTextColorForMain(weatherContoller
+                                    .getWeatherItem()
+                                    .value
+                                    .main),
+                              )
                             ],
                           )
                         ],
@@ -259,7 +303,7 @@ class WeatherDetailsWidget extends StatelessWidget {
         color = Color.fromRGBO(64, 192, 255, 1.0);
         break;
       case 'clear':
-        color = Color.fromRGBO(214, 255, 255, 1.0);
+        color = Color.fromRGBO(152, 255, 255, 1.0);
         break;
       case 'snow':
         color = Color.fromRGBO(224, 224, 224, 1.0);
@@ -284,7 +328,7 @@ class WeatherDetailsWidget extends StatelessWidget {
         color = Color.fromRGBO(138, 226, 255, 1.0);
         break;
       case 'snow':
-        color = Color.fromRGBO(224, 224, 224, 1.0);
+        color = Color.fromRGBO(201, 201, 201, 1.0);
         break;
     }
     return color;
@@ -294,14 +338,14 @@ class WeatherDetailsWidget extends StatelessWidget {
     Color color = Colors.white;
     switch (main.toLowerCase()) {
       case 'snow':
-        color = Colors.grey;
+        color = Colors.black54;
         break;
     }
     return color;
   }
 
   Image imageForMain(String main,
-      {required double height, required double width}) {
+      {required double height, required double width, required Color color}) {
     String asset = 'images/sunny.png';
     switch (main.toLowerCase()) {
       case 'rain':
@@ -324,7 +368,7 @@ class WeatherDetailsWidget extends StatelessWidget {
       asset,
       height: height,
       width: width,
-      color: Colors.white,
+      color: color,
     );
   }
 }
