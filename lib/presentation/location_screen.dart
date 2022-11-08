@@ -52,6 +52,11 @@ class LocationScreenState extends State<LocationScreen> {
             children: [
               Container(
                 width: double.maxFinite,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colors.black38, Colors.black54],
+                        begin: Alignment(0, -1),
+                        end: Alignment(0, 1))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
