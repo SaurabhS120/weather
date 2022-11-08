@@ -294,7 +294,7 @@ class WeatherDetailsWidget extends StatelessWidget {
     Color color = Color.fromRGBO(229, 229, 229, 1.0);
     switch (main.toLowerCase()) {
       case 'rain':
-        color = Color.fromRGBO(176, 176, 176, 1.0);
+        color = Color.fromRGBO(66, 84, 206, 1.0);
         break;
       case 'sunny':
         color = Color.fromRGBO(255, 179, 68, 1.0);
@@ -303,7 +303,7 @@ class WeatherDetailsWidget extends StatelessWidget {
         color = Color.fromRGBO(64, 192, 255, 1.0);
         break;
       case 'clear':
-        color = Color.fromRGBO(152, 255, 255, 1.0);
+        color = Color.fromRGBO(164, 71, 183, 1.0);
         break;
       case 'snow':
         color = Color.fromRGBO(224, 224, 224, 1.0);
@@ -316,7 +316,7 @@ class WeatherDetailsWidget extends StatelessWidget {
     Color color = Colors.grey;
     switch (main.toLowerCase()) {
       case 'rain':
-        color = Colors.black54;
+        color = Color.fromRGBO(9, 22, 152, 1.0);
         break;
       case 'sunny':
         color = Colors.orange;
@@ -325,7 +325,7 @@ class WeatherDetailsWidget extends StatelessWidget {
         color = Colors.lightBlue;
         break;
       case 'clear':
-        color = Color.fromRGBO(138, 226, 255, 1.0);
+        color = Color.fromRGBO(127, 23, 157, 1.0);
         break;
       case 'snow':
         color = Color.fromRGBO(201, 201, 201, 1.0);
