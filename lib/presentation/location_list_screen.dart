@@ -77,6 +77,8 @@ class LocationListScreen extends StatelessWidget {
                     Get.toNamed('/location');
                   },
                   child: Text('Add city'),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.black54),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -92,6 +94,8 @@ class LocationListScreen extends StatelessWidget {
                     }
                   },
                   child: Text('Proceed'),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.black54),
                 ),
               ],
             )
