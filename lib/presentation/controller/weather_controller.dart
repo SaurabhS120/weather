@@ -6,12 +6,12 @@ import 'package:weather/presentation/item/weather_item.dart';
 class WeatherController extends GetxController {
   final cityItem = Rx<CityItem?>(null);
 
-  set(CityItem cityEntity) {
-    this.cityItem.value = cityEntity;
+  set(CityItem cityItem) {
+    this.cityItem.value = cityItem;
     getWeather();
   }
 
-  final _weatherItem = WeatherItem(0, 0, 0, 0, 0, 0, '').obs;
+  final _weatherItem = WeatherItem(0, 0, 0, 0, 0, 0, '', '').obs;
   final RxBool _isLoading = true.obs;
 
   RxBool checkLoading() => _isLoading;

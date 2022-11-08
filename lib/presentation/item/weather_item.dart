@@ -6,7 +6,8 @@ class WeatherItem {
   double pressure;
   double humidity;
   String icon;
+  String main;
 
   WeatherItem(this.temp, this.feelsLike, this.tempMax, this.tempMin,
-      this.pressure, this.humidity, this.icon);
+      this.pressure, this.humidity, this.icon, this.main);
 }

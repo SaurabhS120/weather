@@ -6,7 +6,8 @@ class WeatherModel {
   double pressure;
   double humidity;
   String icon;
+  String main;
 
   WeatherModel(this.temp, this.feelsLike, this.tempMax, this.tempMin,
-      this.pressure, this.humidity, this.icon);
+      this.pressure, this.humidity, this.icon, this.main);
 }
