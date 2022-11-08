@@ -26,7 +26,6 @@ class MainScreenState extends State<MainScreen> {
         child: Column(
           children: [
             Expanded(child: WeatherDetailsWidget()),
-            Spacer(),
           ],
         ),
       ),
