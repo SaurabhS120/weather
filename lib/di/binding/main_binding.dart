@@ -9,6 +9,7 @@ import 'package:weather/domain/repo/location_repo.dart';
 import 'package:weather/domain/repo/open_weather_city_name_repo.dart';
 import 'package:weather/domain/repo/weather_data_repo.dart';
 import 'package:weather/domain/usecase/cities_local_usecase.dart';
+import 'package:weather/domain/usecase/hourly_weather_data_usecase.dart';
 import 'package:weather/domain/usecase/lat_long_to_city_name_usecase.dart';
 import 'package:weather/domain/usecase/location_from_city_usecase.dart';
 import 'package:weather/domain/usecase/location_usecase.dart';
@@ -35,6 +36,7 @@ class MainBinding extends Bindings {
     Get.lazyPut(() => (GeoLocationController()), fenix: true);
     Get.lazyPut(() => WeatherDataRepoImpl() as WeatherDataRepo, fenix: true);
     Get.lazyPut(() => WeatherDataUsecase(), fenix: true);
+    Get.lazyPut(() => HourlyWeatherDataUseCase(), fenix: true);
     Get.lazyPut(() => OpenWeatherCityNameRepoImpl() as OpenWeatherCityNameRepo,
         fenix: true);
   }

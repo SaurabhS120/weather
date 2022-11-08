@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:weather/data/entity/city_data_response.dart';
+import 'package:weather/data/entity/hourly_weather_forecast_entity.dart';
 import 'package:weather/data/entity/weather_details_entity.dart';
 import 'package:weather/domain/model/location_model.dart';
 
@@ -48,6 +49,26 @@ class HttpService {
       print(
           "city = $cityName lat = ${cityDataResponse.lat} long = ${cityDataResponse.lon} ");
       return cityDataResponse;
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<HourlyWeatherForecastEntity> getHourlyForecast(
+      LocationModel locationEntity) async {
+    Response response;
+    try {
+      var data = {
+        'lat': locationEntity.lattitude,
+        'lon': locationEntity.longitude,
+        'appid': '961132958849047de54af9a4a68a8166',
+      };
+      response = await _dio.get('/data/2.5/forecast', queryParameters: data);
+      print(response);
+      HourlyWeatherForecastEntity json =
+          HourlyWeatherForecastEntity.fromJson(response.data);
+      return json;
     } on DioError catch (e) {
       print(e);
       throw Exception(e.message);

@@ -204,6 +204,54 @@ class WeatherDetailsWidget extends StatelessWidget {
                     color: getTextColorForMain(
                         weatherContoller.getWeatherItem().value.main),
                   ),
+                  SizedBox(
+                    height: 64,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: weatherContoller
+                          .getHourlyWeatherItem()
+                          .value
+                          .data
+                          .length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            imageForMain(
+                                weatherContoller
+                                    .getHourlyWeatherItem()
+                                    .value
+                                    .data[index]
+                                    .main,
+                                height: 24,
+                                width: 24,
+                                color: getTextColorForMain(weatherContoller
+                                    .getWeatherItem()
+                                    .value
+                                    .main)),
+                            Text(
+                              weatherContoller
+                                  .getHourlyWeatherItem()
+                                  .value
+                                  .data[index]
+                                  .temp
+                                  .toString(),
+                              style: TextStyle(
+                                  color: getTextColorForMain(weatherContoller
+                                      .getWeatherItem()
+                                      .value
+                                      .main)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    color: getTextColorForMain(
+                        weatherContoller.getWeatherItem().value.main),
+                  ),
                 ],
               ),
             ));
@@ -304,7 +352,7 @@ class WeatherDetailsWidget extends StatelessWidget {
         asset = 'images/sunny.png';
         break;
       case 'snow':
-        asset = 'images/snow.jpg';
+        asset = 'images/snow.png';
         break;
     }
     return Image.asset(
