@@ -4,9 +4,17 @@ import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
-class WeatherDetailsWidget extends StatelessWidget {
+class WeatherDetailsWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => WeatherDetailsWidgetState();
+}
+
+class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
+    with TickerProviderStateMixin {
   final locationController = Get.find<GeoLocationController>();
   final locationListController = Get.find<LocationListController>();
+  late AnimationController animationController;
+  late Animation<double> animation;
 
   @override
   Widget build(BuildContext context) {
@@ -233,19 +241,22 @@ class WeatherDetailsWidget extends StatelessWidget {
                                       children: [
                                         Row(
                                           children: [
-                                            imageForMain(
-                                              weatherContoller
-                                                  .getWeatherItem()
-                                                  .value
-                                                  .main,
-                                              height: 128,
-                                              width: 128,
-                                              color: getTextColorForMain(
-                                                  weatherContoller
-                                                      .getWeatherItem()
-                                                      .value
-                                                      .main),
-                                            )
+                                            ScaleTransition(
+                                              scale: animation,
+                                              child: imageForMain(
+                                                weatherContoller
+                                                    .getWeatherItem()
+                                                    .value
+                                                    .main,
+                                                height: 128,
+                                                width: 128,
+                                                color: getTextColorForMain(
+                                                    weatherContoller
+                                                        .getWeatherItem()
+                                                        .value
+                                                        .main),
+                                              ),
+                                            ),
                                           ],
                                         )
                                       ],
@@ -437,5 +448,17 @@ class WeatherDetailsWidget extends StatelessWidget {
       width: width,
       color: color,
     );
+  }
+
+  @override
+  void initState() {
+    animationController = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: 2),
+        upperBound: 1,
+        lowerBound: 0.7);
+    animation =
+        CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
+    animationController.repeat(reverse: true);
   }
 }
