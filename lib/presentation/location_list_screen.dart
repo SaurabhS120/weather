@@ -25,29 +25,32 @@ class LocationListScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                    onPressed: () => null,
-                    child: Icon(
-                      Icons.menu,
-                      color: Colors.white,
-                    )),
-                Text(
-                  'Add city',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+            ColoredBox(
+              color: Color.fromRGBO(0, 0, 0, 0.7490196078431373),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        onPressed: () => null,
+                        child: Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                        )),
+                    Text(
+                      'Add city',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    TextButton(
+                        onPressed: () => Get.toNamed('/location'),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )),
+                  ],
                 ),
-                TextButton(
-                    onPressed: () => Get.toNamed('/location'),
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    )),
-              ],
+              ),
             ),
             SizedBox(
               height: 12,
@@ -64,27 +67,32 @@ class LocationListScreen extends StatelessWidget {
                   itemCount: locationListController.getCityList().length,
                   itemBuilder: (context, index) {
                     return Container(
-                      alignment: Alignment.topCenter,
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                       decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 0, 0, 0.25098039215686274),
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          color: Color.fromRGBO(73, 73, 73, 1.0),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Stack(
                         children: [
-                          Text(
-                            locationListController
-                                .getCityList()[index]
-                                .cityName,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.close,
-                              color: Colors.white,
+                          Center(
+                            child: Text(
+                              locationListController
+                                  .getCityList()[index]
+                                  .cityName,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
                             ),
-                            onPressed: () =>
-                                locationListController.remove(index),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                              onPressed: () =>
+                                  locationListController.remove(index),
+                            ),
                           ),
                         ],
                       ),
