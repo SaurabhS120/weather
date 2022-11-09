@@ -39,7 +39,7 @@ class LocationListScreen extends StatelessWidget {
                           color: Colors.white,
                         )),
                     Text(
-                      'Add city',
+                      'City list',
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                     TextButton(
