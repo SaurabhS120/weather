@@ -15,9 +15,6 @@ class LocationListScreen extends StatelessWidget {
     locationListController.getFromDB();
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        title: Text('Location list'),
-      ),
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -28,6 +25,33 @@ class LocationListScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(
+              height: 12,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                    onPressed: () => null,
+                    child: Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                    )),
+                Text(
+                  'Add city',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+                TextButton(
+                    onPressed: () => Get.toNamed('/location'),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    )),
+              ],
+            ),
+            SizedBox(
+              height: 12,
+            ),
             Obx(
               () => Expanded(
                 child: GridView.builder(
@@ -72,14 +96,6 @@ class LocationListScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed('/location');
-                  },
-                  child: Text('Add city'),
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.black54),
-                ),
                 ElevatedButton(
                   onPressed: () {
                     if (locationListController.getCityList().isEmpty) {
