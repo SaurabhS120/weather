@@ -1,4 +1,5 @@
 class WeatherItem {
+  String date;
   double temp;
   double feelsLike;
   double tempMax;
@@ -8,6 +9,6 @@ class WeatherItem {
   String icon;
   String main;
 
-  WeatherItem(this.temp, this.feelsLike, this.tempMax, this.tempMin,
+  WeatherItem(this.date, this.temp, this.feelsLike, this.tempMax, this.tempMin,
       this.pressure, this.humidity, this.icon, this.main);
 }

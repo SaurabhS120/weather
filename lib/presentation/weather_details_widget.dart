@@ -39,6 +39,18 @@ class WeatherDetailsWidget extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${weatherContoller.getWeatherItem().value.date}",
+                        style: TextStyle(
+                          color: getTextColorForMain(
+                              weatherContoller.getWeatherItem().value.main),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     height: 12,
                   ),

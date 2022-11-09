@@ -6,7 +6,7 @@ import 'package:weather/presentation/item/weather_item.dart';
 
 extension WeatherItemMapper on WeatherItem {
   WeatherModel toModel() => WeatherModel(
-      temp, feelsLike, tempMax, tempMin, pressure, humidity, icon, main);
+      date, temp, feelsLike, tempMax, tempMin, pressure, humidity, icon, main);
 }
 
 extension WeatherModelMapper on WeatherModel {
@@ -23,7 +23,7 @@ extension WeatherModelMapper on WeatherModel {
         color = Colors.lightBlueAccent;
         break;
     }
-    return WeatherItem(
-        temp, feelsLike, tempMax, tempMin, pressure, humidity, icon, main);
+    return WeatherItem(date, temp, feelsLike, tempMax, tempMin, pressure,
+        humidity, icon, main);
   }
 }

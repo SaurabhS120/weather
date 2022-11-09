@@ -6,10 +6,11 @@ part 'weather_details_entity.g.dart';
 
 @JsonSerializable()
 class WeatherDetailsEntity {
+  int dt;
   WeatherMain main;
   List<WeatherSectionEntity> weather;
 
-  WeatherDetailsEntity(this.main, this.weather);
+  WeatherDetailsEntity(this.dt, this.main, this.weather);
 
   factory WeatherDetailsEntity.fromJson(Map<String, dynamic> json) =>
       _$WeatherDetailsEntityFromJson(json);

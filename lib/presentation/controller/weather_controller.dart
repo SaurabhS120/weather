@@ -17,7 +17,7 @@ class WeatherController extends GetxController {
     _isLoading.value = false;
   }
 
-  final _weatherItem = WeatherItem(0, 0, 0, 0, 0, 0, '', '').obs;
+  final _weatherItem = WeatherItem("", 0, 0, 0, 0, 0, 0, '', '').obs;
   final _hourlyWeatherItem = HourlyWeatherDataItem([]).obs;
   final RxBool _isLoading = true.obs;
 
