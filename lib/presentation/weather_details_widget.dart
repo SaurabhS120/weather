@@ -24,7 +24,6 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
     return SafeArea(
       child: Scaffold(
         body: Obx(() => Container(
-              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 // color: getColorForMain(
                 //     weatherContoller.getWeatherItem().value.main)),
@@ -41,40 +40,48 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
               ),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.menu,
-                        size: 24,
-                        color: getTextColorForMain(
-                          weatherContoller.getWeatherItem().value.main,
-                        ),
-                      ),
-                      Text(
-                        "${weatherContoller.getWeatherItem().value.date}",
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: getTextColorForMain(
-                            weatherContoller.getWeatherItem().value.main,
+                  ColoredBox(
+                    color: Color.fromRGBO(0, 0, 0, 0.2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                            child: Icon(
+                              Icons.menu,
+                              size: 24,
+                              color: getTextColorForMain(
+                                weatherContoller.getWeatherItem().value.main,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      TextButton(
-                        child: Text(
-                          weatherContoller.unit.value.unit.displayText(),
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: getTextColorForMain(
-                                weatherContoller.getWeatherItem().value.main),
+                          Text(
+                            "${weatherContoller.getWeatherItem().value.date}",
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: getTextColorForMain(
+                                weatherContoller.getWeatherItem().value.main,
+                              ),
+                            ),
                           ),
-                        ),
-                        onPressed: () => weatherContoller.toggleUnit(),
+                          TextButton(
+                            child: Text(
+                              weatherContoller.unit.value.unit.displayText(),
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: getTextColorForMain(weatherContoller
+                                    .getWeatherItem()
+                                    .value
+                                    .main),
+                              ),
+                            ),
+                            onPressed: () => weatherContoller.toggleUnit(),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                   Expanded(
                     child: PageView.builder(
