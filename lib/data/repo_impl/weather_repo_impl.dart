@@ -12,9 +12,10 @@ class WeatherDataRepoImpl extends WeatherDataRepo {
   HttpService httpService = HttpService();
 
   @override
-  Future<WeatherModel> getWeatherData(CityModel cityEntity) async {
+  Future<WeatherModel> getWeatherData(
+      CityModel cityEntity, String metric) async {
     WeatherDetailsEntity response =
-        await httpService.getWeatherDetails(cityEntity.locationModel);
+        await httpService.getWeatherDetails(cityEntity.locationModel, metric);
     WeatherModel weatherEntity = response.toModel();
     print('icon : ${response.weather.map((e) => e.icon)}');
     return weatherEntity;
@@ -22,9 +23,9 @@ class WeatherDataRepoImpl extends WeatherDataRepo {
 
   @override
   Future<HourlyWeatherDataModel> getHourlyWeatherData(
-      CityModel cityModel) async {
+      CityModel cityModel, String unit) async {
     HourlyWeatherForecastEntity response =
-        await httpService.getHourlyForecast(cityModel.locationModel);
+        await httpService.getHourlyForecast(cityModel.locationModel, unit);
     HourlyWeatherDataModel weatherModel = response.toModel();
     return weatherModel;
   }

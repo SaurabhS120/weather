@@ -15,14 +15,14 @@ class HttpService {
   }
 
   Future<WeatherDetailsEntity> getWeatherDetails(
-      LocationModel locationEntity) async {
+      LocationModel locationEntity, String metric) async {
     Response response;
     try {
       var data = {
         'lat': locationEntity.lattitude,
         'lon': locationEntity.longitude,
         'appid': '961132958849047de54af9a4a68a8166',
-        'units': 'imperial'
+        'units': metric
       };
       response = await _dio.get('/data/2.5/weather', queryParameters: data);
       print(response);
@@ -56,13 +56,14 @@ class HttpService {
   }
 
   Future<HourlyWeatherForecastEntity> getHourlyForecast(
-      LocationModel locationEntity) async {
+      LocationModel locationEntity, String unit) async {
     Response response;
     try {
       var data = {
         'lat': locationEntity.lattitude,
         'lon': locationEntity.longitude,
         'appid': '961132958849047de54af9a4a68a8166',
+        'units': unit
       };
       response = await _dio.get('/data/2.5/forecast', queryParameters: data);
       print(response);

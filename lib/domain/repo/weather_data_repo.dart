@@ -3,8 +3,9 @@ import 'package:weather/domain/model/hourly_weather_data_model.dart';
 import 'package:weather/domain/model/weather_model.dart';
 
 abstract class WeatherDataRepo {
-  Future<WeatherModel> getWeatherData(CityModel cityEntity);
+  Future<WeatherModel> getWeatherData(CityModel cityEntity, String metric);
 
   @override
-  Future<HourlyWeatherDataModel> getHourlyWeatherData(CityModel cityModel);
+  Future<HourlyWeatherDataModel> getHourlyWeatherData(
+      CityModel cityModel, String metric);
 }

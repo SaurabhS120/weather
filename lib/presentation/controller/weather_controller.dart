@@ -4,10 +4,12 @@ import 'package:weather/domain/usecase/hourly_weather_data_usecase.dart';
 import 'package:weather/domain/usecase/weather_data_usecase.dart';
 import 'package:weather/presentation/item/city_item.dart';
 import 'package:weather/presentation/item/hourly_weather_data_item.dart';
+import 'package:weather/presentation/item/unit_item.dart';
 import 'package:weather/presentation/item/weather_item.dart';
 
 class WeatherController extends GetxController {
   final cityItem = Rx<CityItem?>(null);
+  Rx<UnitItem> unit = UnitItem(MetricUnitItem()).obs;
 
   set(CityItem cityItem) {
     _isLoading.value = true;
@@ -37,8 +39,8 @@ class WeatherController extends GetxController {
       print('No cities passed to fetch');
     } else {
       WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
-      WeatherItem weatherItem =
-          await weatherDataUsecase.invoke(cityItem.value!);
+      WeatherItem weatherItem = await weatherDataUsecase.invoke(
+          cityItem.value!, unit.value.unit.getUnitName());
       _weatherItem.value = weatherItem;
       _isLoading.value = false;
     }
@@ -50,10 +52,18 @@ class WeatherController extends GetxController {
     } else {
       HourlyWeatherDataUseCase hourlyWeatherDataUseCase =
           Get.find<HourlyWeatherDataUseCase>();
-      HourlyWeatherDataItem hourlyWeatherItem =
-          await hourlyWeatherDataUseCase.invoke(cityItem.value!.toModel());
+      HourlyWeatherDataItem hourlyWeatherItem = await hourlyWeatherDataUseCase
+          .invoke(cityItem.value!.toModel(), unit.value.unit.getUnitName());
       _hourlyWeatherItem.value = hourlyWeatherItem;
       _isLoading.value = false;
     }
+  }
+
+  toggleUnit() {
+    _isLoading.value = true;
+    unit.value = unit.value.toggle();
+    getWeather();
+    getHourlyWeather();
+    _isLoading.value = false;
   }
 }

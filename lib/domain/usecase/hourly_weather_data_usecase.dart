@@ -7,7 +7,8 @@ import 'package:weather/presentation/item/hourly_weather_data_item.dart';
 class HourlyWeatherDataUseCase {
   WeatherDataRepo repo = Get.find<WeatherDataRepo>();
 
-  Future<HourlyWeatherDataItem> invoke(CityModel cityModel) async {
-    return (await repo.getHourlyWeatherData(cityModel)).toItem();
+  Future<HourlyWeatherDataItem> invoke(
+      CityModel cityModel, String metric) async {
+    return (await repo.getHourlyWeatherData(cityModel, metric)).toItem();
   }
 }

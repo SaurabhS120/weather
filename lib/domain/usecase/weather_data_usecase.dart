@@ -10,7 +10,8 @@ class WeatherDataUsecase {
 
   WeatherDataUsecase();
 
-  Future<WeatherItem> invoke(CityItem city) async {
-    return (await weatherDataRepo.getWeatherData(city.toModel())).toItem();
+  Future<WeatherItem> invoke(CityItem city, String metric) async {
+    return (await weatherDataRepo.getWeatherData(city.toModel(), metric))
+        .toItem();
   }
 }

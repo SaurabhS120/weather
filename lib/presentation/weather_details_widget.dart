@@ -55,13 +55,16 @@ class WeatherDetailsWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(
-                        "C°",
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: getTextColorForMain(
-                              weatherContoller.getWeatherItem().value.main),
+                      TextButton(
+                        child: Text(
+                          weatherContoller.unit.value.unit.displayText(),
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: getTextColorForMain(
+                                weatherContoller.getWeatherItem().value.main),
+                          ),
                         ),
+                        onPressed: () => weatherContoller.toggleUnit(),
                       ),
                     ],
                   ),
@@ -209,7 +212,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                                                                     .main)),
                                                       ),
                                                       Text(
-                                                        "Feels like : ${weatherContoller.getWeatherItem().value.feelsLike}",
+                                                        "Feels like : ${weatherContoller.getWeatherItem().value.feelsLike}°",
                                                         style: TextStyle(
                                                             color: getTextColorForMain(
                                                                 weatherContoller
@@ -256,7 +259,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                                       .main),
                                 ),
                                 SizedBox(
-                                  height: 72,
+                                  height: 80,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -295,19 +298,19 @@ class WeatherDetailsWidget extends StatelessWidget {
                                                       .getWeatherItem()
                                                       .value
                                                       .main)),
-                                          Text(
-                                            weatherContoller
-                                                .getHourlyWeatherItem()
-                                                .value
-                                                .data[index]
-                                                .temp
-                                                .toString(),
-                                            style: TextStyle(
-                                                color: getTextColorForMain(
-                                                    weatherContoller
-                                                        .getWeatherItem()
-                                                        .value
-                                                        .main)),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Text(
+                                              "${weatherContoller.getHourlyWeatherItem().value.data[index].temp}°",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: getTextColorForMain(
+                                                      weatherContoller
+                                                          .getWeatherItem()
+                                                          .value
+                                                          .main)),
+                                            ),
                                           ),
                                         ],
                                       ),
