@@ -64,15 +64,10 @@ class LocationScreenState extends State<LocationScreen> {
                         'Add city',
                         style: TextStyle(color: Colors.white, fontSize: 24),
                       ),
-                      TextButton(
-                        onPressed: () => Get.toNamed('/location'),
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black54),
-                      ),
+                      SizedBox(
+                        height: 24,
+                        width: 72,
+                      )
                     ],
                   ),
                 ),
