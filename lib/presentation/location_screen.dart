@@ -36,9 +36,6 @@ class LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Add Location'),
-        ),
         body: WillPopScope(
           onWillPop: () {
             if (_choosingLoc.isTrue) {
@@ -48,108 +45,156 @@ class LocationScreenState extends State<LocationScreen> {
               return Future.value(true);
             }
           },
-          child: Stack(
+          child: Column(
             children: [
-              Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.black38, Colors.black54],
-                        begin: Alignment(0, -1),
-                        end: Alignment(0, 1))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Obx(() => Text('Selected location : $city')),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          geoLocationController.getCurrentLocation();
-                        },
-                        child: Text('Get city from location')),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Text('OR'),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          _choosingLoc.value = true;
-                        },
-                        child: Text('Choose City'))
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(12),
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (location.value == null) {
-                        Get.snackbar("Location error",
-                            "Please select location to proceed");
-                      } else {
-                        locationListController
-                            .add_city(CityItem(city.value, location.value!));
-                        Get.back();
-                      }
-                    },
-                    child: Text('Proceed with selected location '),
+              ColoredBox(
+                color: Color.fromRGBO(0, 0, 0, 0.7490196078431373),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () => null,
+                          child: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          )),
+                      Text(
+                        'Add city',
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                      TextButton(
+                        onPressed: () => Get.toNamed('/location'),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black54),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Obx(
-                    () {
-                  return Visibility(
-                      visible: fetchingLocation.isTrue,
-                      child: SizedBox(
-                        width: double.maxFinite,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(255, 255, 255, 0.9)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                              Text('Getting current location'),
-                            ],
-                          ),
-                        ),
-                      ));
-                },
-              ),
-              Obx(
-                    () => Visibility(
-                        visible: _choosingLoc.isTrue,
-                    child: Container(
-                      color: Colors.white,
+              Expanded(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [Colors.black38, Colors.black54],
+                              begin: Alignment(0, -1),
+                              end: Alignment(0, 1))),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SelectState(
-                            onCityChanged: (value) {
-                              selectedCity = value;
-                            },
-                            onCountryChanged: (value) {},
-                            onStateChanged: (value) {},
+                          Obx(() => Text('Selected location : $city')),
+                          SizedBox(
+                            height: 24,
                           ),
                           ElevatedButton(
-                              onPressed: () {
-                                geoLocationController.getLocationFromCityName(
-                                    selectedCity, onFinish: () {
-                                  _choosingLoc.value = false;
-                                });
-                              },
-                              child: Text('Confirm')),
+                            onPressed: () {
+                              geoLocationController.getCurrentLocation();
+                            },
+                            child: Text('Get city from location'),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black54),
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Text('OR'),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _choosingLoc.value = true;
+                            },
+                            child: Text('Choose City'),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black54),
+                          )
                         ],
                       ),
-                    )),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        width: double.maxFinite,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (location.value == null) {
+                              Get.snackbar("Location error",
+                                  "Please select location to proceed");
+                            } else {
+                              locationListController.add_city(
+                                  CityItem(city.value, location.value!));
+                              Get.back();
+                            }
+                          },
+                          child: Text('Proceed with selected location '),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black54),
+                        ),
+                      ),
+                    ),
+                    Obx(
+                      () {
+                        return Visibility(
+                            visible: fetchingLocation.isTrue,
+                            child: SizedBox(
+                              width: double.maxFinite,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 0.9)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    Text('Getting current location'),
+                                  ],
+                                ),
+                              ),
+                            ));
+                      },
+                    ),
+                    Obx(
+                      () => Visibility(
+                          visible: _choosingLoc.isTrue,
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SelectState(
+                                  onCityChanged: (value) {
+                                    selectedCity = value;
+                                  },
+                                  onCountryChanged: (value) {},
+                                  onStateChanged: (value) {},
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    geoLocationController
+                                        .getLocationFromCityName(selectedCity,
+                                            onFinish: () {
+                                      _choosingLoc.value = false;
+                                    });
+                                  },
+                                  child: Text('Confirm'),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.black54),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
