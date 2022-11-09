@@ -18,9 +18,10 @@ class LocationListScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [Colors.black38, Colors.black54],
-                begin: Alignment(0, -1),
-                end: Alignment(0, 1))),
+                colors: [
+          Color.fromRGBO(100, 100, 100, 1.0),
+          Color.fromRGBO(0, 0, 0, 1)
+        ], begin: Alignment(0, -1), end: Alignment(0, 1))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,7 +69,7 @@ class LocationListScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
-                          color: Color.fromRGBO(73, 73, 73, 1.0),
+                          color: Color.fromRGBO(255, 255, 255, 0.2),
                           borderRadius: BorderRadius.circular(12)),
                       child: Stack(
                         children: [
@@ -118,8 +119,8 @@ class LocationListScreen extends StatelessWidget {
                     }
                   },
                   child: Text('Proceed'),
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.black54),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(255, 255, 255, 0.2)),
                 ),
               ],
             )
