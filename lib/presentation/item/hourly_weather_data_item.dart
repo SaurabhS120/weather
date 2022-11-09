@@ -5,8 +5,9 @@ class HourlyWeatherDataItem {
 }
 
 class SingleHourDataItem {
+  String time;
   double temp;
   String main;
 
-  SingleHourDataItem(this.temp, this.main);
+  SingleHourDataItem(this.time, this.temp, this.main);
 }

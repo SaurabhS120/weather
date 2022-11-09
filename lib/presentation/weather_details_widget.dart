@@ -256,7 +256,7 @@ class WeatherDetailsWidget extends StatelessWidget {
                                       .main),
                                 ),
                                 SizedBox(
-                                  height: 64,
+                                  height: 72,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -269,6 +269,19 @@ class WeatherDetailsWidget extends StatelessWidget {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         children: [
+                                          Text(
+                                            weatherContoller
+                                                .getHourlyWeatherItem()
+                                                .value
+                                                .data[index]
+                                                .time,
+                                            style: TextStyle(
+                                                color: getTextColorForMain(
+                                                    weatherContoller
+                                                        .getWeatherItem()
+                                                        .value
+                                                        .main)),
+                                          ),
                                           imageForMain(
                                               weatherContoller
                                                   .getHourlyWeatherItem()

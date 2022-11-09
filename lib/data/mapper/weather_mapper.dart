@@ -17,7 +17,7 @@ extension WeatherEntityToModel on WeatherDetailsEntity {
   }
 
   String millisToDate(int millis) {
-    var dt = DateTime.fromMillisecondsSinceEpoch(millis);
+    var dt = DateTime.fromMillisecondsSinceEpoch(millis * 1000);
 
 // 12 Hour format:
     var d12 = DateFormat('EEE, MMM d').format(dt);

@@ -5,8 +5,9 @@ class HourlyWeatherDataModel {
 }
 
 class SingleHourDataModel {
+  String time;
   double temp;
   String main;
 
-  SingleHourDataModel(this.temp, this.main);
+  SingleHourDataModel(this.time, this.temp, this.main);
 }
