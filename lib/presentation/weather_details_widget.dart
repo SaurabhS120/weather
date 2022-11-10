@@ -250,13 +250,14 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                           children: [
                                             ScaleTransition(
                                               scale: animation,
-                                              child: imageForMain(
-                                                weatherContoller
-                                                    .getWeatherItem()
-                                                    .value
+                                              child:
+                                                  weatherContoller.imageForMain(
+                                                locationListController
+                                                    .getWeatherList()
+                                                    .value[index]
                                                     .main,
-                                                height: 128,
-                                                width: 128,
+                                                height: 24,
+                                                width: 24,
                                                 color: getTextColorForMain(
                                                     weatherContoller
                                                         .getWeatherItem()
@@ -303,11 +304,10 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                         .value
                                                         .main)),
                                           ),
-                                          imageForMain(
-                                              weatherContoller
-                                                  .getHourlyWeatherItem()
-                                                  .value
-                                                  .data[index]
+                                          weatherContoller.imageForMain(
+                                              locationListController
+                                                  .getWeatherList()
+                                                  .value[index]
                                                   .main,
                                               height: 24,
                                               width: 24,
@@ -429,33 +429,6 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
     return color;
   }
 
-  Image imageForMain(String main,
-      {required double height, required double width, required Color color}) {
-    String asset = 'images/sunny.png';
-    switch (main.toLowerCase()) {
-      case 'rain':
-        asset = 'images/rain.png';
-        break;
-      case 'sunny':
-        asset = 'images/sunny.png';
-        break;
-      case 'clouds':
-        asset = 'images/cloud.png';
-        break;
-      case 'clear':
-        asset = 'images/sunny.png';
-        break;
-      case 'snow':
-        asset = 'images/snow.png';
-        break;
-    }
-    return Image.asset(
-      asset,
-      height: height,
-      width: width,
-      color: color,
-    );
-  }
 
   @override
   void initState() {

@@ -20,12 +20,14 @@ class LocationListController extends GetxController {
   void add_city(CityItem cityItem) {
     _cityList.add(cityItem);
     citiesLocalUsecase.addCity(cityItem);
+    getWeathers();
   }
 
   void remove(int index) {
     citiesLocalUsecase.removeCity(_cityList[index]);
     // _cityList.removeAt(index);
     getFromDB();
+    getWeathers();
   }
 
   RxList<CityItem> getCityList() => _cityList;
@@ -36,16 +38,16 @@ class LocationListController extends GetxController {
 
   void getWeathers() async {
     List<WeatherItem> list = [];
+    _weatherList.clear();
     for (var e in _cityList.value) {
       try {
         WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
         WeatherItem weatherItem = await weatherDataUsecase.invoke(e, 'metric');
-        list.add(weatherItem);
+        _weatherList.add(weatherItem);
+        print("_weatherList len : ${_weatherList.length}");
       } on Exception catch (e) {
         print(e);
       }
     }
-    _weatherList.value = list;
-    print("_weatherList len : ${_weatherList.length}");
   }
 }

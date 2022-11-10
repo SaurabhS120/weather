@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather/domain/mappers/city_mapper.dart';
 import 'package:weather/domain/usecase/hourly_weather_data_usecase.dart';
@@ -51,7 +52,7 @@ class WeatherController extends GetxController {
       print('No cities passed to fetch');
     } else {
       HourlyWeatherDataUseCase hourlyWeatherDataUseCase =
-          Get.find<HourlyWeatherDataUseCase>();
+      Get.find<HourlyWeatherDataUseCase>();
       HourlyWeatherDataItem hourlyWeatherItem = await hourlyWeatherDataUseCase
           .invoke(cityItem.value!.toModel(), unit.value.unit.getUnitName());
       _hourlyWeatherItem.value = hourlyWeatherItem;
@@ -65,5 +66,33 @@ class WeatherController extends GetxController {
     getWeather();
     getHourlyWeather();
     _isLoading.value = false;
+  }
+
+  Image imageForMain(String main,
+      {required double height, required double width, required Color color}) {
+    String asset = 'images/sunny.png';
+    switch (main.toLowerCase()) {
+      case 'rain':
+        asset = 'images/rain.png';
+        break;
+      case 'sunny':
+        asset = 'images/sunny.png';
+        break;
+      case 'clouds':
+        asset = 'images/cloud.png';
+        break;
+      case 'clear':
+        asset = 'images/sunny.png';
+        break;
+      case 'snow':
+        asset = 'images/snow.png';
+        break;
+    }
+    return Image.asset(
+      asset,
+      height: height,
+      width: width,
+      color: color,
+    );
   }
 }

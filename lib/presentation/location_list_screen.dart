@@ -66,46 +66,77 @@ class LocationListScreen extends StatelessWidget {
                     crossAxisSpacing: 8,
                   ),
                   itemCount:
-                      locationListController.getWeatherList().value.length,
+                      (locationListController.getWeatherList().value.length <
+                              locationListController.getCityList().value.length)
+                          ? locationListController.getWeatherList().value.length
+                          : locationListController.getCityList().value.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(255, 255, 255, 0.2),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  locationListController
-                                      .getCityList()[index]
-                                      .cityName,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
+                    return GestureDetector(
+                      onLongPress: () => locationListController.remove(index),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Color.fromRGBO(255, 255, 255, 0.2),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    locationListController
+                                        .getCityList()[index]
+                                        .cityName,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
                                   ),
-                                ),
-                                Text(locationListController
-                                    .getWeatherList()
-                                    .value[index]
-                                    .main)
-                              ],
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.white,
+                                  Text(
+                                    locationListController
+                                        .getWeatherList()
+                                        .value[index]
+                                        .main,
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                ],
                               ),
-                              onPressed: () =>
-                                  locationListController.remove(index),
                             ),
-                          ),
-                        ],
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () =>
+                                        locationListController.remove(index),
+                                  ),
+                                  weatherController.imageForMain(
+                                      locationListController
+                                          .getWeatherList()
+                                          .value[index]
+                                          .main,
+                                      height: 24,
+                                      width: 24,
+                                      color: Colors.white),
+                                ],
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Text(
+                                    "${locationListController.getWeatherList().value[index].temp}°",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )),
+                          ],
+                        ),
                       ),
                     );
                   },
