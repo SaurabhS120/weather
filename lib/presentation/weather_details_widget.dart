@@ -442,4 +442,10 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
         CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
     animationController.repeat(reverse: true);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+  }
 }
