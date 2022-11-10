@@ -392,8 +392,8 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
 
   @override
   void dispose() {
-    super.dispose();
     animationController.dispose();
+    super.dispose();
   }
 
 }

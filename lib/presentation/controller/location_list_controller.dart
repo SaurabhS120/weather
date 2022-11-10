@@ -20,12 +20,14 @@ class LocationListController extends GetxController {
   void add_city(CityItem cityItem) {
     _cityList.add(cityItem);
     citiesLocalUsecase.addCity(cityItem);
+    getFromDB();
+    getWeathers();
   }
 
   void remove(int index) {
     citiesLocalUsecase.removeCity(_cityList[index]);
-    // _cityList.removeAt(index);
     getFromDB();
+    getWeathers();
   }
 
   RxList<CityItem> getCityList() => _cityList;
