@@ -4,22 +4,14 @@ import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
-class WeatherDetailsWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => WeatherDetailsWidgetState();
-}
-
-class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
-    with TickerProviderStateMixin {
+class WeatherDetailsWidget extends StatelessWidget {
   final locationController = Get.find<GeoLocationController>();
   final locationListController = Get.find<LocationListController>();
-  late AnimationController animationController;
-  late Animation<double> animation;
 
   @override
   Widget build(BuildContext context) {
     final cityList = locationListController.getCityList();
-    final weatherContoller = WeatherController();
+    final weatherContoller = Get.find<WeatherController>();
     weatherContoller.set(cityList[0]);
     return SafeArea(
       child: Scaffold(
@@ -29,9 +21,9 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                 //     weatherContoller.getWeatherItem().value.main)),
                 gradient: LinearGradient(
                   colors: [
-                    getGradientStartColorForMain(
+                    weatherContoller.getGradientStartColorForMain(
                         weatherContoller.getWeatherItem().value.main),
-                    getGradientEndColorForMain(
+                    weatherContoller.getGradientEndColorForMain(
                         weatherContoller.getWeatherItem().value.main)
                   ],
                   begin: Alignment(0, -1),
@@ -52,7 +44,7 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                             child: Icon(
                               Icons.menu,
                               size: 24,
-                              color: getTextColorForMain(
+                              color: weatherContoller.getTextColorForMain(
                                 weatherContoller.getWeatherItem().value.main,
                               ),
                             ),
@@ -61,7 +53,7 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                             "${weatherContoller.getWeatherItem().value.date}",
                             style: TextStyle(
                               fontSize: 24,
-                              color: getTextColorForMain(
+                              color: weatherContoller.getTextColorForMain(
                                 weatherContoller.getWeatherItem().value.main,
                               ),
                             ),
@@ -71,10 +63,11 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                               weatherContoller.unit.value.unit.displayText(),
                               style: TextStyle(
                                 fontSize: 24,
-                                color: getTextColorForMain(weatherContoller
-                                    .getWeatherItem()
-                                    .value
-                                    .main),
+                                color: weatherContoller.getTextColorForMain(
+                                    weatherContoller
+                                        .getWeatherItem()
+                                        .value
+                                        .main),
                               ),
                             ),
                             onPressed: () => weatherContoller.toggleUnit(),
@@ -117,11 +110,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                             .value?.cityName ??
                                                         '',
                                                     style: TextStyle(
-                                                        color: getTextColorForMain(
-                                                            weatherContoller
-                                                                .getWeatherItem()
-                                                                .value
-                                                                .main),
+                                                        color: weatherContoller
+                                                            .getTextColorForMain(
+                                                                weatherContoller
+                                                                    .getWeatherItem()
+                                                                    .value
+                                                                    .main),
                                                         fontSize: 36),
                                                   ),
                                                 ],
@@ -135,11 +129,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                 Text(
                                                   '${weatherContoller.getWeatherItem().value.temp.toInt()}°',
                                                   style: TextStyle(
-                                                      color: getTextColorForMain(
-                                                          weatherContoller
-                                                              .getWeatherItem()
-                                                              .value
-                                                              .main),
+                                                      color: weatherContoller
+                                                          .getTextColorForMain(
+                                                              weatherContoller
+                                                                  .getWeatherItem()
+                                                                  .value
+                                                                  .main),
                                                       fontSize: 72),
                                                 )
                                               ],
@@ -153,11 +148,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                     Padding(
                                                       child: Icon(
                                                         Icons.keyboard_arrow_up,
-                                                        color: getTextColorForMain(
-                                                            weatherContoller
-                                                                .getWeatherItem()
-                                                                .value
-                                                                .main),
+                                                        color: weatherContoller
+                                                            .getTextColorForMain(
+                                                                weatherContoller
+                                                                    .getWeatherItem()
+                                                                    .value
+                                                                    .main),
                                                       ),
                                                       padding:
                                                           EdgeInsets.all(4),
@@ -165,11 +161,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                     Text(
                                                       "${weatherContoller.getWeatherItem().value.tempMax}°",
                                                       style: TextStyle(
-                                                          color: getTextColorForMain(
-                                                              weatherContoller
-                                                                  .getWeatherItem()
-                                                                  .value
-                                                                  .main)),
+                                                          color: weatherContoller
+                                                              .getTextColorForMain(
+                                                                  weatherContoller
+                                                                      .getWeatherItem()
+                                                                      .value
+                                                                      .main)),
                                                     ),
                                                   ],
                                                 ),
@@ -181,11 +178,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                       child: Icon(
                                                         Icons
                                                             .keyboard_arrow_down,
-                                                        color: getTextColorForMain(
-                                                            weatherContoller
-                                                                .getWeatherItem()
-                                                                .value
-                                                                .main),
+                                                        color: weatherContoller
+                                                            .getTextColorForMain(
+                                                                weatherContoller
+                                                                    .getWeatherItem()
+                                                                    .value
+                                                                    .main),
                                                       ),
                                                       padding:
                                                           EdgeInsets.all(4),
@@ -193,11 +191,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                     Text(
                                                       "${weatherContoller.getWeatherItem().value.tempMin}°",
                                                       style: TextStyle(
-                                                          color: getTextColorForMain(
-                                                              weatherContoller
-                                                                  .getWeatherItem()
-                                                                  .value
-                                                                  .main)),
+                                                          color: weatherContoller
+                                                              .getTextColorForMain(
+                                                                  weatherContoller
+                                                                      .getWeatherItem()
+                                                                      .value
+                                                                      .main)),
                                                     ),
                                                   ],
                                                 ),
@@ -220,20 +219,22 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                         "${weatherContoller.getWeatherItem().value.main}",
                                                         style: TextStyle(
                                                             fontSize: 24,
-                                                            color: getTextColorForMain(
-                                                                weatherContoller
-                                                                    .getWeatherItem()
-                                                                    .value
-                                                                    .main)),
+                                                            color: weatherContoller
+                                                                .getTextColorForMain(
+                                                                    weatherContoller
+                                                                        .getWeatherItem()
+                                                                        .value
+                                                                        .main)),
                                                       ),
                                                       Text(
                                                         "Feels like : ${weatherContoller.getWeatherItem().value.feelsLike}°",
                                                         style: TextStyle(
-                                                            color: getTextColorForMain(
-                                                                weatherContoller
-                                                                    .getWeatherItem()
-                                                                    .value
-                                                                    .main)),
+                                                            color: weatherContoller
+                                                                .getTextColorForMain(
+                                                                    weatherContoller
+                                                                        .getWeatherItem()
+                                                                        .value
+                                                                        .main)),
                                                       ),
                                                     ],
                                                   ),
@@ -248,23 +249,7 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                       children: [
                                         Row(
                                           children: [
-                                            ScaleTransition(
-                                              scale: animation,
-                                              child:
-                                                  weatherContoller.imageForMain(
-                                                    locationListController
-                                                    .getWeatherList()
-                                                    .value[pageIndex]
-                                                    .main,
-                                                height: 24,
-                                                width: 24,
-                                                color: getTextColorForMain(
-                                                    weatherContoller
-                                                        .getWeatherItem()
-                                                        .value
-                                                        .main),
-                                              ),
-                                            ),
+                                            WeatherImageWidget(pageIndex),
                                           ],
                                         )
                                       ],
@@ -272,10 +257,11 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                   ],
                                 ),
                                 Divider(
-                                  color: getTextColorForMain(weatherContoller
-                                      .getWeatherItem()
-                                      .value
-                                      .main),
+                                  color: weatherContoller.getTextColorForMain(
+                                      weatherContoller
+                                          .getWeatherItem()
+                                          .value
+                                          .main),
                                 ),
                                 SizedBox(
                                   height: 80,
@@ -298,11 +284,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                 .data[index]
                                                 .time,
                                             style: TextStyle(
-                                                color: getTextColorForMain(
-                                                    weatherContoller
-                                                        .getWeatherItem()
-                                                        .value
-                                                        .main)),
+                                                color: weatherContoller
+                                                    .getTextColorForMain(
+                                                        weatherContoller
+                                                            .getWeatherItem()
+                                                            .value
+                                                            .main)),
                                           ),
                                           weatherContoller.imageForMain(
                                               weatherContoller
@@ -312,11 +299,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                   .main,
                                               height: 24,
                                               width: 24,
-                                              color: getTextColorForMain(
-                                                  weatherContoller
-                                                      .getWeatherItem()
-                                                      .value
-                                                      .main)),
+                                              color: weatherContoller
+                                                  .getTextColorForMain(
+                                                      weatherContoller
+                                                          .getWeatherItem()
+                                                          .value
+                                                          .main)),
                                           Padding(
                                             padding: const EdgeInsets.all(4.0),
                                             child: Text(
@@ -324,11 +312,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
-                                                  color: getTextColorForMain(
-                                                      weatherContoller
-                                                          .getWeatherItem()
-                                                          .value
-                                                          .main)),
+                                                  color: weatherContoller
+                                                      .getTextColorForMain(
+                                                          weatherContoller
+                                                              .getWeatherItem()
+                                                              .value
+                                                              .main)),
                                             ),
                                           ),
                                         ],
@@ -337,10 +326,11 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                   ),
                                 ),
                                 Divider(
-                                  color: getTextColorForMain(weatherContoller
-                                      .getWeatherItem()
-                                      .value
-                                      .main),
+                                  color: weatherContoller.getTextColorForMain(
+                                      weatherContoller
+                                          .getWeatherItem()
+                                          .value
+                                          .main),
                                 ),
                               ],
                             ));
@@ -353,83 +343,40 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
       ),
     );
   }
+}
 
-  Color getColorForMain(String main) {
-    Color color = Colors.grey;
-    switch (main.toLowerCase()) {
-      case 'rain':
-        color = Colors.black54;
-        break;
-      case 'sunny':
-        color = Colors.orange;
-        break;
-      case 'clouds':
-        color = Colors.lightBlue;
-        break;
-      case 'clear':
-        color = Color.fromRGBO(138, 226, 255, 1.0);
-        break;
-      case 'snow':
-        color = Color.fromRGBO(224, 224, 224, 1.0);
-        break;
-    }
-    return color;
-  }
+class WeatherImageWidget extends StatefulWidget {
+  int pageIndex;
 
-  Color getGradientStartColorForMain(String main) {
-    Color color = Color.fromRGBO(229, 229, 229, 1.0);
-    switch (main.toLowerCase()) {
-      case 'rain':
-        color = Color.fromRGBO(66, 84, 206, 1.0);
-        break;
-      case 'sunny':
-        color = Color.fromRGBO(243, 165, 61, 1.0);
-        break;
-      case 'clouds':
-        color = Color.fromRGBO(64, 192, 255, 1.0);
-        break;
-      case 'clear':
-        color = Color.fromRGBO(164, 71, 183, 1.0);
-        break;
-      case 'snow':
-        color = Color.fromRGBO(224, 224, 224, 1.0);
-        break;
-    }
-    return color;
-  }
+  WeatherImageWidget(this.pageIndex);
 
-  Color getGradientEndColorForMain(String main) {
-    Color color = Colors.grey;
-    switch (main.toLowerCase()) {
-      case 'rain':
-        color = Color.fromRGBO(9, 22, 152, 1.0);
-        break;
-      case 'sunny':
-        color = Color.fromRGBO(255, 140, 41, 1.0);
-        break;
-      case 'clouds':
-        color = Colors.lightBlue;
-        break;
-      case 'clear':
-        color = Color.fromRGBO(127, 23, 157, 1.0);
-        break;
-      case 'snow':
-        color = Color.fromRGBO(201, 201, 201, 1.0);
-        break;
-    }
-    return color;
-  }
+  @override
+  State<StatefulWidget> createState() =>
+      WeatherImageWidgetState(this.pageIndex);
+}
 
-  Color getTextColorForMain(String main) {
-    Color color = Colors.white;
-    switch (main.toLowerCase()) {
-      case 'snow':
-        color = Colors.black54;
-        break;
-    }
-    return color;
-  }
+class WeatherImageWidgetState extends State<WeatherImageWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation<double> animation;
+  final locationController = Get.find<GeoLocationController>();
+  final locationListController = Get.find<LocationListController>();
+  final weatherContoller = Get.find<WeatherController>();
+  int pageIndex;
 
+  WeatherImageWidgetState(this.pageIndex);
+
+  @override
+  Widget build(BuildContext context) => ScaleTransition(
+        scale: animation,
+        child: weatherContoller.imageForMain(
+          locationListController.getWeatherList().value[pageIndex].main,
+          height: 128,
+          width: 128,
+          color: weatherContoller.getTextColorForMain(
+              weatherContoller.getWeatherItem().value.main),
+        ),
+      );
 
   @override
   void initState() {
@@ -448,4 +395,5 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
     super.dispose();
     animationController.dispose();
   }
+
 }
