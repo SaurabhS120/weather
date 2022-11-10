@@ -13,12 +13,12 @@ class LocationListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     locationListController.getFromDB();
+    locationListController.getWeathers();
     return SafeArea(
         child: Scaffold(
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [
+            gradient: LinearGradient(colors: [
           Color.fromRGBO(100, 100, 100, 1.0),
           Color.fromRGBO(0, 0, 0, 1)
         ], begin: Alignment(0, -1), end: Alignment(0, 1))),
@@ -65,7 +65,8 @@ class LocationListScreen extends StatelessWidget {
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
                   ),
-                  itemCount: locationListController.getCityList().length,
+                  itemCount:
+                      locationListController.getWeatherList().value.length,
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
@@ -74,14 +75,23 @@ class LocationListScreen extends StatelessWidget {
                       child: Stack(
                         children: [
                           Center(
-                            child: Text(
-                              locationListController
-                                  .getCityList()[index]
-                                  .cityName,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                              ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  locationListController
+                                      .getCityList()[index]
+                                      .cityName,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                Text(locationListController
+                                    .getWeatherList()
+                                    .value[index]
+                                    .main)
+                              ],
                             ),
                           ),
                           Align(
