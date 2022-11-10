@@ -12,8 +12,7 @@ class LocationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    locationListController.getFromDB();
-    locationListController.getWeathers();
+    locationListController.updateData();
     return SafeArea(
         child: Scaffold(
       body: Container(
