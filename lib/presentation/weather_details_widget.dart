@@ -87,12 +87,12 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: cityList.length,
-                      onPageChanged: (index) {
-                        weatherContoller.set(cityList[index]);
+                      onPageChanged: (pageIndex) {
+                        weatherContoller.set(cityList[pageIndex]);
                         locationListController
-                            .setCurrentCity(cityList[index].cityName);
+                            .setCurrentCity(cityList[pageIndex].cityName);
                       },
-                      itemBuilder: (context, index) {
+                      itemBuilder: (context, pageIndex) {
                         return Obx(() => Column(
                               children: [
                                 SizedBox(
@@ -252,9 +252,9 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                               scale: animation,
                                               child:
                                                   weatherContoller.imageForMain(
-                                                locationListController
+                                                    locationListController
                                                     .getWeatherList()
-                                                    .value[index]
+                                                    .value[pageIndex]
                                                     .main,
                                                 height: 24,
                                                 width: 24,
@@ -305,9 +305,10 @@ class WeatherDetailsWidgetState extends State<WeatherDetailsWidget>
                                                         .main)),
                                           ),
                                           weatherContoller.imageForMain(
-                                              locationListController
-                                                  .getWeatherList()
-                                                  .value[index]
+                                              weatherContoller
+                                                  .getHourlyWeatherItem()
+                                                  .value
+                                                  .data[pageIndex]
                                                   .main,
                                               height: 24,
                                               width: 24,
