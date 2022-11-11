@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
 
 class WeatherDetailsWidget extends StatelessWidget {
-  final locationController = Get.find<GeoLocationController>();
   final locationListController = Get.find<LocationListController>();
 
   @override
@@ -359,7 +357,6 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
-  final locationController = Get.find<GeoLocationController>();
   final locationListController = Get.find<LocationListController>();
   final weatherContoller = Get.find<WeatherController>();
   int pageIndex;
