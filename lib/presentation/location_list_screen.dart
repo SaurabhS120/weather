@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
+import 'package:weather/presentation/location_notifier.dart';
 
 class LocationListScreen extends StatelessWidget {
   final locationListController = Get.find<LocationListController>();
@@ -55,93 +57,7 @@ class LocationListScreen extends StatelessWidget {
             SizedBox(
               height: 12,
             ),
-            Obx(
-              () => Expanded(
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                  ),
-                  itemCount:
-                      (locationListController.getWeatherList().value.length <
-                              locationListController.getCityList().value.length)
-                          ? locationListController.getWeatherList().value.length
-                          : locationListController.getCityList().value.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onLongPress: () => locationListController.remove(index),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(255, 255, 255, 0.2),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    locationListController
-                                        .getCityList()[index]
-                                        .cityName,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                  Text(
-                                    locationListController
-                                        .getWeatherList()
-                                        .value[index]
-                                        .main,
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () =>
-                                        locationListController.remove(index),
-                                  ),
-                                  weatherController.imageForMain(
-                                      locationListController
-                                          .getWeatherList()
-                                          .value[index]
-                                          .main,
-                                      height: 24,
-                                      width: 24,
-                                      color: Colors.white),
-                                ],
-                              ),
-                            ),
-                            Align(
-                                alignment: Alignment.topLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Text(
-                                    "${locationListController.getWeatherList().value[index].temp}°",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
+            Expanded(child: LocationListWidget()),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -168,5 +84,106 @@ class LocationListScreen extends StatelessWidget {
         ),
       ),
     ));
+  }
+}
+
+class LocationListWidget extends StatefulWidget {
+  @override
+  State<LocationListWidget> createState() => _LocationListWidgetState();
+}
+
+class _LocationListWidgetState extends State<LocationListWidget> {
+  final locationListController = Get.find<LocationListController>();
+  final GeoLocationController locationController =
+      Get.find<GeoLocationController>();
+  final WeatherController weatherController = Get.find<WeatherController>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+        create: (context) => locationListController.locationNotifier,
+        child: Consumer<LocationNotifier>(
+          builder: (context, value, child) => GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+            ),
+            itemCount: (value.weather_item.length < value.city_list.length)
+                ? value.weather_item.length
+                : value.city_list.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onLongPress: () => locationListController.remove(index),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(255, 255, 255, 0.2),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              locationListController
+                                  .locationNotifier.city_list[index].cityName,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text(
+                              locationListController
+                                  .locationNotifier.weather_item[index].main,
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                              onPressed: () =>
+                                  locationListController.remove(index),
+                            ),
+                            weatherController.imageForMain(
+                                locationListController
+                                    .locationNotifier.weather_item[index].main,
+                                height: 24,
+                                width: 24,
+                                color: Colors.white),
+                          ],
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Text(
+                              "${value.weather_item[index].temp}°",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ));
   }
 }

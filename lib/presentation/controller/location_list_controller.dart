@@ -3,12 +3,14 @@ import 'package:weather/domain/usecase/cities_local_usecase.dart';
 import 'package:weather/domain/usecase/weather_data_usecase.dart';
 import 'package:weather/presentation/item/city_item.dart';
 import 'package:weather/presentation/item/weather_item.dart';
+import 'package:weather/presentation/location_notifier.dart';
 
 class LocationListController extends GetxController {
   final RxList<CityItem> _cityList = RxList<CityItem>();
   final RxList<WeatherItem> _weatherList = RxList<WeatherItem>();
   final currentCity = RxString('');
   final CitiesLocalUseCase citiesLocalUsecase = Get.find<CitiesLocalUseCase>();
+  final locationNotifier = LocationNotifier();
 
   RxList<WeatherItem> getWeatherList() => _weatherList;
 
@@ -29,6 +31,7 @@ class LocationListController extends GetxController {
     // _cityList.removeAt(index);
     await getFromDB();
     await getWeathers();
+    locationNotifier.update(_cityList.value, _weatherList.value);
   }
 
   RxList<CityItem> getCityList() => _cityList;
@@ -55,5 +58,6 @@ class LocationListController extends GetxController {
   Future<void> updateData() async {
     await getFromDB();
     await getWeathers();
+    locationNotifier.update(_cityList.value, _weatherList.value);
   }
 }
