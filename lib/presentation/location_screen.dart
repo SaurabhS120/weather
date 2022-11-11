@@ -1,10 +1,10 @@
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
-import 'package:weather/presentation/item/city_item.dart';
-import 'package:weather/presentation/item/location_item.dart';
+import 'package:weather/presentation/notifiers/location_notifier.dart';
 
 class LocationScreen extends StatefulWidget {
   @override
@@ -14,37 +14,35 @@ class LocationScreen extends StatefulWidget {
 class LocationScreenState extends State<LocationScreen> {
   final geoLocationController = Get.find<GeoLocationController>();
   final locationListController = Get.find<LocationListController>();
+  String selectedCity = '';
+  var choosingLoc = false;
+
   @override
   void initState() {
-    super.initState();
-    fetchingLocation = geoLocationController.checkLoading();
-    geoLocationController.getCity().listen((city) {
-      this.city.value = city;
-    });
-    geoLocationController.getLocationEntity().listen((location) {
-      this.location.value = location;
+    geoLocationController.init();
+    geoLocationController.addListener(() {
+      setState(() {});
     });
   }
-
-  late RxBool fetchingLocation;
-  RxString city = ''.obs;
-  Rx<LocationItem?> location = Rx<LocationItem?>(null);
-  RxBool _choosingLoc = false.obs;
-  String selectedCity = '';
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: WillPopScope(
-          onWillPop: () {
-            if (_choosingLoc.isTrue) {
-              _choosingLoc.value = false;
-              return Future.value(false);
-            } else {
-              return Future.value(true);
-            }
-          },
+        body: ChangeNotifierProvider(
+          create: (context) => geoLocationController.locationNotifier,
+          builder: (context, child) => Consumer<LocationNotifier>(
+            builder: (context, location, child) => WillPopScope(
+              onWillPop: () {
+                if (choosingLoc) {
+                  choosingLoc = false;
+                  setState(() {});
+                  return Future.value(false);
+                } else {
+                  setState(() {});
+                  return Future.value(true);
+                }
+              },
           child: Column(
             children: [
               ColoredBox(
@@ -85,18 +83,19 @@ class LocationScreenState extends State<LocationScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Obx(() => Text('Selected location : $city')),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              geoLocationController.getCurrentLocation();
-                            },
-                            child: Text('Get city from location'),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black54),
-                          ),
+                              Text(
+                                  'Selected location : ${location.city?.cityName}'),
+                              SizedBox(
+                                height: 24,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  geoLocationController.getCurrentLocation();
+                                },
+                                child: Text('Get city from location'),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black54),
+                              ),
                           SizedBox(
                             height: 12,
                           ),
@@ -106,8 +105,9 @@ class LocationScreenState extends State<LocationScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              _choosingLoc.value = true;
-                            },
+                                  choosingLoc = true;
+                                  setState(() {});
+                                },
                             child: Text('Choose City'),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black54),
@@ -122,25 +122,23 @@ class LocationScreenState extends State<LocationScreen> {
                         width: double.maxFinite,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (location.value == null) {
-                              Get.snackbar("Location error",
-                                  "Please select location to proceed");
-                            } else {
-                              locationListController.add_city(
-                                  CityItem(city.value, location.value!));
-                              Get.back();
-                            }
-                          },
-                          child: Text('Proceed with selected location '),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black54),
+                            if (location == null) {
+                                  Get.snackbar("Location error",
+                                      "Please select location to proceed");
+                                } else {
+                                  locationListController
+                                      .add_city(location.city!);
+                                  Get.back();
+                                }
+                              },
+                              child: Text('Proceed with selected location '),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black54),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Obx(
-                      () {
-                        return Visibility(
-                            visible: fetchingLocation.isTrue,
+                        Visibility(
+                            visible: location.fetchingLocation,
                             child: SizedBox(
                               width: double.maxFinite,
                               child: Container(
@@ -154,44 +152,45 @@ class LocationScreenState extends State<LocationScreen> {
                                   ],
                                 ),
                               ),
-                            ));
-                      },
+                            )),
+                        Visibility(
+                            visible: choosingLoc,
+                            child: Container(
+                              color: Colors.white,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SelectState(
+                                    onCityChanged: (value) {
+                                      selectedCity = value;
+                                      setState(() {});
+                                    },
+                                    onCountryChanged: (value) {},
+                                    onStateChanged: (value) {},
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      geoLocationController
+                                          .getLocationFromCityName(selectedCity,
+                                              onFinish: () {
+                                        choosingLoc = false;
+                                        setState(() {});
+                                      });
+                                    },
+                                    child: Text('Confirm'),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black54),
+                                  ),
+                                ],
+                              ),
+                            ))
+                      ],
                     ),
-                    Obx(
-                      () => Visibility(
-                          visible: _choosingLoc.isTrue,
-                          child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SelectState(
-                                  onCityChanged: (value) {
-                                    selectedCity = value;
-                                  },
-                                  onCountryChanged: (value) {},
-                                  onStateChanged: (value) {},
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    geoLocationController
-                                        .getLocationFromCityName(selectedCity,
-                                            onFinish: () {
-                                      _choosingLoc.value = false;
-                                    });
-                                  },
-                                  child: Text('Confirm'),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
