@@ -3,7 +3,7 @@ import 'package:weather/domain/usecase/cities_local_usecase.dart';
 import 'package:weather/domain/usecase/weather_data_usecase.dart';
 import 'package:weather/presentation/item/city_item.dart';
 import 'package:weather/presentation/item/weather_item.dart';
-import 'package:weather/presentation/location_notifier.dart';
+import 'package:weather/presentation/notifiers/location_notifier.dart';
 
 class LocationListController extends GetxController {
   final RxList<CityItem> _cityList = RxList<CityItem>();

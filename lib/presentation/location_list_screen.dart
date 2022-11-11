@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
-import 'package:weather/presentation/location_notifier.dart';
+import 'package:weather/presentation/notifiers/location_notifier.dart';
 
 class LocationListScreen extends StatelessWidget {
   final locationListController = Get.find<LocationListController>();
