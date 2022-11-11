@@ -1,90 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
+import 'package:weather/presentation/notifiers/weather_notifier.dart';
 
-class WeatherDetailsWidget extends StatelessWidget {
+class WeatherDetailsWidget extends StatefulWidget {
+  @override
+  State<WeatherDetailsWidget> createState() => _WeatherDetailsWidgetState();
+}
+
+class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
   final locationListController = Get.find<LocationListController>();
+  final weatherContoller = Get.find<WeatherController>();
+
+  @override
+  void init() {
+    weatherContoller.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final cityList = locationListController.getCityList();
-    final weatherContoller = Get.find<WeatherController>();
+    weatherContoller.init();
     weatherContoller.set(cityList[0]);
     return SafeArea(
       child: Scaffold(
-        body: Obx(() => Container(
-              decoration: BoxDecoration(
-                // color: getColorForMain(
-                //     weatherContoller.getWeatherItem().value.main)),
-                gradient: LinearGradient(
-                  colors: [
-                    weatherContoller.getGradientStartColorForMain(
-                        weatherContoller.getWeatherItem().value.main),
-                    weatherContoller.getGradientEndColorForMain(
-                        weatherContoller.getWeatherItem().value.main)
-                  ],
-                  begin: Alignment(0, -1),
-                  end: Alignment(0, 1),
-                ),
-              ),
-              child: Column(
-                children: [
-                  ColoredBox(
-                    color: Color.fromRGBO(0, 0, 0, 0.2),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Icon(
-                              Icons.menu,
-                              size: 24,
-                              color: weatherContoller.getTextColorForMain(
-                                weatherContoller.getWeatherItem().value.main,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "${weatherContoller.getWeatherItem().value.date}",
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: weatherContoller.getTextColorForMain(
-                                weatherContoller.getWeatherItem().value.main,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            child: Text(
-                              weatherContoller.unit.value.unit.displayText(),
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: weatherContoller.getTextColorForMain(
-                                    weatherContoller
-                                        .getWeatherItem()
-                                        .value
-                                        .main),
-                              ),
-                            ),
-                            onPressed: () => weatherContoller.toggleUnit(),
-                          ),
-                        ],
-                      ),
+          body: ChangeNotifierProvider(
+        builder: (context, child) => Consumer<WeatherNotifier>(
+            builder: (context, weather, child) => Container(
+                  decoration: BoxDecoration(
+                    // color: getColorForMain(
+                    //     weather.weatherItem.main)),
+                    gradient: LinearGradient(
+                      colors: [
+                        weatherContoller.getGradientStartColorForMain(
+                            weather.weatherItem.main),
+                        weatherContoller.getGradientEndColorForMain(
+                            weather.weatherItem.main)
+                      ],
+                      begin: Alignment(0, -1),
+                      end: Alignment(0, 1),
                     ),
                   ),
-                  Expanded(
-                    child: PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: cityList.length,
-                      onPageChanged: (pageIndex) {
-                        weatherContoller.set(cityList[pageIndex]);
-                        locationListController
-                            .setCurrentCity(cityList[pageIndex].cityName);
-                      },
-                      itemBuilder: (context, pageIndex) {
-                        return Obx(() => Column(
+                  child: Column(
+                    children: [
+                      ColoredBox(
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                child: Icon(
+                                  Icons.menu,
+                                  size: 24,
+                                  color: weatherContoller.getTextColorForMain(
+                                    weather.weatherItem.main,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "${weather.weatherItem.date}",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  color: weatherContoller.getTextColorForMain(
+                                    weather.weatherItem.main,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                child: Text(
+                                  weather.unit.unit.displayText(),
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: weatherContoller.getTextColorForMain(
+                                        weather.weatherItem.main),
+                                  ),
+                                ),
+                                onPressed: () => weatherContoller.toggleUnit(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: PageView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: cityList.length,
+                          onPageChanged: (pageIndex) {
+                            weatherContoller.set(cityList[pageIndex]);
+                            locationListController
+                                .setCurrentCity(cityList[pageIndex].cityName);
+                          },
+                          itemBuilder: (context, pageIndex) {
+                            return Column(
                               children: [
                                 SizedBox(
                                   height: 12,
@@ -100,24 +114,20 @@ class WeatherDetailsWidget extends StatelessWidget {
                                             SizedBox(
                                               height: 24,
                                             ),
-                                            Obx(
-                                              () => Row(
-                                                children: [
-                                                  Text(
-                                                    weatherContoller.cityItem
-                                                            .value?.cityName ??
-                                                        '',
-                                                    style: TextStyle(
-                                                        color: weatherContoller
-                                                            .getTextColorForMain(
-                                                                weatherContoller
-                                                                    .getWeatherItem()
-                                                                    .value
-                                                                    .main),
-                                                        fontSize: 36),
-                                                  ),
-                                                ],
-                                              ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  weather.cityItem?.cityName ??
+                                                      '',
+                                                  style: TextStyle(
+                                                      color: weatherContoller
+                                                          .getTextColorForMain(
+                                                              weather
+                                                                  .weatherItem
+                                                                  .main),
+                                                      fontSize: 36),
+                                                ),
+                                              ],
                                             ),
                                             SizedBox(
                                               height: 24,
@@ -125,13 +135,12 @@ class WeatherDetailsWidget extends StatelessWidget {
                                             Row(
                                               children: [
                                                 Text(
-                                                  '${weatherContoller.getWeatherItem().value.temp.toInt()}°',
+                                                  '${weather.weatherItem.temp.toInt()}°',
                                                   style: TextStyle(
                                                       color: weatherContoller
                                                           .getTextColorForMain(
-                                                              weatherContoller
-                                                                  .getWeatherItem()
-                                                                  .value
+                                                              weather
+                                                                  .weatherItem
                                                                   .main),
                                                       fontSize: 72),
                                                 )
@@ -148,22 +157,20 @@ class WeatherDetailsWidget extends StatelessWidget {
                                                         Icons.keyboard_arrow_up,
                                                         color: weatherContoller
                                                             .getTextColorForMain(
-                                                                weatherContoller
-                                                                    .getWeatherItem()
-                                                                    .value
+                                                                weather
+                                                                    .weatherItem
                                                                     .main),
                                                       ),
                                                       padding:
                                                           EdgeInsets.all(4),
                                                     ),
                                                     Text(
-                                                      "${weatherContoller.getWeatherItem().value.tempMax}°",
+                                                      "${weather.weatherItem.tempMax}°",
                                                       style: TextStyle(
                                                           color: weatherContoller
                                                               .getTextColorForMain(
-                                                                  weatherContoller
-                                                                      .getWeatherItem()
-                                                                      .value
+                                                                  weather
+                                                                      .weatherItem
                                                                       .main)),
                                                     ),
                                                   ],
@@ -178,22 +185,20 @@ class WeatherDetailsWidget extends StatelessWidget {
                                                             .keyboard_arrow_down,
                                                         color: weatherContoller
                                                             .getTextColorForMain(
-                                                                weatherContoller
-                                                                    .getWeatherItem()
-                                                                    .value
+                                                                weather
+                                                                    .weatherItem
                                                                     .main),
                                                       ),
                                                       padding:
                                                           EdgeInsets.all(4),
                                                     ),
                                                     Text(
-                                                      "${weatherContoller.getWeatherItem().value.tempMin}°",
+                                                      "${weather.weatherItem.tempMin}°",
                                                       style: TextStyle(
                                                           color: weatherContoller
                                                               .getTextColorForMain(
-                                                                  weatherContoller
-                                                                      .getWeatherItem()
-                                                                      .value
+                                                                  weather
+                                                                      .weatherItem
                                                                       .main)),
                                                     ),
                                                   ],
@@ -214,24 +219,22 @@ class WeatherDetailsWidget extends StatelessWidget {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        "${weatherContoller.getWeatherItem().value.main}",
+                                                        "${weather.weatherItem.main}",
                                                         style: TextStyle(
                                                             fontSize: 24,
                                                             color: weatherContoller
                                                                 .getTextColorForMain(
-                                                                    weatherContoller
-                                                                        .getWeatherItem()
-                                                                        .value
+                                                                    weather
+                                                                        .weatherItem
                                                                         .main)),
                                                       ),
                                                       Text(
-                                                        "Feels like : ${weatherContoller.getWeatherItem().value.feelsLike}°",
+                                                        "Feels like : ${weather.weatherItem.feelsLike}°",
                                                         style: TextStyle(
                                                             color: weatherContoller
                                                                 .getTextColorForMain(
-                                                                    weatherContoller
-                                                                        .getWeatherItem()
-                                                                        .value
+                                                                    weather
+                                                                        .weatherItem
                                                                         .main)),
                                                       ),
                                                     ],
@@ -247,7 +250,11 @@ class WeatherDetailsWidget extends StatelessWidget {
                                       children: [
                                         Row(
                                           children: [
-                                            WeatherImageWidget(pageIndex),
+                                            WeatherImageWidget(
+                                                pageIndex,
+                                                weatherContoller
+                                                    .getTextColorForMain(weather
+                                                        .weatherItem.main)),
                                           ],
                                         )
                                       ],
@@ -256,65 +263,45 @@ class WeatherDetailsWidget extends StatelessWidget {
                                 ),
                                 Divider(
                                   color: weatherContoller.getTextColorForMain(
-                                      weatherContoller
-                                          .getWeatherItem()
-                                          .value
-                                          .main),
+                                      weather.weatherItem.main),
                                 ),
                                 SizedBox(
                                   height: 80,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
-                                    itemCount: weatherContoller
-                                        .getHourlyWeatherItem()
-                                        .value
-                                        .data
-                                        .length,
+                                    itemCount:
+                                        weather.hourlyWeatherItem.data.length,
                                     itemBuilder: (context, index) => Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         children: [
                                           Text(
-                                            weatherContoller
-                                                .getHourlyWeatherItem()
-                                                .value
-                                                .data[index]
-                                                .time,
+                                            weather.hourlyWeatherItem
+                                                .data[index].time,
                                             style: TextStyle(
                                                 color: weatherContoller
-                                                    .getTextColorForMain(
-                                                        weatherContoller
-                                                            .getWeatherItem()
-                                                            .value
-                                                            .main)),
+                                                    .getTextColorForMain(weather
+                                                        .weatherItem.main)),
                                           ),
                                           weatherContoller.imageForMain(
-                                              weatherContoller
-                                                  .getHourlyWeatherItem()
-                                                  .value
-                                                  .data[pageIndex]
-                                                  .main,
+                                              weather.hourlyWeatherItem
+                                                  .data[pageIndex].main,
                                               height: 24,
                                               width: 24,
                                               color: weatherContoller
-                                                  .getTextColorForMain(
-                                                      weatherContoller
-                                                          .getWeatherItem()
-                                                          .value
-                                                          .main)),
+                                                  .getTextColorForMain(weather
+                                                      .weatherItem.main)),
                                           Padding(
                                             padding: const EdgeInsets.all(4.0),
                                             child: Text(
-                                              "${weatherContoller.getHourlyWeatherItem().value.data[index].temp}°",
+                                              "${weather.hourlyWeatherItem.data[index].temp}°",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: weatherContoller
                                                       .getTextColorForMain(
-                                                          weatherContoller
-                                                              .getWeatherItem()
-                                                              .value
+                                                          weather.weatherItem
                                                               .main)),
                                             ),
                                           ),
@@ -325,32 +312,31 @@ class WeatherDetailsWidget extends StatelessWidget {
                                 ),
                                 Divider(
                                   color: weatherContoller.getTextColorForMain(
-                                      weatherContoller
-                                          .getWeatherItem()
-                                          .value
-                                          .main),
+                                      weather.weatherItem.main),
                                 ),
                               ],
-                            ));
-                      },
-                    ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )),
-      ),
+                )),
+        create: (BuildContext context) => weatherContoller.weather_notifier,
+      )),
     );
   }
 }
 
 class WeatherImageWidget extends StatefulWidget {
   int pageIndex;
+  Color color;
 
-  WeatherImageWidget(this.pageIndex);
+  WeatherImageWidget(this.pageIndex, this.color);
 
   @override
   State<StatefulWidget> createState() =>
-      WeatherImageWidgetState(this.pageIndex);
+      WeatherImageWidgetState(this.pageIndex, this.color);
 }
 
 class WeatherImageWidgetState extends State<WeatherImageWidget>
@@ -360,8 +346,9 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
   final locationListController = Get.find<LocationListController>();
   final weatherContoller = Get.find<WeatherController>();
   int pageIndex;
+  Color color;
 
-  WeatherImageWidgetState(this.pageIndex);
+  WeatherImageWidgetState(this.pageIndex, this.color);
 
   @override
   Widget build(BuildContext context) => ScaleTransition(
@@ -370,8 +357,7 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
           locationListController.getWeatherList().value[pageIndex].main,
           height: 128,
           width: 128,
-          color: weatherContoller.getTextColorForMain(
-              weatherContoller.getWeatherItem().value.main),
+          color: color,
         ),
       );
 

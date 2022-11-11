@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather/presentation/item/city_item.dart';
 import 'package:weather/presentation/item/weather_item.dart';
 
-class LocationNotifier extends ChangeNotifier {
+class LocationListNotifier extends ChangeNotifier {
   List<CityItem> city_list = [];
   List<WeatherItem> weather_item = [];
 

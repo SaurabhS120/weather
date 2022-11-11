@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
 import 'package:weather/presentation/controller/weather_controller.dart';
-import 'package:weather/presentation/notifiers/location_notifier.dart';
+import 'package:weather/presentation/notifiers/location_list_notifier.dart';
 
 class LocationListScreen extends StatelessWidget {
   final locationListController = Get.find<LocationListController>();
@@ -107,7 +107,7 @@ class _LocationListWidgetState extends State<LocationListWidget> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (context) => locationListController.locationNotifier,
-        child: Consumer<LocationNotifier>(
+        child: Consumer<LocationListNotifier>(
           builder: (context, value, child) => GridView.builder(
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
