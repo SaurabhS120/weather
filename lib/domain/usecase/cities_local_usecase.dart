@@ -1,10 +1,11 @@
-import 'package:get/get.dart';
 import 'package:weather/domain/mappers/city_mapper.dart';
 import 'package:weather/domain/repo/cities_local_repo.dart';
 import 'package:weather/presentation/item/city_item.dart';
 
 class CitiesLocalUseCase {
-  final citiesLocalRepo = Get.find<CitiesLocalRepo>();
+  final CitiesLocalRepo citiesLocalRepo;
+
+  CitiesLocalUseCase(this.citiesLocalRepo);
 
   void addCity(CityItem city) => citiesLocalRepo.addCity(city.toModel());
 

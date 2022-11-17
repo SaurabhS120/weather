@@ -8,15 +8,20 @@ import 'package:weather/presentation/notifiers/location_list_notifier.dart';
 class LocationListController extends GetxController {
   final RxList<CityItem> _cityList = RxList<CityItem>();
   final RxList<WeatherItem> _weatherList = RxList<WeatherItem>();
-  final currentCity = RxString('');
-  final CitiesLocalUseCase citiesLocalUsecase = Get.find<CitiesLocalUseCase>();
-  final locationNotifier = LocationListNotifier();
+  final RxString currentCity = RxString('');
+  final CitiesLocalUseCase citiesLocalUsecase;
+  final LocationListNotifier locationNotifier = LocationListNotifier();
 
   RxList<WeatherItem> getWeatherList() => _weatherList;
+  WeatherDataUsecase weatherDataUsecase;
+
+  LocationListController(this.citiesLocalUsecase, this.weatherDataUsecase);
 
   Future<void> getFromDB() async {
     _cityList.value = (await citiesLocalUsecase.getCities());
-    currentCity.value = getCityList().first.cityName;
+    if (getCityList().isNotEmpty) {
+      currentCity.value = getCityList().first.cityName;
+    }
   }
 
   void add_city(CityItem cityItem) async {
@@ -44,7 +49,6 @@ class LocationListController extends GetxController {
     List<WeatherItem> list = [];
     for (var e in _cityList.value) {
       try {
-        WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
         WeatherItem weatherItem = await weatherDataUsecase.invoke(e, 'metric');
         list.add(weatherItem);
       } on Exception catch (e) {

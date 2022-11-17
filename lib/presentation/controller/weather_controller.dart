@@ -7,9 +7,13 @@ import 'package:weather/presentation/item/city_item.dart';
 import 'package:weather/presentation/item/hourly_weather_data_item.dart';
 import 'package:weather/presentation/item/weather_item.dart';
 import 'package:weather/presentation/notifiers/weather_notifier.dart';
-
 class WeatherController extends GetxController {
   var weather_notifier = WeatherNotifier();
+
+  HourlyWeatherDataUseCase hourlyWeatherDataUseCase;
+  WeatherDataUsecase weatherDataUsecase;
+
+  WeatherController(this.weatherDataUsecase, this.hourlyWeatherDataUseCase);
 
   set(CityItem cityItem) {
     weather_notifier.cityItem = cityItem;
@@ -26,7 +30,6 @@ class WeatherController extends GetxController {
     if (weather_notifier.cityItem == null) {
       print('No cities passed to fetch');
     } else {
-      WeatherDataUsecase weatherDataUsecase = Get.find<WeatherDataUsecase>();
       WeatherItem weatherItem = await weatherDataUsecase.invoke(
           weather_notifier.cityItem!, weather_notifier.unit.unit.getUnitName());
       weather_notifier.updateWeatherItem(weatherItem);
@@ -37,8 +40,6 @@ class WeatherController extends GetxController {
     if (weather_notifier.cityItem == null) {
       print('No cities passed to fetch');
     } else {
-      HourlyWeatherDataUseCase hourlyWeatherDataUseCase =
-          Get.find<HourlyWeatherDataUseCase>();
       HourlyWeatherDataItem hourlyWeatherItem =
           await hourlyWeatherDataUseCase.invoke(
               weather_notifier.cityItem!.toModel(),

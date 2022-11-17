@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:weather/presentation/controller/location_list_controller.dart';
-import 'package:weather/presentation/controller/weather_controller.dart';
+import 'package:weather/di/binding/main_binding.dart';
 import 'package:weather/presentation/notifiers/weather_notifier.dart';
 
 class WeatherDetailsWidget extends StatefulWidget {
@@ -11,21 +9,25 @@ class WeatherDetailsWidget extends StatefulWidget {
 }
 
 class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
-  final locationListController = Get.find<LocationListController>();
-  final weatherContoller = Get.find<WeatherController>();
+  late MainBinding mainBinding;
 
-  @override
-  void init() {
-    weatherContoller.addListener(() {
-      setState(() {});
-    });
-  }
+  // @override
+  // void init() {
+  //   mainBinding = Provider.of<MainBinding>(context);
+  //   mainBinding.weatherController.addListener(() {
+  //     setState(() {});
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final cityList = locationListController.getCityList();
-    weatherContoller.init();
-    weatherContoller.set(cityList[0]);
+    mainBinding = Provider.of<MainBinding>(context);
+    mainBinding.weatherController.addListener(() {
+      setState(() {});
+    });
+    final cityList = mainBinding.locationListController.getCityList();
+    mainBinding.weatherController.init();
+    mainBinding.weatherController.set(cityList[0]);
     return SafeArea(
       child: Scaffold(
           body: ChangeNotifierProvider(
@@ -36,10 +38,12 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                     //     weather.weatherItem.main)),
                     gradient: LinearGradient(
                       colors: [
-                        weatherContoller.getGradientStartColorForMain(
-                            weather.weatherItem.main),
-                        weatherContoller.getGradientEndColorForMain(
-                            weather.weatherItem.main)
+                        mainBinding.weatherController
+                            .getGradientStartColorForMain(
+                                weather.weatherItem.main),
+                                mainBinding.weatherController
+                            .getGradientEndColorForMain(
+                                weather.weatherItem.main)
                       ],
                       begin: Alignment(0, -1),
                       end: Alignment(0, 1),
@@ -59,7 +63,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                 child: Icon(
                                   Icons.menu,
                                   size: 24,
-                                  color: weatherContoller.getTextColorForMain(
+                                  color: mainBinding.weatherController
+                                      .getTextColorForMain(
                                     weather.weatherItem.main,
                                   ),
                                 ),
@@ -68,7 +73,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                 "${weather.weatherItem.date}",
                                 style: TextStyle(
                                   fontSize: 24,
-                                  color: weatherContoller.getTextColorForMain(
+                                  color: mainBinding.weatherController
+                                      .getTextColorForMain(
                                     weather.weatherItem.main,
                                   ),
                                 ),
@@ -78,11 +84,13 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                   weather.unit.unit.displayText(),
                                   style: TextStyle(
                                     fontSize: 24,
-                                    color: weatherContoller.getTextColorForMain(
-                                        weather.weatherItem.main),
+                                    color: mainBinding.weatherController
+                                        .getTextColorForMain(
+                                            weather.weatherItem.main),
                                   ),
                                 ),
-                                onPressed: () => weatherContoller.toggleUnit(),
+                                onPressed: () =>
+                                    mainBinding.weatherController.toggleUnit(),
                               ),
                             ],
                           ),
@@ -93,8 +101,9 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                           scrollDirection: Axis.horizontal,
                           itemCount: cityList.length,
                           onPageChanged: (pageIndex) {
-                            weatherContoller.set(cityList[pageIndex]);
-                            locationListController
+                            mainBinding.weatherController
+                                .set(cityList[pageIndex]);
+                            mainBinding.locationListController
                                 .setCurrentCity(cityList[pageIndex].cityName);
                           },
                           itemBuilder: (context, pageIndex) {
@@ -120,7 +129,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                   weather.cityItem?.cityName ??
                                                       '',
                                                   style: TextStyle(
-                                                      color: weatherContoller
+                                                      color: mainBinding
+                                                          .weatherController
                                                           .getTextColorForMain(
                                                               weather
                                                                   .weatherItem
@@ -137,7 +147,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                 Text(
                                                   '${weather.weatherItem.temp.toInt()}°',
                                                   style: TextStyle(
-                                                      color: weatherContoller
+                                                      color: mainBinding
+                                                          .weatherController
                                                           .getTextColorForMain(
                                                               weather
                                                                   .weatherItem
@@ -155,7 +166,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                     Padding(
                                                       child: Icon(
                                                         Icons.keyboard_arrow_up,
-                                                        color: weatherContoller
+                                                        color: mainBinding
+                                                            .weatherController
                                                             .getTextColorForMain(
                                                                 weather
                                                                     .weatherItem
@@ -167,7 +179,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                     Text(
                                                       "${weather.weatherItem.tempMax}°",
                                                       style: TextStyle(
-                                                          color: weatherContoller
+                                                          color: mainBinding
+                                                              .weatherController
                                                               .getTextColorForMain(
                                                                   weather
                                                                       .weatherItem
@@ -183,7 +196,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                       child: Icon(
                                                         Icons
                                                             .keyboard_arrow_down,
-                                                        color: weatherContoller
+                                                        color: mainBinding
+                                                            .weatherController
                                                             .getTextColorForMain(
                                                                 weather
                                                                     .weatherItem
@@ -195,7 +209,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                     Text(
                                                       "${weather.weatherItem.tempMin}°",
                                                       style: TextStyle(
-                                                          color: weatherContoller
+                                                          color: mainBinding
+                                                              .weatherController
                                                               .getTextColorForMain(
                                                                   weather
                                                                       .weatherItem
@@ -222,7 +237,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                         "${weather.weatherItem.main}",
                                                         style: TextStyle(
                                                             fontSize: 24,
-                                                            color: weatherContoller
+                                                            color: mainBinding
+                                                                .weatherController
                                                                 .getTextColorForMain(
                                                                     weather
                                                                         .weatherItem
@@ -231,7 +247,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                       Text(
                                                         "Feels like : ${weather.weatherItem.feelsLike}°",
                                                         style: TextStyle(
-                                                            color: weatherContoller
+                                                            color: mainBinding
+                                                                .weatherController
                                                                 .getTextColorForMain(
                                                                     weather
                                                                         .weatherItem
@@ -252,7 +269,7 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                           children: [
                                             WeatherImageWidget(
                                                 pageIndex,
-                                                weatherContoller
+                                                mainBinding.weatherController
                                                     .getTextColorForMain(weather
                                                         .weatherItem.main)),
                                           ],
@@ -262,8 +279,9 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                   ],
                                 ),
                                 Divider(
-                                  color: weatherContoller.getTextColorForMain(
-                                      weather.weatherItem.main),
+                                  color: mainBinding.weatherController
+                                      .getTextColorForMain(
+                                          weather.weatherItem.main),
                                 ),
                                 SizedBox(
                                   height: 80,
@@ -280,18 +298,22 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                             weather.hourlyWeatherItem
                                                 .data[index].time,
                                             style: TextStyle(
-                                                color: weatherContoller
+                                                color: mainBinding
+                                                    .weatherController
                                                     .getTextColorForMain(weather
                                                         .weatherItem.main)),
                                           ),
-                                          weatherContoller.imageForMain(
-                                              weather.hourlyWeatherItem
-                                                  .data[pageIndex].main,
-                                              height: 24,
-                                              width: 24,
-                                              color: weatherContoller
-                                                  .getTextColorForMain(weather
-                                                      .weatherItem.main)),
+                                          mainBinding.weatherController
+                                              .imageForMain(
+                                                  weather.hourlyWeatherItem
+                                                      .data[pageIndex].main,
+                                                  height: 24,
+                                                  width: 24,
+                                                  color: mainBinding
+                                                      .weatherController
+                                                      .getTextColorForMain(
+                                                          weather.weatherItem
+                                                              .main)),
                                           Padding(
                                             padding: const EdgeInsets.all(4.0),
                                             child: Text(
@@ -299,7 +321,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
-                                                  color: weatherContoller
+                                                  color: mainBinding
+                                                      .weatherController
                                                       .getTextColorForMain(
                                                           weather.weatherItem
                                                               .main)),
@@ -311,8 +334,9 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                   ),
                                 ),
                                 Divider(
-                                  color: weatherContoller.getTextColorForMain(
-                                      weather.weatherItem.main),
+                                  color: mainBinding.weatherController
+                                      .getTextColorForMain(
+                                          weather.weatherItem.main),
                                 ),
                               ],
                             );
@@ -322,7 +346,8 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                     ],
                   ),
                 )),
-        create: (BuildContext context) => weatherContoller.weather_notifier,
+        create: (BuildContext context) =>
+            mainBinding.weatherController.weather_notifier,
       )),
     );
   }
@@ -343,23 +368,28 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
-  final locationListController = Get.find<LocationListController>();
-  final weatherContoller = Get.find<WeatherController>();
+  late MainBinding mainBinding;
   int pageIndex;
   Color color;
 
   WeatherImageWidgetState(this.pageIndex, this.color);
 
   @override
-  Widget build(BuildContext context) => ScaleTransition(
-        scale: animation,
-        child: weatherContoller.imageForMain(
-          locationListController.getWeatherList().value[pageIndex].main,
-          height: 128,
-          width: 128,
-          color: color,
-        ),
-      );
+  Widget build(BuildContext context) {
+    mainBinding = Provider.of<MainBinding>(context);
+    return ScaleTransition(
+      scale: animation,
+      child: mainBinding.weatherController.imageForMain(
+        mainBinding.locationListController
+            .getWeatherList()
+            .value[pageIndex]
+            .main,
+        height: 128,
+        width: 128,
+        color: color,
+      ),
+    );
+  }
 
   @override
   void initState() {

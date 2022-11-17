@@ -3,7 +3,7 @@ import 'package:weather/data/mapper/city_mapper.dart';
 import 'package:weather/domain/model/location_model.dart';
 import 'package:weather/domain/repo/open_weather_city_name_repo.dart';
 
-class OpenWeatherCityNameRepoImpl extends OpenWeatherCityNameRepo {
+class OpenWeatherCityNameRepoImpl extends CityNameRepo {
   HttpService httpService = HttpService();
 
   @override

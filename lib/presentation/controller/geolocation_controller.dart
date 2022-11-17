@@ -7,14 +7,17 @@ import 'package:weather/presentation/item/location_item.dart';
 import 'package:weather/presentation/notifiers/location_notifier.dart';
 
 class GeoLocationController extends GetxController {
-  final locFromCityNameUsecase = Get.find<LocationFromCityUsecase>();
-  final latLongToCityNameUsecase = Get.find<LatLongToCityNameUsecase>();
-  final locationUseCase = Get.find<LocationUseCase>();
-  late LocationNotifier locationNotifier;
+  final LocationFromCityUsecase locFromCityNameUsecase;
+  final LatLongToCityNameUsecase latLongToCityNameUsecase;
+  final LocationUseCase locationUseCase;
+  LocationNotifier locationNotifier = LocationNotifier();
 
-  void init() {
-    locationNotifier = LocationNotifier();
-  }
+  GeoLocationController(this.locFromCityNameUsecase,
+      this.latLongToCityNameUsecase, this.locationUseCase);
+
+  // void init() {
+  //   locationNotifier = LocationNotifier();
+  // }
 
   void getCurrentLocation() async {
     LocationItem location = await locationUseCase.invoke();
@@ -31,5 +34,10 @@ class GeoLocationController extends GetxController {
 
   void setLocation(CityItem cityItem) {
     locationNotifier.setLocation(cityItem);
+  }
+
+  @override
+  void dispose() {
+    locationNotifier.dispose();
   }
 }

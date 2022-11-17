@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:weather/di/binding/main_binding.dart';
 import 'package:weather/presentation/weather_details_widget.dart';
 
-import 'di/binding/main_binding.dart';
 import 'presentation/location_list_screen.dart';
 import 'presentation/location_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(GetMaterialApp(
-    initialRoute: '/location_list',
-    initialBinding: MainBinding(),
-    getPages: [
-      GetPage(
-        name: '/location',
-        page: () => LocationScreen(),
-        // binding: LocationScreenBinding(),
-      ),
-      GetPage(
-        name: '/location_list',
-        page: () => LocationListScreen(),
-        // binding: LocationListBinding(),
-      ),
-      GetPage(
-        name: '/home',
-        page: () => WeatherDetailsWidget(),
-        // binding: WeatherDetailsBinding(),
-      ),
-    ],
+  runApp(Provider(
+    create: (context) => MainBinding.createBinding(),
+    child: MaterialApp(
+      initialRoute: '/location_list',
+      routes: {
+        '/location': (context) => LocationScreen(),
+        '/location_list': (context) => LocationListScreen(),
+        '/home': (context) => WeatherDetailsWidget(),
+      },
+    ),
   ));
 }
