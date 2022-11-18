@@ -16,9 +16,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
   Widget build(BuildContext context) {
     mainBinding = Provider.of<MainBinding>(context);
     mainBinding.locationListController.updateData();
-    mainBinding.locationListController.addListener(() {
-      setState(() {});
-    });
 
     return SafeArea(
         child: Scaffold(

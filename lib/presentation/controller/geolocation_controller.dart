@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:weather/domain/usecase/lat_long_to_city_name_usecase.dart';
 import 'package:weather/domain/usecase/location_from_city_usecase.dart';
 import 'package:weather/domain/usecase/location_usecase.dart';
@@ -6,7 +5,7 @@ import 'package:weather/presentation/item/city_item.dart';
 import 'package:weather/presentation/item/location_item.dart';
 import 'package:weather/presentation/notifiers/location_notifier.dart';
 
-class GeoLocationController extends GetxController {
+class GeoLocationController {
   final LocationFromCityUsecase locFromCityNameUsecase;
   final LatLongToCityNameUsecase latLongToCityNameUsecase;
   final LocationUseCase locationUseCase;

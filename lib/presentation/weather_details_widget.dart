@@ -15,9 +15,6 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     mainBinding = Provider.of<MainBinding>(context);
-    mainBinding.locationListController.addListener(() {
-      setState(() {});
-    });
     mainBinding.locationListController.uiNotifier.setCurrentCity(mainBinding
             .locationListController
             .weatherNotifier
@@ -172,11 +169,9 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                             style: TextStyle(
                                                                 color: mainBinding
                                                                     .locationListController
-                                                                    .getTextColorForMain(weatherNotifier
-                                                                            .weathers[pageIndex]
-                                                                            .weatherItem
-                                                                            ?.main ??
-                                                                        ''),
+                                                                    .getTextColorForMain(
+                                                                        weatherDetails.weatherItem?.main ??
+                                                                            ''),
                                                                 fontSize: 32),
                                                           ),
                                               ],

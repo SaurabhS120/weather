@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:weather/domain/mappers/city_mapper.dart';
 import 'package:weather/domain/usecase/cities_local_usecase.dart';
 import 'package:weather/domain/usecase/hourly_weather_data_usecase.dart';
@@ -11,7 +10,7 @@ import 'package:weather/presentation/notifiers/all_weather_details_item.dart';
 import 'package:weather/presentation/notifiers/ui_config_notifier.dart';
 import 'package:weather/presentation/notifiers/weather_notifier.dart';
 
-class LocationListController extends GetxController {
+class LocationListController {
   final CitiesLocalUseCase citiesLocalUsecase;
   HourlyWeatherDataUseCase hourlyWeatherDataUseCase;
   final WeatherNotifier weatherNotifier = WeatherNotifier();
