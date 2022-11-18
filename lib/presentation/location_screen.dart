@@ -12,8 +12,6 @@ class LocationScreen extends StatefulWidget {
 
 class LocationScreenState extends State<LocationScreen> {
   late MainBinding mainBinding;
-  String selectedCity = '';
-  var choosingLoc = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +23,10 @@ class LocationScreenState extends State<LocationScreen> {
           child: Consumer<LocationNotifier>(
             builder: (context, location, child) => WillPopScope(
               onWillPop: () {
-                if (choosingLoc) {
-                  choosingLoc = false;
-                  setState(() {});
+                if (location.choosingLoc) {
+                  location.setChoosingLoc(false);
                   return Future.value(false);
                 } else {
-                  setState(() {});
                   return Future.value(true);
                 }
               },
@@ -107,9 +103,8 @@ class LocationScreenState extends State<LocationScreen> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          choosingLoc = true;
-                                          setState(() {});
-                                        },
+                                          location.setChoosingLoc(true);
+                                },
                                         child: Text('Choose City'),
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.black54),
@@ -160,33 +155,32 @@ class LocationScreenState extends State<LocationScreen> {
                                       ),
                                     )),
                                 Visibility(
-                                    visible: choosingLoc,
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SelectState(
-                                            onCityChanged: (value) {
-                                              selectedCity = value;
-                                              setState(() {});
-                                            },
-                                            onCountryChanged: (value) {},
+                                    visible: location.choosingLoc,
+                            child: Container(
+                              color: Colors.white,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SelectState(
+                                    onCityChanged: (value) {
+                                      location.selectCity(value);
+                                    },
+                                    onCountryChanged: (value) {},
                                             onStateChanged: (value) {},
                                           ),
                                           ElevatedButton(
                                     onPressed: () async {
                                       var city = await mainBinding
                                           .locationFromCityUsecase
-                                          .invoke(selectedCity);
-                                      location.setLocation(
-                                          CityItem(selectedCity, city));
+                                          .invoke(location.selectedCity);
+                                      location.setLocation(CityItem(
+                                          location.selectedCity, city));
                                       mainBinding.geoLocationController
-                                          .getLocationFromCityName(selectedCity,
+                                          .getLocationFromCityName(
+                                              location.selectedCity,
                                               onFinish: () {
-                                        choosingLoc = false;
-                                        setState(() {});
+                                        location.setChoosingLoc(false);
                                       });
                                     },
                                     child: Text('Confirm'),
