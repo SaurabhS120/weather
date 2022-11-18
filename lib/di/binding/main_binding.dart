@@ -15,7 +15,6 @@ import 'package:weather/domain/usecase/location_usecase.dart';
 import 'package:weather/domain/usecase/weather_data_usecase.dart';
 import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/controller/location_list_controller.dart';
-import 'package:weather/presentation/controller/weather_controller.dart';
 
 import '../../data/repo_impl/location_geolocator_repo.dart';
 
@@ -29,7 +28,6 @@ class MainBinding {
   WeatherDataRepo weatherDataRepo;
   WeatherDataUsecase weatherDataUsecase;
   HourlyWeatherDataUseCase hourlyWeatherDataUseCase;
-  WeatherController weatherController;
   LocationListController locationListController;
   LatLongToCityNameRepo latLongToCityNameRepo;
   LatLongToCityNameUsecase latLongToCityNameUsecase;
@@ -45,7 +43,6 @@ class MainBinding {
     this.weatherDataRepo,
     this.weatherDataUsecase,
     this.hourlyWeatherDataUseCase,
-    this.weatherController,
     this.locationListController,
     this.latLongToCityNameRepo,
     this.latLongToCityNameUsecase,
@@ -64,10 +61,8 @@ class MainBinding {
     WeatherDataUsecase weatherDataUsecase = WeatherDataUsecase(weatherDataRepo);
     HourlyWeatherDataUseCase hourlyWeatherDataUseCase =
         HourlyWeatherDataUseCase(weatherDataRepo);
-    WeatherController weatherController =
-        WeatherController(weatherDataUsecase, hourlyWeatherDataUseCase);
-    LocationListController locationListController =
-        LocationListController(citiesLocalUseCase, weatherDataUsecase);
+    LocationListController locationListController = LocationListController(
+        citiesLocalUseCase, weatherDataUsecase, hourlyWeatherDataUseCase);
     LatLongToCityNameRepo latLongToCityNameRepo = GeoCodingRepoImpl();
     LatLongToCityNameUsecase latLongToCityNameUsecase =
         LatLongToCityNameUsecase(latLongToCityNameRepo);
@@ -83,7 +78,6 @@ class MainBinding {
         weatherDataRepo,
         weatherDataUsecase,
         hourlyWeatherDataUseCase,
-        weatherController,
         locationListController,
         latLongToCityNameRepo,
         latLongToCityNameUsecase,

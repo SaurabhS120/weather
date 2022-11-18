@@ -6,8 +6,8 @@ import 'package:weather/domain/repo/cities_local_repo.dart';
 class CitiesLocalRepoImpl extends CitiesLocalRepo {
   var cities_db = CitiesDB();
 
-  void addCity(CityModel city) {
-    cities_db.addCity(city.toDbEntity());
+  Future<void> addCity(CityModel city) async {
+    await cities_db.addCity(city.toDbEntity());
   }
 
   Future<List<CityModel>> getCities() async {

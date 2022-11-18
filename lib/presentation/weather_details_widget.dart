@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
+import 'package:weather/presentation/notifiers/ui_config_notifier.dart';
 import 'package:weather/presentation/notifiers/weather_notifier.dart';
 
 class WeatherDetailsWidget extends StatefulWidget {
@@ -11,43 +12,52 @@ class WeatherDetailsWidget extends StatefulWidget {
 class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
   late MainBinding mainBinding;
 
-  // @override
-  // void init() {
-  //   mainBinding = Provider.of<MainBinding>(context);
-  //   mainBinding.weatherController.addListener(() {
-  //     setState(() {});
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     mainBinding = Provider.of<MainBinding>(context);
-    mainBinding.weatherController.addListener(() {
+    mainBinding.locationListController.addListener(() {
       setState(() {});
     });
-    final cityList = mainBinding.locationListController.getCityList();
-    mainBinding.weatherController.init();
-    mainBinding.weatherController.set(cityList[0]);
+    mainBinding.locationListController.uiNotifier.setCurrentCity(mainBinding
+            .locationListController
+            .weatherNotifier
+            .weathers[0]
+            .cityItem
+            ?.cityName ??
+        '');
     return SafeArea(
-      child: Scaffold(
-          body: ChangeNotifierProvider(
-        builder: (context, child) => Consumer<WeatherNotifier>(
-            builder: (context, weather, child) => Container(
-                  decoration: BoxDecoration(
-                    // color: getColorForMain(
-                    //     weather.weatherItem.main)),
-                    gradient: LinearGradient(
-                      colors: [
-                        mainBinding.weatherController
-                            .getGradientStartColorForMain(
-                                weather.weatherItem.main),
-                                mainBinding.weatherController
-                            .getGradientEndColorForMain(
-                                weather.weatherItem.main)
-                      ],
-                      begin: Alignment(0, -1),
-                      end: Alignment(0, 1),
-                    ),
+        child: Scaffold(
+      body: ChangeNotifierProvider.value(
+          value: mainBinding.locationListController.weatherNotifier,
+          builder: (context, child) => ChangeNotifierProvider.value(
+                value: mainBinding.locationListController.uiNotifier,
+                builder: (context, child) => Consumer<WeatherNotifier>(
+                  builder: (context, weatherNotifier, child) => Consumer<
+                          UiConfigNotifier>(
+                      builder: (context, uiConfigNotifier, child) => Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  mainBinding.locationListController
+                                      .getGradientStartColorForMain(
+                                          weatherNotifier
+                                                  .weathers[uiConfigNotifier
+                                                      .current_page_no]
+                                                  .weatherItem
+                                                  ?.main ??
+                                              ''),
+                                  mainBinding.locationListController
+                                      .getGradientEndColorForMain(
+                                          weatherNotifier
+                                                  .weathers[uiConfigNotifier
+                                                      .current_page_no]
+                                                  .weatherItem
+                                                  ?.main ??
+                                              '')
+                                ],
+                                begin: Alignment(0, -1),
+                                end: Alignment(0, 1),
+                              ),
                   ),
                   child: Column(
                     children: [
@@ -62,36 +72,56 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                 padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                                 child: Icon(
                                   Icons.menu,
-                                  size: 24,
-                                  color: mainBinding.weatherController
-                                      .getTextColorForMain(
-                                    weather.weatherItem.main,
-                                  ),
-                                ),
+                                            size: 24,
+                                            color: mainBinding
+                                                .locationListController
+                                                .getTextColorForMain(
+                                              weatherNotifier
+                                                      .weathers[uiConfigNotifier
+                                                          .current_page_no]
+                                                      .weatherItem
+                                                      ?.main ??
+                                                  '',
+                                            ),
+                                          ),
                               ),
                               Text(
-                                "${weather.weatherItem.date}",
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  color: mainBinding.weatherController
-                                      .getTextColorForMain(
-                                    weather.weatherItem.main,
-                                  ),
-                                ),
-                              ),
+                                "${weatherNotifier.weathers[uiConfigNotifier.current_page_no].weatherItem?.date}",
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            color: mainBinding
+                                                .locationListController
+                                                .getTextColorForMain(
+                                              weatherNotifier
+                                                      .weathers[uiConfigNotifier
+                                                          .current_page_no]
+                                                      .weatherItem
+                                                      ?.main ??
+                                                  '',
+                                            ),
+                                          ),
+                                        ),
                               TextButton(
                                 child: Text(
-                                  weather.unit.unit.displayText(),
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: mainBinding.weatherController
-                                        .getTextColorForMain(
-                                            weather.weatherItem.main),
-                                  ),
-                                ),
-                                onPressed: () =>
-                                    mainBinding.weatherController.toggleUnit(),
-                              ),
+                                            weatherNotifier.unit.unit
+                                                .displayText(),
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              color: mainBinding
+                                                  .locationListController
+                                                  .getTextColorForMain(weatherNotifier
+                                                          .weathers[
+                                                              uiConfigNotifier
+                                                                  .current_page_no]
+                                                          .weatherItem
+                                                          ?.main ??
+                                                      ''),
+                                            ),
+                                          ),
+                                          onPressed: () => mainBinding
+                                              .locationListController
+                                              .toggleUnit(),
+                                        ),
                             ],
                           ),
                         ),
@@ -99,25 +129,34 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                       Expanded(
                         child: PageView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: cityList.length,
-                          onPageChanged: (pageIndex) {
-                            mainBinding.weatherController
-                                .set(cityList[pageIndex]);
-                            mainBinding.locationListController
-                                .setCurrentCity(cityList[pageIndex].cityName);
-                          },
-                          itemBuilder: (context, pageIndex) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  height: 12,
-                                ),
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(12),
+                                    itemCount: weatherNotifier.weathers.length,
+                                    onPageChanged: (pageIndex) {
+                                      uiConfigNotifier.changePage(pageIndex);
+                                      uiConfigNotifier.setCurrentCity(
+                                          weatherNotifier.weathers[pageIndex]
+                                                  .cityItem?.cityName ??
+                                              '');
+                                      mainBinding.locationListController
+                                          .setCurrentCity(weatherNotifier
+                                                  .weathers[pageIndex]
+                                                  .cityItem
+                                                  ?.cityName ??
+                                              '');
+                                    },
+                                    itemBuilder: (context, pageIndex) {
+                                      var weatherDetails =
+                                          weatherNotifier.weathers[pageIndex];
+                                      return Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                flex: 1,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(12),
                                         child: Column(
                                           children: [
                                             SizedBox(
@@ -126,16 +165,19 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  weather.cityItem?.cityName ??
-                                                      '',
+                                                  weatherDetails
+                                                                    .cityItem
+                                                                    ?.cityName ??
+                                                                '',
                                                   style: TextStyle(
                                                       color: mainBinding
-                                                          .weatherController
-                                                          .getTextColorForMain(
-                                                              weather
-                                                                  .weatherItem
-                                                                  .main),
-                                                      fontSize: 36),
+                                                                    .locationListController
+                                                                    .getTextColorForMain(weatherNotifier
+                                                                            .weathers[pageIndex]
+                                                                            .weatherItem
+                                                                            ?.main ??
+                                                                        ''),
+                                                                fontSize: 36),
                                                 ),
                                               ],
                                             ),
@@ -145,77 +187,75 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  '${weather.weatherItem.temp.toInt()}°',
-                                                  style: TextStyle(
-                                                      color: mainBinding
-                                                          .weatherController
-                                                          .getTextColorForMain(
-                                                              weather
-                                                                  .weatherItem
-                                                                  .main),
-                                                      fontSize: 72),
-                                                )
+                                                  '${weatherDetails.weatherItem?.temp.toInt()}°',
+                                                            style: TextStyle(
+                                                                color: mainBinding
+                                                                    .locationListController
+                                                                    .getTextColorForMain(
+                                                                        weatherDetails.weatherItem?.main ??
+                                                                            ''),
+                                                                fontSize: 72),
+                                                          )
                                               ],
                                             ),
                                             Row(
                                               children: [
                                                 Row(
                                                   mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      child: Icon(
-                                                        Icons.keyboard_arrow_up,
-                                                        color: mainBinding
-                                                            .weatherController
-                                                            .getTextColorForMain(
-                                                                weather
-                                                                    .weatherItem
-                                                                    .main),
-                                                      ),
-                                                      padding:
-                                                          EdgeInsets.all(4),
-                                                    ),
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Padding(
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_up,
+                                                                  color: mainBinding
+                                                                      .locationListController
+                                                                      .getTextColorForMain(
+                                                                          weatherDetails.weatherItem?.main ??
+                                                                              ''),
+                                                                ),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(4),
+                                                              ),
                                                     Text(
-                                                      "${weather.weatherItem.tempMax}°",
-                                                      style: TextStyle(
-                                                          color: mainBinding
-                                                              .weatherController
-                                                              .getTextColorForMain(
-                                                                  weather
-                                                                      .weatherItem
-                                                                      .main)),
-                                                    ),
+                                                      "${weatherDetails.weatherItem?.tempMax}°",
+                                                                style: TextStyle(
+                                                                    color: mainBinding
+                                                                        .locationListController
+                                                                        .getTextColorForMain(weatherDetails.weatherItem?.main ??
+                                                                            '')),
+                                                              ),
                                                   ],
                                                 ),
                                                 Row(
                                                   mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      child: Icon(
-                                                        Icons
-                                                            .keyboard_arrow_down,
-                                                        color: mainBinding
-                                                            .weatherController
-                                                            .getTextColorForMain(
-                                                                weather
-                                                                    .weatherItem
-                                                                    .main),
-                                                      ),
-                                                      padding:
-                                                          EdgeInsets.all(4),
-                                                    ),
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Padding(
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_down,
+                                                                  color: mainBinding
+                                                                      .locationListController
+                                                                      .getTextColorForMain(
+                                                                          weatherDetails.weatherItem?.main ??
+                                                                              ''),
+                                                                ),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(4),
+                                                              ),
                                                     Text(
-                                                      "${weather.weatherItem.tempMin}°",
-                                                      style: TextStyle(
-                                                          color: mainBinding
-                                                              .weatherController
-                                                              .getTextColorForMain(
-                                                                  weather
-                                                                      .weatherItem
-                                                                      .main)),
-                                                    ),
+                                                      "${weatherDetails.weatherItem?.tempMin}°",
+                                                                style: TextStyle(
+                                                                    color: mainBinding
+                                                                        .locationListController
+                                                                        .getTextColorForMain(weatherDetails.weatherItem?.main ??
+                                                                            '')),
+                                                              ),
                                                   ],
                                                 ),
                                               ],
@@ -227,33 +267,31 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                               children: [
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "${weather.weatherItem.main}",
-                                                        style: TextStyle(
-                                                            fontSize: 24,
-                                                            color: mainBinding
-                                                                .weatherController
-                                                                .getTextColorForMain(
-                                                                    weather
-                                                                        .weatherItem
-                                                                        .main)),
-                                                      ),
-                                                      Text(
-                                                        "Feels like : ${weather.weatherItem.feelsLike}°",
-                                                        style: TextStyle(
-                                                            color: mainBinding
-                                                                .weatherController
-                                                                .getTextColorForMain(
-                                                                    weather
-                                                                        .weatherItem
-                                                                        .main)),
-                                                      ),
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  "${weatherDetails.weatherItem?.main ?? ''}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          24,
+                                                                      color: mainBinding
+                                                                          .locationListController
+                                                                          .getTextColorForMain(weatherDetails.weatherItem?.main ??
+                                                                              '')),
+                                                                ),
+                                                                Text(
+                                                                  "Feels like : ${weatherDetails.weatherItem?.feelsLike ?? ''}°",
+                                                                  style: TextStyle(
+                                                                      color: mainBinding
+                                                                          .locationListController
+                                                                          .getTextColorForMain(weatherDetails.weatherItem?.main ??
+                                                                              '')),
+                                                                ),
                                                     ],
                                                   ),
                                                 )
@@ -267,89 +305,118 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                       children: [
                                         Row(
                                           children: [
-                                            WeatherImageWidget(
-                                                pageIndex,
-                                                mainBinding.weatherController
-                                                    .getTextColorForMain(weather
-                                                        .weatherItem.main)),
-                                          ],
+                                                      WeatherImageWidget(
+                                                          pageIndex,
+                                                          mainBinding
+                                                              .locationListController
+                                                              .getTextColorForMain(
+                                                                  weatherDetails
+                                                                          .weatherItem
+                                                                          ?.main ??
+                                                                      '')),
+                                                    ],
                                         )
                                       ],
                                     )
                                   ],
                                 ),
                                 Divider(
-                                  color: mainBinding.weatherController
-                                      .getTextColorForMain(
-                                          weather.weatherItem.main),
-                                ),
+                                            color: mainBinding
+                                                .locationListController
+                                                .getTextColorForMain(
+                                                    weatherDetails.weatherItem
+                                                            ?.main ??
+                                                        ''),
+                                          ),
                                 SizedBox(
                                   height: 80,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        weather.hourlyWeatherItem.data.length,
-                                    itemBuilder: (context, index) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            weather.hourlyWeatherItem
-                                                .data[index].time,
-                                            style: TextStyle(
-                                                color: mainBinding
-                                                    .weatherController
-                                                    .getTextColorForMain(weather
-                                                        .weatherItem.main)),
+                                              shrinkWrap: true,
+                                              itemCount: weatherDetails
+                                                  .hourlyWeatherItem
+                                                  ?.data
+                                                  .length,
+                                              itemBuilder: (context, index) =>
+                                                  Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      weatherDetails
+                                                              .hourlyWeatherItem
+                                                              ?.data[index]
+                                                              .time ??
+                                                          '',
+                                                      style: TextStyle(
+                                                          color: mainBinding
+                                                              .locationListController
+                                                              .getTextColorForMain(
+                                                                  weatherDetails
+                                                                          .weatherItem
+                                                                          ?.main ??
+                                                                      '')),
+                                                    ),
+                                                    mainBinding.locationListController.imageForMain(
+                                                        weatherDetails
+                                                                .hourlyWeatherItem
+                                                                ?.data[
+                                                                    pageIndex]
+                                                                .main ??
+                                                            '',
+                                                        height: 24,
+                                                        width: 24,
+                                                        color: mainBinding
+                                                            .locationListController
+                                                            .getTextColorForMain(
+                                                                weatherDetails
+                                                                        .weatherItem
+                                                                        ?.main ??
+                                                                    '')),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Text(
+                                                        "${weatherDetails.hourlyWeatherItem?.data[index].temp}°",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: mainBinding
+                                                                .locationListController
+                                                                .getTextColorForMain(
+                                                                    weatherDetails
+                                                                            .weatherItem
+                                                                            ?.main ??
+                                                                        '')),
+                                                      ),
+                                              ),
+                                            ],
                                           ),
-                                          mainBinding.weatherController
-                                              .imageForMain(
-                                                  weather.hourlyWeatherItem
-                                                      .data[pageIndex].main,
-                                                  height: 24,
-                                                  width: 24,
-                                                  color: mainBinding
-                                                      .weatherController
-                                                      .getTextColorForMain(
-                                                          weather.weatherItem
-                                                              .main)),
-                                          Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Text(
-                                              "${weather.hourlyWeatherItem.data[index].temp}°",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: mainBinding
-                                                      .weatherController
-                                                      .getTextColorForMain(
-                                                          weather.weatherItem
-                                                              .main)),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                        ),
                                   ),
                                 ),
                                 Divider(
-                                  color: mainBinding.weatherController
-                                      .getTextColorForMain(
-                                          weather.weatherItem.main),
+                                            color: mainBinding
+                                                .locationListController
+                                                .getTextColorForMain(
+                                                    weatherDetails.weatherItem
+                                                            ?.main ??
+                                                        ''),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-        create: (BuildContext context) =>
-            mainBinding.weatherController.weather_notifier,
-      )),
-    );
+                            ),
+                          )),
+                ),
+              )),
+        ));
   }
 }
 
@@ -373,17 +440,15 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
   Color color;
 
   WeatherImageWidgetState(this.pageIndex, this.color);
-
   @override
   Widget build(BuildContext context) {
     mainBinding = Provider.of<MainBinding>(context);
     return ScaleTransition(
       scale: animation,
-      child: mainBinding.weatherController.imageForMain(
-        mainBinding.locationListController
-            .getWeatherList()
-            .value[pageIndex]
-            .main,
+      child: mainBinding.locationListController.imageForMain(
+        mainBinding.locationListController.weatherNotifier.weathers[pageIndex]
+                .weatherItem?.main ??
+            '',
         height: 128,
         width: 128,
         color: color,
@@ -406,7 +471,5 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
   @override
   void dispose() {
     animationController.dispose();
-    super.dispose();
   }
-
 }

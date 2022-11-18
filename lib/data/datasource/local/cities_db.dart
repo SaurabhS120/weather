@@ -19,13 +19,13 @@ class CitiesDB {
     return database;
   }
 
-  void addCity(CityDBEntity city) async {
+  Future<void> addCity(CityDBEntity city) async {
     var data = {
       'name': city.cityName,
       'latitude': city.longitude,
       'longitude': city.lattitude,
     };
-    (await init())!.insert('City', data);
+    await (await init())!.insert('City', data);
   }
 
   Future<List<CityDBEntity>> getCities() async {

@@ -2,7 +2,7 @@ import 'package:weather/domain/model/city_model.dart';
 
 abstract class CitiesLocalRepo {
 
-  void addCity(CityModel city);
+  Future<void> addCity(CityModel city);
 
   Future<List<CityModel>> getCities();
 

@@ -1,22 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:weather/presentation/item/city_item.dart';
-import 'package:weather/presentation/item/hourly_weather_data_item.dart';
 import 'package:weather/presentation/item/unit_item.dart';
-import 'package:weather/presentation/item/weather_item.dart';
+import 'package:weather/presentation/notifiers/all_weather_details_item.dart';
 
 class WeatherNotifier extends ChangeNotifier {
-  var weatherItem = WeatherItem("", 0, 0, 0, 0, 0, 0, '', '');
-  var hourlyWeatherItem = HourlyWeatherDataItem([]);
-  UnitItem unit = UnitItem(MetricUnitItem());
-  CityItem? cityItem = null;
+  UnitItem unit = AllWeatherDetailsItem.defaultUnit;
+  List<AllWeatherDetailsItem> weathers = [];
 
-  void updateWeatherItem(WeatherItem weatherItem) {
-    this.weatherItem = weatherItem;
+  void setWeathers(List<AllWeatherDetailsItem> weathers) {
+    this.weathers = weathers;
     notifyListeners();
   }
 
-  void updateHourlyWeatherItem(HourlyWeatherDataItem hourlyWeatherItem) {
-    this.hourlyWeatherItem = hourlyWeatherItem;
-    notifyListeners();
+  void addCity(CityItem city) {
+    weathers.add(AllWeatherDetailsItem(AllWeatherDetailsItem.defaultUnit,
+        cityItem: city));
   }
 }

@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
-import 'package:weather/presentation/notifiers/location_list_notifier.dart';
 
-class LocationListScreen extends StatelessWidget {
+import 'notifiers/weather_notifier.dart';
+
+class LocationListScreen extends StatefulWidget {
+  @override
+  State<LocationListScreen> createState() => _LocationListScreenState();
+}
+
+class _LocationListScreenState extends State<LocationListScreen> {
   late MainBinding mainBinding;
 
   @override
   Widget build(BuildContext context) {
     mainBinding = Provider.of<MainBinding>(context);
     mainBinding.locationListController.updateData();
+    mainBinding.locationListController.addListener(() {
+      setState(() {});
+    });
+
     return SafeArea(
         child: Scaffold(
       body: Container(
@@ -57,28 +67,31 @@ class LocationListScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    if (mainBinding.locationListController
-                        .getCityList()
-                        .isEmpty) {
-                      const snackBar = SnackBar(
-                        content: Text(
-                          'Please add atleast one location to proceed',
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    } else {
-                      mainBinding.geoLocationController.setLocation(
-                          mainBinding.locationListController.getCityList()[0]);
-                      mainBinding.weatherController.set(
-                          mainBinding.locationListController.getCityList()[0]);
-                      Navigator.of(context).pushNamed('/home');
-                    }
-                  },
-                  child: Text('Proceed'),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromRGBO(255, 255, 255, 0.2)),
+                ChangeNotifierProvider.value(
+                  value: mainBinding.locationListController.weatherNotifier,
+                  child: Consumer<WeatherNotifier>(
+                    builder: (context, value, child) => ElevatedButton(
+                      onPressed: () {
+                        if (value.weathers.isEmpty) {
+                          const snackBar = SnackBar(
+                            content: Text(
+                              'Please add atleast one location to proceed',
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else {
+                          mainBinding.geoLocationController
+                              .setLocation(value.weathers[0].cityItem!);
+                          // mainBinding.weatherController.set(
+                          //     value.weathers[0].cityItem!);
+                          Navigator.of(context).pushNamed('/home');
+                        }
+                      },
+                      child: Text('Proceed'),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(255, 255, 255, 0.2)),
+                    ),
+                  ),
                 ),
               ],
             )
@@ -100,10 +113,9 @@ class _LocationListWidgetState extends State<LocationListWidget> {
   @override
   Widget build(BuildContext context) {
     mainBinding = Provider.of<MainBinding>(context);
-    return ChangeNotifierProvider(
-        create: (context) =>
-            mainBinding.locationListController.locationNotifier,
-        child: Consumer<LocationListNotifier>(
+    return ChangeNotifierProvider.value(
+        value: mainBinding.locationListController.weatherNotifier,
+        child: Consumer<WeatherNotifier>(
           builder: (context, value, child) => GridView.builder(
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -111,12 +123,10 @@ class _LocationListWidgetState extends State<LocationListWidget> {
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
             ),
-            itemCount: (value.weather_item.length < value.city_list.length)
-                ? value.weather_item.length
-                : value.city_list.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onLongPress: () =>
+            itemCount: value.weathers.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onLongPress: () =>
                     mainBinding.locationListController.remove(index),
                 child: Container(
                   decoration: BoxDecoration(
@@ -129,18 +139,16 @@ class _LocationListWidgetState extends State<LocationListWidget> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                                  mainBinding.locationListController
-                                  .locationNotifier.city_list[index].cityName,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                  ),
-                                ),
+                              value.weathers[index].cityItem?.cityName ?? '',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
                                 Text(
-                                  mainBinding.locationListController
-                                  .locationNotifier.weather_item[index].main,
-                                  style: TextStyle(color: Colors.white),
-                                )
+                                  value.weathers[index].weatherItem?.main ?? '',
+                              style: TextStyle(color: Colors.white),
+                            )
                               ],
                             ),
                           ),
@@ -158,9 +166,8 @@ class _LocationListWidgetState extends State<LocationListWidget> {
                                   .locationListController
                                   .remove(index),
                             ),
-                            mainBinding.weatherController.imageForMain(
-                                mainBinding.locationListController
-                                    .locationNotifier.weather_item[index].main,
+                            mainBinding.locationListController.imageForMain(
+                                value.weathers[index].weatherItem?.icon ?? '',
                                 height: 24,
                                 width: 24,
                                 color: Colors.white),
@@ -172,9 +179,9 @@ class _LocationListWidgetState extends State<LocationListWidget> {
                               child: Padding(
                                 padding: EdgeInsets.all(16),
                                 child: Text(
-                                  "${value.weather_item[index].temp}°",
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                                  "${value.weathers[index].weatherItem?.temp}°",
+                              style: TextStyle(color: Colors.white),
+                            ),
                               )),
                         ],
                       ),

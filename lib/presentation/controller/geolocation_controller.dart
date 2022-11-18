@@ -15,10 +15,6 @@ class GeoLocationController extends GetxController {
   GeoLocationController(this.locFromCityNameUsecase,
       this.latLongToCityNameUsecase, this.locationUseCase);
 
-  // void init() {
-  //   locationNotifier = LocationNotifier();
-  // }
-
   void getCurrentLocation() async {
     LocationItem location = await locationUseCase.invoke();
     String cityName = await latLongToCityNameUsecase.invoke(location);
@@ -27,17 +23,14 @@ class GeoLocationController extends GetxController {
   }
 
   void getLocationFromCityName(String cityName, {Function? onFinish}) async {
+    print('getLocationFromCityName : $cityName');
     LocationItem locationItem = await locFromCityNameUsecase.invoke(cityName);
     setLocation(CityItem(cityName, locationItem));
     onFinish?.call();
   }
 
   void setLocation(CityItem cityItem) {
+    print('setLocation : ${cityItem.cityName}');
     locationNotifier.setLocation(cityItem);
-  }
-
-  @override
-  void dispose() {
-    locationNotifier.dispose();
   }
 }

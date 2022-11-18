@@ -7,7 +7,8 @@ class CitiesLocalUseCase {
 
   CitiesLocalUseCase(this.citiesLocalRepo);
 
-  void addCity(CityItem city) => citiesLocalRepo.addCity(city.toModel());
+  Future<void> addCity(CityItem city) async =>
+      await citiesLocalRepo.addCity(city.toModel());
 
   Future<List<CityItem>> getCities() async =>
       (await citiesLocalRepo.getCities()).toItemList();

@@ -13,8 +13,15 @@ class LocationNotifier extends ChangeNotifier {
   }
 
   void setLocation(CityItem city) {
+    print('locationNotifier.setLocation : ${city.cityName}');
     this.isLoading = false;
     this.city = city;
     notifyListeners();
+  }
+
+  @override
+  void notifyListeners() {
+    print('LocationNotifier.notifyListeners city : ${city?.cityName}');
+    super.notifyListeners();
   }
 }
