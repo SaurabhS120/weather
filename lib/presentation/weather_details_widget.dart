@@ -182,7 +182,7 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  '${weatherDetails.weatherItem?.temp.toInt()}°',
+                                                  '${weatherDetails.weatherItem?.temp.toInt() ?? ''}${weatherNotifier.unit.unit.displayText()}',
                                                             style: TextStyle(
                                                                 color: mainBinding
                                                                     .locationListController

@@ -176,7 +176,7 @@ class _LocationListWidgetState extends State<LocationListWidget> {
                               child: Padding(
                                 padding: EdgeInsets.all(16),
                                 child: Text(
-                                  "${value.weathers[index].weatherItem?.temp}°",
+                                  "${value.weathers[index].weatherItem?.temp ?? ''} ${value.unit.unit.displayText()}",
                               style: TextStyle(color: Colors.white),
                             ),
                               )),
