@@ -7,7 +7,7 @@ class AllWeatherDetailsItem {
   WeatherItem? weatherItem;
   HourlyWeatherDataItem? hourlyWeatherItem;
   UnitItem unit = UnitItem(MetricUnitItem());
-  static UnitItem defaultUnit = UnitItem(MetricUnitItem());
+  static UnitItem defaultUnit = UnitItem(ImperialUnitItem());
   CityItem? cityItem;
 
   AllWeatherDetailsItem(this.unit,

@@ -169,16 +169,16 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                                                     .cityItem
                                                                     ?.cityName ??
                                                                 '',
-                                                  style: TextStyle(
-                                                      color: mainBinding
+                                                            style: TextStyle(
+                                                                color: mainBinding
                                                                     .locationListController
                                                                     .getTextColorForMain(weatherNotifier
                                                                             .weathers[pageIndex]
                                                                             .weatherItem
                                                                             ?.main ??
                                                                         ''),
-                                                                fontSize: 36),
-                                                ),
+                                                                fontSize: 32),
+                                                          ),
                                               ],
                                             ),
                                             SizedBox(
@@ -469,7 +469,8 @@ class WeatherImageWidgetState extends State<WeatherImageWidget>
   }
 
   @override
-  void dispose() {
+  void deactivate() {
+    super.deactivate();
     animationController.dispose();
   }
 }
