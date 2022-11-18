@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
+import 'package:weather/presentation/navigation_service.dart';
 
 import 'notifiers/weather_notifier.dart';
 
@@ -13,10 +14,15 @@ class _LocationListScreenState extends State<LocationListScreen> {
   late MainBinding mainBinding;
 
   @override
-  Widget build(BuildContext context) {
-    mainBinding = Provider.of<MainBinding>(context);
+  void initState() {
+    super.initState();
+    mainBinding = Provider.of<MainBinding>(
+        NavigationService.navigatorKey.currentContext!);
     mainBinding.locationListController.updateData();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       body: Container(

@@ -5,6 +5,7 @@ import 'package:weather/presentation/weather_details_widget.dart';
 
 import 'presentation/location_list_screen.dart';
 import 'presentation/location_screen.dart';
+import 'presentation/navigation_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ void main() {
         '/location_list': (context) => LocationListScreen(),
         '/home': (context) => WeatherDetailsWidget(),
       },
+      navigatorKey: NavigationService.navigatorKey,
     ),
   ));
 }
