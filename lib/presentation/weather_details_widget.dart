@@ -29,7 +29,6 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<UiConfigNotifier>(context).changePage(0);
     return SafeArea(
         child: Scaffold(
             body: Consumer<WeatherNotifier>(

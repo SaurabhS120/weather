@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
-import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/navigation_service.dart';
+import 'package:weather/presentation/notifiers/location_notifier.dart';
 import 'package:weather/presentation/provider/assets_provider.dart';
 
 import 'notifiers/weather_notifier.dart';
@@ -74,32 +74,33 @@ class _LocationListScreenState extends State<LocationListScreen> {
               children: [
                 Consumer<WeatherNotifier>(
                   builder: (context, weatherNotifier, child) =>
-                      Consumer<GeoLocationController>(
-                    builder: (context, geoLocationController, child) =>
-                        ElevatedButton(
-                      onPressed: () {
-                        if (false) {
-                          // if (weatherNotifier.weathers.isEmpty) {
-                          const snackBar = SnackBar(
-                            content: Text(
-                              'Please add atleast one location to proceed',
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } else {
-                          geoLocationController.setLocation(
-                              weatherNotifier.weathers[0].cityItem!);
-                          // mainBinding.weatherController.set(
-                          //     value.weathers[0].cityItem!);
-                          Navigator.of(context).pushNamed('/home');
-                        }
-                      },
-                      child: Text('Proceed'),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(255, 255, 255, 0.2)),
-                    ),
-                  ),
-                )
+                        Consumer<LocationNotifier>(
+                          builder: (context, locationNotifier, child) =>
+                              ElevatedButton(
+                            onPressed: () {
+                              if (false) {
+                                // if (weatherNotifier.weathers.isEmpty) {
+                                const snackBar = SnackBar(
+                                  content: Text(
+                                    'Please add atleast one location to proceed',
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              } else {
+                                locationNotifier.setLocation(
+                                    weatherNotifier.weathers[0].cityItem!);
+                                // mainBinding.weatherController.set(
+                                //     value.weathers[0].cityItem!);
+                                Navigator.of(context).pushNamed('/home');
+                              }
+                            },
+                            child: Text('Proceed'),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromRGBO(255, 255, 255, 0.2)),
+                          ),
+                        ))
               ],
             )
           ],

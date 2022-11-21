@@ -10,6 +10,8 @@ import 'package:weather/presentation/item/unit_item.dart';
 import 'package:weather/presentation/item/weather_item.dart';
 import 'package:weather/presentation/notifiers/all_weather_details_item.dart';
 
+import '../../di/binding/main_binding.dart';
+
 class WeatherNotifier extends ChangeNotifier {
   UnitItem unit = AllWeatherDetailsItem.defaultUnit;
   List<AllWeatherDetailsItem> weathers = [];
@@ -29,13 +31,16 @@ class WeatherNotifier extends ChangeNotifier {
     updateData();
   }
 
-  final CitiesLocalUseCase citiesLocalUsecase;
-  HourlyWeatherDataUseCase hourlyWeatherDataUseCase;
+  late CitiesLocalUseCase citiesLocalUsecase;
+  late HourlyWeatherDataUseCase hourlyWeatherDataUseCase;
 
-  WeatherDataUsecase weatherDataUsecase;
+  late WeatherDataUsecase weatherDataUsecase;
 
-  WeatherNotifier(this.citiesLocalUsecase, this.weatherDataUsecase,
-      this.hourlyWeatherDataUseCase);
+  WeatherNotifier(MainBinding mainBinding) {
+    citiesLocalUsecase = mainBinding.citiesLocalUseCase;
+    hourlyWeatherDataUseCase = mainBinding.hourlyWeatherDataUseCase;
+    weatherDataUsecase = mainBinding.weatherDataUsecase;
+  }
 
   Future<void> getFromDB() async {
     setCities(await citiesLocalUsecase.getCities());

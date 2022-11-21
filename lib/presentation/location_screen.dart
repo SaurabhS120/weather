@@ -2,7 +2,6 @@ import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
-import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/item/city_item.dart';
 import 'package:weather/presentation/notifiers/location_notifier.dart';
 import 'package:weather/presentation/notifiers/weather_notifier.dart';
@@ -76,17 +75,13 @@ class LocationScreenState extends State<LocationScreen> {
                             SizedBox(
                               height: 24,
                             ),
-                            Consumer<GeoLocationController>(
-                              builder:
-                                  (context, geoLocationController, child) =>
-                                      ElevatedButton(
-                                onPressed: () {
-                                  geoLocationController.getCurrentLocation();
-                                },
-                                child: Text('Get city from location'),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black54),
-                              ),
+                            ElevatedButton(
+                              onPressed: () {
+                                location.getCurrentLocation();
+                              },
+                              child: Text('Get city from location'),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black54),
                             ),
                             SizedBox(
                               height: 12,
@@ -161,27 +156,21 @@ class LocationScreenState extends State<LocationScreen> {
                                   onCountryChanged: (value) {},
                                   onStateChanged: (value) {},
                                 ),
-                                Consumer<GeoLocationController>(
-                                  builder:
-                                      (context, geoLocationController, child) =>
-                                          ElevatedButton(
-                                    onPressed: () async {
-                                      var city = await mainBinding
-                                          .locationFromCityUsecase
-                                          .invoke(location.selectedCity);
-                                      location.setLocation(CityItem(
-                                          location.selectedCity, city));
-                                      geoLocationController
-                                          .getLocationFromCityName(
-                                              location.selectedCity,
-                                              onFinish: () {
-                                        location.setChoosingLoc(false);
-                                      });
-                                    },
-                                    child: Text('Confirm'),
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.black54),
-                                  ),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    var city = await mainBinding
+                                        .locationFromCityUsecase
+                                        .invoke(location.selectedCity);
+                                    location.setLocation(
+                                        CityItem(location.selectedCity, city));
+                                    location.getLocationFromCityName(
+                                        location.selectedCity, onFinish: () {
+                                      location.setChoosingLoc(false);
+                                    });
+                                  },
+                                  child: Text('Confirm'),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.black54),
                                 )
                               ],
                             ),
