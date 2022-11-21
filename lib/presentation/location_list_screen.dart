@@ -89,8 +89,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
                               } else {
                                 locationNotifier.setLocation(
                                     weatherNotifier.weathers[0].cityItem!);
-                                // mainBinding.weatherController.set(
-                                //     value.weathers[0].cityItem!);
                                 Navigator.of(context).pushNamed('/home');
                               }
                             },

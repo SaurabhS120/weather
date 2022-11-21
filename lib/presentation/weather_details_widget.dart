@@ -17,14 +17,6 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
     super.initState();
     BuildContext context = NavigationService.navigatorKey.currentContext!;
     MainBinding mainBinding = Provider.of<MainBinding>(context);
-    // UiConfigNotifier uiConfigNotifier = Provider.of<UiConfigNotifier>(context);
-    // uiConfigNotifier.setCurrentCity(mainBinding
-    //     .locationListController
-    //     .weatherNotifier
-    //     .weathers[0]
-    //     .cityItem
-    //     ?.cityName ??
-    //     '');
   }
 
   @override

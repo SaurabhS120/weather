@@ -16,11 +16,6 @@ class WeatherNotifier extends ChangeNotifier {
   UnitItem unit = AllWeatherDetailsItem.defaultUnit;
   List<AllWeatherDetailsItem> weathers = [];
 
-  // void setWeathers(List<AllWeatherDetailsItem> weathers) {
-  //   this.weathers = weathers;
-  //   notifyListeners();
-  // }
-
   void addCity(CityItem city) {
     weathers.add(AllWeatherDetailsItem(AllWeatherDetailsItem.defaultUnit,
         cityItem: city));
