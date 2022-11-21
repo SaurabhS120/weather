@@ -14,8 +14,6 @@ import 'presentation/navigation_service.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MainBinding mainBinding = MainBinding.createBinding();
-  LocationNotifier locationNotifier = LocationNotifier(mainBinding);
-  WeatherNotifier weatherNotifier = WeatherNotifier(mainBinding);
   runApp(MultiProvider(
     providers: [
       Provider.value(value: mainBinding),
@@ -23,8 +21,8 @@ void main() {
         value: AssetsProvider(),
       ),
       ChangeNotifierProvider.value(value: UiConfigNotifier()),
-      ChangeNotifierProvider.value(value: weatherNotifier),
-      ChangeNotifierProvider.value(value: locationNotifier),
+      ChangeNotifierProvider.value(value: WeatherNotifier(mainBinding)),
+      ChangeNotifierProvider.value(value: LocationNotifier(mainBinding)),
     ],
     child: MaterialApp(
       initialRoute: '/location_list',
