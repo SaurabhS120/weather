@@ -78,8 +78,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
                           builder: (context, locationNotifier, child) =>
                               ElevatedButton(
                             onPressed: () {
-                              if (false) {
-                                // if (weatherNotifier.weathers.isEmpty) {
+                                if (weatherNotifier.weathers.isEmpty) {
                                 const snackBar = SnackBar(
                                   content: Text(
                                     'Please add atleast one location to proceed',
