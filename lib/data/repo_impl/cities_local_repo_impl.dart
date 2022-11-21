@@ -15,7 +15,6 @@ class CitiesLocalRepoImpl extends CitiesLocalRepo {
   }
 
   @override
-  void removeCity(CityModel cityEntity) {
-    cities_db.removeCity(cityEntity.cityName);
-  }
+  Future<void> removeCity(CityModel cityEntity) async =>
+      await cities_db.removeCity(cityEntity.cityName);
 }

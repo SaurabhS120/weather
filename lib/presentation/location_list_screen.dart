@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
+import 'package:weather/presentation/controller/geolocation_controller.dart';
 import 'package:weather/presentation/navigation_service.dart';
+import 'package:weather/presentation/provider/assets_provider.dart';
 
 import 'notifiers/weather_notifier.dart';
 
@@ -11,14 +13,14 @@ class LocationListScreen extends StatefulWidget {
 }
 
 class _LocationListScreenState extends State<LocationListScreen> {
-  late MainBinding mainBinding;
+  late WeatherNotifier weatherNotifier;
 
   @override
   void initState() {
     super.initState();
-    mainBinding = Provider.of<MainBinding>(
+    weatherNotifier = Provider.of<WeatherNotifier>(
         NavigationService.navigatorKey.currentContext!);
-    mainBinding.locationListController.updateData();
+    weatherNotifier.updateData();
   }
 
   @override
@@ -70,12 +72,14 @@ class _LocationListScreenState extends State<LocationListScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ChangeNotifierProvider.value(
-                  value: mainBinding.locationListController.weatherNotifier,
-                  child: Consumer<WeatherNotifier>(
-                    builder: (context, value, child) => ElevatedButton(
+                Consumer<WeatherNotifier>(
+                  builder: (context, weatherNotifier, child) =>
+                      Consumer<GeoLocationController>(
+                    builder: (context, geoLocationController, child) =>
+                        ElevatedButton(
                       onPressed: () {
-                        if (value.weathers.isEmpty) {
+                        if (false) {
+                          // if (weatherNotifier.weathers.isEmpty) {
                           const snackBar = SnackBar(
                             content: Text(
                               'Please add atleast one location to proceed',
@@ -83,8 +87,8 @@ class _LocationListScreenState extends State<LocationListScreen> {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } else {
-                          mainBinding.geoLocationController
-                              .setLocation(value.weathers[0].cityItem!);
+                          geoLocationController.setLocation(
+                              weatherNotifier.weathers[0].cityItem!);
                           // mainBinding.weatherController.set(
                           //     value.weathers[0].cityItem!);
                           Navigator.of(context).pushNamed('/home');
@@ -95,7 +99,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
                           backgroundColor: Color.fromRGBO(255, 255, 255, 0.2)),
                     ),
                   ),
-                ),
+                )
               ],
             )
           ],
@@ -116,82 +120,84 @@ class _LocationListWidgetState extends State<LocationListWidget> {
   @override
   Widget build(BuildContext context) {
     mainBinding = Provider.of<MainBinding>(context);
-    return ChangeNotifierProvider.value(
-        value: mainBinding.locationListController.weatherNotifier,
-        child: Consumer<WeatherNotifier>(
-          builder: (context, value, child) => GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-            ),
-            itemCount: value.weathers.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onLongPress: () =>
-                    mainBinding.locationListController.remove(index),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(255, 255, 255, 0.2),
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              value.weathers[index].cityItem?.cityName ?? '',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                              ),
-                            ),
-                                Text(
-                                  value.weathers[index].weatherItem?.main ?? '',
-                              style: TextStyle(color: Colors.white),
-                            )
-                              ],
-                            ),
+    return Consumer<WeatherNotifier>(
+      builder: (context, weatherNotifier, child) => GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+        ),
+        itemCount: weatherNotifier.weathers.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onLongPress: () => weatherNotifier.remove(index),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(255, 255, 255, 0.2),
+                  borderRadius: BorderRadius.circular(12)),
+              child: Stack(
+                children: [
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          weatherNotifier.weathers[index].cityItem?.cityName ??
+                              '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              ),
-                              onPressed: () => mainBinding
-                                  .locationListController
-                                  .remove(index),
-                            ),
-                            mainBinding.locationListController.imageForMain(
-                                value.weathers[index].weatherItem?.icon ?? '',
-                                height: 24,
-                                width: 24,
-                                color: Colors.white),
-                          ],
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                padding: EdgeInsets.all(16),
-                                child: Text(
-                                  "${value.weathers[index].weatherItem?.temp ?? ''} ${value.unit.unit.displayText()}",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                              )),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          weatherNotifier.weathers[index].weatherItem?.main ??
+                              '',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
                     ),
-                  );
-                },
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                          onPressed: () => weatherNotifier.remove(index),
+                        ),
+                        Consumer<AssetsProvider>(
+                          builder: (context, assetsProvider, child) =>
+                              assetsProvider.imageForMain(
+                                  weatherNotifier
+                                          .weathers[index].weatherItem?.icon ??
+                                      '',
+                                  height: 24,
+                                  width: 24,
+                                  color: Colors.white),
+                        )
+                      ],
+                    ),
+                  ),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          "${weatherNotifier.weathers[index].weatherItem?.temp ?? ''} ${weatherNotifier.unit.unit.displayText()}",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                ],
               ),
-        ));
+            ),
+          );
+        },
+      ),
+    );
   }
 }

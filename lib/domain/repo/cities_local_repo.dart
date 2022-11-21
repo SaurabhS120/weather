@@ -6,5 +6,5 @@ abstract class CitiesLocalRepo {
 
   Future<List<CityModel>> getCities();
 
-  void removeCity(CityModel cityEntity);
+  Future<void> removeCity(CityModel cityEntity);
 }

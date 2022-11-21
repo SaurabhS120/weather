@@ -9,10 +9,13 @@ class GeoLocationController {
   final LocationFromCityUsecase locFromCityNameUsecase;
   final LatLongToCityNameUsecase latLongToCityNameUsecase;
   final LocationUseCase locationUseCase;
-  LocationNotifier locationNotifier = LocationNotifier();
+  LocationNotifier locationNotifier;
 
-  GeoLocationController(this.locFromCityNameUsecase,
-      this.latLongToCityNameUsecase, this.locationUseCase);
+  GeoLocationController(
+      this.locFromCityNameUsecase,
+      this.latLongToCityNameUsecase,
+      this.locationUseCase,
+      this.locationNotifier);
 
   void getCurrentLocation() async {
     LocationItem location = await locationUseCase.invoke();

@@ -13,8 +13,6 @@ import 'package:weather/domain/usecase/lat_long_to_city_name_usecase.dart';
 import 'package:weather/domain/usecase/location_from_city_usecase.dart';
 import 'package:weather/domain/usecase/location_usecase.dart';
 import 'package:weather/domain/usecase/weather_data_usecase.dart';
-import 'package:weather/presentation/controller/geolocation_controller.dart';
-import 'package:weather/presentation/controller/location_list_controller.dart';
 
 import '../../data/repo_impl/location_geolocator_repo.dart';
 
@@ -28,10 +26,8 @@ class MainBinding {
   WeatherDataRepo weatherDataRepo;
   WeatherDataUsecase weatherDataUsecase;
   HourlyWeatherDataUseCase hourlyWeatherDataUseCase;
-  LocationListController locationListController;
   LatLongToCityNameRepo latLongToCityNameRepo;
   LatLongToCityNameUsecase latLongToCityNameUsecase;
-  GeoLocationController geoLocationController;
 
   MainBinding(
     this.citiesLocalRepo,
@@ -43,10 +39,8 @@ class MainBinding {
     this.weatherDataRepo,
     this.weatherDataUsecase,
     this.hourlyWeatherDataUseCase,
-    this.locationListController,
     this.latLongToCityNameRepo,
     this.latLongToCityNameUsecase,
-    this.geoLocationController,
   );
 
   factory MainBinding.createBinding() {
@@ -61,26 +55,21 @@ class MainBinding {
     WeatherDataUsecase weatherDataUsecase = WeatherDataUsecase(weatherDataRepo);
     HourlyWeatherDataUseCase hourlyWeatherDataUseCase =
         HourlyWeatherDataUseCase(weatherDataRepo);
-    LocationListController locationListController = LocationListController(
-        citiesLocalUseCase, weatherDataUsecase, hourlyWeatherDataUseCase);
     LatLongToCityNameRepo latLongToCityNameRepo = GeoCodingRepoImpl();
     LatLongToCityNameUsecase latLongToCityNameUsecase =
         LatLongToCityNameUsecase(latLongToCityNameRepo);
-    GeoLocationController geoLocationController = GeoLocationController(
-        locationFromCityUsecase, latLongToCityNameUsecase, locationUseCase);
     return MainBinding(
-        citiesLocalRepo,
-        cityNameRepo,
-        citiesLocalUseCase,
-        locationRepo,
-        locationFromCityUsecase,
-        locationUseCase,
-        weatherDataRepo,
-        weatherDataUsecase,
-        hourlyWeatherDataUseCase,
-        locationListController,
-        latLongToCityNameRepo,
-        latLongToCityNameUsecase,
-        geoLocationController);
+      citiesLocalRepo,
+      cityNameRepo,
+      citiesLocalUseCase,
+      locationRepo,
+      locationFromCityUsecase,
+      locationUseCase,
+      weatherDataRepo,
+      weatherDataUsecase,
+      hourlyWeatherDataUseCase,
+      latLongToCityNameRepo,
+      latLongToCityNameUsecase,
+    );
   }
 }

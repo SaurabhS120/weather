@@ -36,7 +36,7 @@ class CitiesDB {
         .toList();
   }
 
-  void removeCity(String cityName) async {
+  Future<void> removeCity(String cityName) async {
     (await init())!.delete('City', where: "name=?", whereArgs: [cityName]);
   }
 }
