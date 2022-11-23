@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
+import 'package:weather/presentation/notifiers/detailed_weather_notifier.dart';
 import 'package:weather/presentation/notifiers/location_notifier.dart';
 import 'package:weather/presentation/notifiers/ui_config_notifier.dart';
 import 'package:weather/presentation/notifiers/weather_notifier.dart';
@@ -23,6 +24,7 @@ void main() {
       ChangeNotifierProvider.value(value: UiConfigNotifier()),
       ChangeNotifierProvider.value(value: WeatherNotifier(mainBinding)),
       ChangeNotifierProvider.value(value: LocationNotifier(mainBinding)),
+      ChangeNotifierProvider.value(value: DetailedWeatherNotifier(mainBinding.weatherDataUsecase)),
     ],
     child: MaterialApp(
       initialRoute: '/location_list',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/di/binding/main_binding.dart';
 import 'package:weather/presentation/navigation_service.dart';
+import 'package:weather/presentation/notifiers/detailed_weather_notifier.dart';
 import 'package:weather/presentation/notifiers/ui_config_notifier.dart';
 import 'package:weather/presentation/notifiers/weather_notifier.dart';
 import 'package:weather/presentation/provider/assets_provider.dart';
@@ -12,11 +13,17 @@ class WeatherDetailsWidget extends StatefulWidget {
 }
 
 class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
+  late DetailedWeatherNotifier detailedWeatherNotifier;
   @override
   void initState() {
     super.initState();
     BuildContext context = NavigationService.navigatorKey.currentContext!;
     MainBinding mainBinding = Provider.of<MainBinding>(context);
+    WeatherNotifier weatherNotifier = Provider.of<WeatherNotifier>(context);
+    detailedWeatherNotifier = Provider.of<DetailedWeatherNotifier>(context);
+    detailedWeatherNotifier.city = weatherNotifier.weathers[0].cityItem;
+    detailedWeatherNotifier.metric = weatherNotifier.unit.unit.getUnitName();
+    detailedWeatherNotifier.updateData();
   }
 
   @override
@@ -99,7 +106,11 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                                             ''),
                                   ),
                                 ),
-                                onPressed: () => weatherNotifier.toggleUnit(),
+                                onPressed: () {
+                                  weatherNotifier.toggleUnit();
+                                  detailedWeatherNotifier.metric = weatherNotifier.unit.unit.getUnitName();
+                                  detailedWeatherNotifier.updateData();
+                                },
                               ),
                             ],
                           ),
@@ -111,254 +122,252 @@ class _WeatherDetailsWidgetState extends State<WeatherDetailsWidget> {
                           itemCount: weatherNotifier.weathers.length,
                           onPageChanged: (pageIndex) {
                             uiConfigNotifier.changePage(pageIndex);
+                            detailedWeatherNotifier.city = weatherNotifier.weathers[pageIndex].cityItem!;
+                            detailedWeatherNotifier.metric = weatherNotifier.unit.unit.getUnitName();
+                            detailedWeatherNotifier.updateData();
                           },
                           itemBuilder: (context, pageIndex) {
                             var weatherDetails =
                                 weatherNotifier.weathers[pageIndex];
-                            return Consumer<MainBinding>(
-                              builder:(context, mainBinding, child) => FutureBuilder(
-                                future: mainBinding.weatherDataUsecase.invoke(weatherDetails.cityItem!, weatherDetails.unit.unit.getUnitName()),
-                                builder: (context, snapshot) => snapshot.hasData?Column(
+                            return Consumer<DetailedWeatherNotifier>(builder: (context, detailedWeatherNotifier, child) => detailedWeatherNotifier.loading?Center(child: CircularProgressIndicator(),):Column(
+                              children: [
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                Row(
                                   children: [
-                                    SizedBox(
-                                      height: 12,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Flexible(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(12),
-                                            child: Column(
+                                    Flexible(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(12),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 24,
+                                            ),
+                                            Row(
                                               children: [
-                                                SizedBox(
-                                                  height: 24,
+                                                Text(
+                                                  weatherDetails
+                                                      .cityItem?.cityName ??
+                                                      '',
+                                                  style: TextStyle(
+                                                      color: assetsProvider
+                                                          .getTextColorForMain(
+                                                          detailedWeatherNotifier.weatherItem
+                                                              ?.main ??
+                                                              ''),
+                                                      fontSize: 32),
                                                 ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 24,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '${detailedWeatherNotifier.weatherItem?.temp.toInt() ?? ''}${weatherNotifier.unit.unit.displayText()}',
+                                                  style: TextStyle(
+                                                      color: assetsProvider
+                                                          .getTextColorForMain(
+                                                          weatherDetails
+                                                              .weatherItem
+                                                              ?.main ??
+                                                              ''),
+                                                      fontSize: 72),
+                                                )
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
                                                 Row(
+                                                  mainAxisSize:
+                                                  MainAxisSize.min,
                                                   children: [
-                                                    Text(
-                                                      weatherDetails
-                                                          .cityItem?.cityName ??
-                                                          '',
-                                                      style: TextStyle(
-                                                          color: assetsProvider
-                                                              .getTextColorForMain(
-                                                              snapshot.data
-                                                                  ?.main ??
-                                                                  ''),
-                                                          fontSize: 32),
+                                                    Padding(
+                                                      child: Icon(
+                                                        Icons.keyboard_arrow_up,
+                                                        color: assetsProvider
+                                                            .getTextColorForMain(
+                                                            weatherDetails
+                                                                .weatherItem
+                                                                ?.main ??
+                                                                ''),
+                                                      ),
+                                                      padding:
+                                                      EdgeInsets.all(4),
                                                     ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 24,
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text(
-                                                      '${snapshot.data?.temp.toInt() ?? ''}${weatherNotifier.unit.unit.displayText()}',
+                                                      "${detailedWeatherNotifier.weatherItem?.tempMax}°",
                                                       style: TextStyle(
                                                           color: assetsProvider
                                                               .getTextColorForMain(
                                                               weatherDetails
                                                                   .weatherItem
                                                                   ?.main ??
-                                                                  ''),
-                                                          fontSize: 72),
-                                                    )
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Padding(
-                                                          child: Icon(
-                                                            Icons.keyboard_arrow_up,
-                                                            color: assetsProvider
-                                                                .getTextColorForMain(
-                                                                weatherDetails
-                                                                    .weatherItem
-                                                                    ?.main ??
-                                                                    ''),
-                                                          ),
-                                                          padding:
-                                                          EdgeInsets.all(4),
-                                                        ),
-                                                        Text(
-                                                          "${snapshot.data?.tempMax}°",
-                                                          style: TextStyle(
-                                                              color: assetsProvider
-                                                                  .getTextColorForMain(
-                                                                  weatherDetails
-                                                                      .weatherItem
-                                                                      ?.main ??
-                                                                      '')),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Padding(
-                                                          child: Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down,
-                                                            color: assetsProvider
-                                                                .getTextColorForMain(
-                                                                weatherDetails
-                                                                    .weatherItem
-                                                                    ?.main ??
-                                                                    ''),
-                                                          ),
-                                                          padding:
-                                                          EdgeInsets.all(4),
-                                                        ),
-                                                        Text(
-                                                          "${snapshot.data?.tempMin}°",
-                                                          style: TextStyle(
-                                                              color: assetsProvider
-                                                                  .getTextColorForMain(
-                                                                  weatherDetails
-                                                                      .weatherItem
-                                                                      ?.main ??
-                                                                      '')),
-                                                        ),
-                                                      ],
+                                                                  '')),
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(
-                                                  height: 24,
-                                                ),
                                                 Row(
+                                                  mainAxisSize:
+                                                  MainAxisSize.min,
                                                   children: [
                                                     Padding(
-                                                      padding:
-                                                      const EdgeInsets.all(8.0),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                        children: [
-                                                          Text(
-                                                            "${snapshot.data?.main ?? ''}",
-                                                            style: TextStyle(
-                                                                fontSize: 24,
-                                                                color: assetsProvider
-                                                                    .getTextColorForMain(
-                                                                    weatherDetails
-                                                                        .weatherItem
-                                                                        ?.main ??
-                                                                        '')),
-                                                          ),
-                                                          Text(
-                                                            "Feels like : ${snapshot.data?.feelsLike ?? ''}°",
-                                                            style: TextStyle(
-                                                                color: assetsProvider
-                                                                    .getTextColorForMain(
-                                                                    weatherDetails
-                                                                        .weatherItem
-                                                                        ?.main ??
-                                                                        '')),
-                                                          ),
-                                                        ],
+                                                      child: Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down,
+                                                        color: assetsProvider
+                                                            .getTextColorForMain(
+                                                            weatherDetails
+                                                                .weatherItem
+                                                                ?.main ??
+                                                                ''),
                                                       ),
-                                                    )
+                                                      padding:
+                                                      EdgeInsets.all(4),
+                                                    ),
+                                                    Text(
+                                                      "${detailedWeatherNotifier.weatherItem?.tempMin}°",
+                                                      style: TextStyle(
+                                                          color: assetsProvider
+                                                              .getTextColorForMain(
+                                                              weatherDetails
+                                                                  .weatherItem
+                                                                  ?.main ??
+                                                                  '')),
+                                                    ),
                                                   ],
-                                                )
+                                                ),
                                               ],
                                             ),
-                                          ),
-                                        ),
-                                        Column(
-                                          children: [
+                                            SizedBox(
+                                              height: 24,
+                                            ),
                                             Row(
                                               children: [
-                                                WeatherImageWidget(
-                                                    pageIndex,
-                                                    assetsProvider
-                                                        .getTextColorForMain(
-                                                        weatherDetails
-                                                            .weatherItem
-                                                            ?.main ??
-                                                            ''),
-                                                    assetsProvider),
+                                                Padding(
+                                                  padding:
+                                                  const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Text(
+                                                        "${detailedWeatherNotifier.weatherItem?.main ?? ''}",
+                                                        style: TextStyle(
+                                                            fontSize: 24,
+                                                            color: assetsProvider
+                                                                .getTextColorForMain(
+                                                                weatherDetails
+                                                                    .weatherItem
+                                                                    ?.main ??
+                                                                    '')),
+                                                      ),
+                                                      Text(
+                                                        "Feels like : ${detailedWeatherNotifier.weatherItem?.feelsLike ?? ''}°",
+                                                        style: TextStyle(
+                                                            color: assetsProvider
+                                                                .getTextColorForMain(
+                                                                weatherDetails
+                                                                    .weatherItem
+                                                                    ?.main ??
+                                                                    '')),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
                                               ],
                                             )
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                    Divider(
-                                      color: assetsProvider.getTextColorForMain(
-                                          snapshot.data?.main ?? ''),
-                                    ),
-                                    SizedBox(
-                                      height: 80,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemCount: weatherDetails
-                                            .hourlyWeatherItem?.data.length,
-                                        itemBuilder: (context, index) => Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                weatherDetails.hourlyWeatherItem
-                                                    ?.data[index].time ??
-                                                    '',
-                                                style: TextStyle(
-                                                    color: assetsProvider
-                                                        .getTextColorForMain(
-                                                        weatherDetails
-                                                            .weatherItem
-                                                            ?.main ??
-                                                            '')),
-                                              ),
-                                              assetsProvider.imageForMain(
-                                                  weatherDetails.hourlyWeatherItem
-                                                      ?.data[pageIndex].main ??
-                                                      '',
-                                                  height: 24,
-                                                  width: 24,
-                                                  color: assetsProvider
-                                                      .getTextColorForMain(
-                                                      snapshot.data
-                                                          ?.main ??
-                                                          '')),
-                                              Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: Text(
-                                                  "${weatherDetails.hourlyWeatherItem?.data[index].temp}°",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: assetsProvider
-                                                          .getTextColorForMain(
-                                                          weatherDetails
-                                                              .weatherItem
-                                                              ?.main ??
-                                                              '')),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
                                         ),
                                       ),
                                     ),
-                                    Divider(
-                                      color: assetsProvider.getTextColorForMain(
-                                          snapshot.data?.main ?? ''),
-                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            WeatherImageWidget(
+                                                pageIndex,
+                                                assetsProvider
+                                                    .getTextColorForMain(
+                                                    weatherDetails
+                                                        .weatherItem
+                                                        ?.main ??
+                                                        ''),
+                                                assetsProvider),
+                                          ],
+                                        )
+                                      ],
+                                    )
                                   ],
-                                )
-                                    :const Center(child: CircularProgressIndicator(),),)
-                            );
+                                ),
+                                Divider(
+                                  color: assetsProvider.getTextColorForMain(
+                                      detailedWeatherNotifier.weatherItem?.main ?? ''),
+                                ),
+                                SizedBox(
+                                  height: 80,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemCount: weatherDetails
+                                        .hourlyWeatherItem?.data.length,
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            weatherDetails.hourlyWeatherItem
+                                                ?.data[index].time ??
+                                                '',
+                                            style: TextStyle(
+                                                color: assetsProvider
+                                                    .getTextColorForMain(
+                                                    weatherDetails
+                                                        .weatherItem
+                                                        ?.main ??
+                                                        '')),
+                                          ),
+                                          assetsProvider.imageForMain(
+                                              weatherDetails.hourlyWeatherItem
+                                                  ?.data[pageIndex].main ??
+                                                  '',
+                                              height: 24,
+                                              width: 24,
+                                              color: assetsProvider
+                                                  .getTextColorForMain(
+                                                  detailedWeatherNotifier.weatherItem
+                                                      ?.main ??
+                                                      '')),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Text(
+                                              "${weatherDetails.hourlyWeatherItem?.data[index].temp}°",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: assetsProvider
+                                                      .getTextColorForMain(
+                                                      weatherDetails
+                                                          .weatherItem
+                                                          ?.main ??
+                                                          '')),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: assetsProvider.getTextColorForMain(
+                                      detailedWeatherNotifier.weatherItem?.main ?? ''),
+                                ),
+                              ],
+                            ),);
                           },
                         ),
                       ),
